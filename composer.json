@@ -1,0 +1,19 @@
+{
+    "name": "kyzegs/laracord",
+    "description": "Discord API wrapper",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Sebastiaan Zegers",
+            "email": "kyzegs@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Kyzegs\\Laracord\\": "src/"
+        }
+    },
+    "require": {
+        "php": "^8.0"
+    }
+}
