@@ -118,7 +118,7 @@ class DiscordProvider extends AbstractProvider implements ProviderInterface
     protected function mapGuildsToObjects(array $guilds): Collection
     {
         return collect($guilds)->map(function ($guild) {
-            return new PartialGuild(...collect($guild)->except('permssions_new'));
+            return new PartialGuild(...collect($guild)->except('permissions_new'));
         });
     }
 
