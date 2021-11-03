@@ -66,7 +66,7 @@ class DiscordProvider extends AbstractProvider implements ProviderInterface
      * @param string $token
      * @return array
      */
-    protected function getUserByToken(string $token): array
+    protected function getUserByToken(mixed $token): array
     {
         $response = $this->getHttpClient()->get('https://discord.com/api/users/@me', [
             'headers' => [
