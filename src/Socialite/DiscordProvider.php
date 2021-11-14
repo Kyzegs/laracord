@@ -4,6 +4,7 @@ namespace Kyzegs\Laracord\Socialite;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Session;
 use Laravel\Socialite\Two\AbstractProvider;
 
 class DiscordProvider extends AbstractProvider implements ProviderInterface
@@ -131,6 +132,10 @@ class DiscordProvider extends AbstractProvider implements ProviderInterface
 
         if (in_array('guilds', $this->scopes)) {
             $user->setGuilds($this->mapGuildsToObjects($this->getGuildsByToken($this->user->token)));
+        }
+
+        if (config('laracord.session.user.store')) {
+            Session::put(config('laracord.session.user.key'), $user);
         }
 
         return $user;

@@ -27,4 +27,23 @@ return [
 
     'bot_token' => env('DISCORD_BOT_TOKEN'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Session
+    |--------------------------------------------------------------------------
+    |
+    | Here you may specify what should be stored in the Laravel session.
+    |
+    | Disabling the storing of the user will make it so you cannot use any
+    | user API routes without adding the bearer token manually.
+    |
+    */
+
+    'session' => [
+        'user' => [
+            'store' => true,
+            'key' => 'user',
+        ],
+    ],
+
 ];
