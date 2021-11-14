@@ -7,12 +7,12 @@ use Kyzegs\Laracord\Constants\Permissions;
 class PartialGuild
 {
     /**
-     * @param int $id
-     * @param string $name
-     * @param string $icon
-     * @param bool $owner
-     * @param int $permissions
-     * @param array $features
+     * @param  int  $id
+     * @param  string  $name
+     * @param  string  $icon
+     * @param  bool  $owner
+     * @param  int  $permissions
+     * @param  array  $features
      * @return void
      */
     public function __construct(
@@ -22,12 +22,13 @@ class PartialGuild
         public bool $owner,
         public int $permissions,
         public array $features,
-    ) { }
+    ) {
+    }
 
     /**
      * Check if the user has all of the given permissions.
      *
-     * @param int[] ...$permissions
+     * @param  int[]  ...$permissions
      * @return bool
      */
     public function hasPermissions(int ...$permissions): bool
@@ -40,7 +41,7 @@ class PartialGuild
     /**
      * Check if the user has any of the given permissions.
      *
-     * @param int[] ...$permissions
+     * @param  int[]  ...$permissions
      * @return bool
      */
     public function hasAnyPermissions(int ...$permissions): bool
@@ -69,7 +70,7 @@ class PartialGuild
     {
         if ($this->owner) {
             return 'Owner';
-        } else if ($this->isAdmin()) {
+        } elseif ($this->isAdmin()) {
             return 'Administrator';
         } else {
             return 'Member';

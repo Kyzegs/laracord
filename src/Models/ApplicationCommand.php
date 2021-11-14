@@ -12,7 +12,7 @@ class ApplicationCommand extends Model
     /**
      * Create a new Eloquent model instance.
      *
-     * @param array $attributes
+     * @param  array  $attributes
      * @return void
      */
     public function __construct(array $attributes = [])
@@ -27,10 +27,10 @@ class ApplicationCommand extends Model
     /**
      * Helper to get the corresponding route for an API call.
      *
-     * @param string $method
-     * @param int|null $guildId
-     * @param bool $multiple
-     * @param array ...$values
+     * @param  string  $method
+     * @param  int|null  $guildId
+     * @param  bool  $multiple
+     * @param  array  ...$values
      * @return string
      */
     protected static function getRoute(string $method, int|null $guildId = null, mixed ...$values): string
@@ -54,7 +54,7 @@ class ApplicationCommand extends Model
     /**
      * Send an HTTP GET request to retrieve data from Discord.
      *
-     * @param int|null $guildId
+     * @param  int|null  $guildId
      * @return \Illuminate\Support\Collection
      */
     public static function get(int|null $guildId = null): Collection
@@ -74,8 +74,8 @@ class ApplicationCommand extends Model
     /**
      * Send an HTTP POST request to Discord to make a new application command.
      *
-     * @param int|null $guildId
-     * @param array $data
+     * @param  int|null  $guildId
+     * @param  array  $data
      * @return \Kyzegs\Laracord\Models\ApplicationCommand
      */
     public static function create(int|null $guildId = null, array $data): self
@@ -88,9 +88,9 @@ class ApplicationCommand extends Model
     /**
      * Send an HTTP PATCH request to Discord with the given data.
      *
-     * @param int|null $guildId
-     * @param int $id
-     * @param array $data
+     * @param  int|null  $guildId
+     * @param  int  $id
+     * @param  array  $data
      * @return \Kyzegs\Laracord\Models\ApplicationCommand
      */
     public static function update(int|null $guildId = null, int $id, array $data): self
@@ -117,8 +117,8 @@ class ApplicationCommand extends Model
     /**
      * Send an HTTP DELETE request to Discord to delete a given application command.
      *
-     * @param int|null $guildId
-     * @param int $id
+     * @param  int|null  $guildId
+     * @param  int  $id
      * @return void
      */
     public static function delete(int|null $guildId = null, int $id): void
@@ -148,7 +148,7 @@ class ApplicationCommand extends Model
         if (empty($this->permissions)) {
             $this->permissions = new ApplicationCommandPermission([
                 'id' => $this->id,
-                'guild_id' => $this->guild_id
+                'guild_id' => $this->guild_id,
             ]);
         }
 

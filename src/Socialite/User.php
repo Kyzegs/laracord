@@ -11,7 +11,7 @@ class User extends AbstractUser
     public $guilds;
 
     /**
-     * @param bool $admin
+     * @param  bool  $admin
      * @return \Illuminate\Support\Collection
      */
     public function getGuilds(bool $admin = false): Collection
@@ -24,7 +24,7 @@ class User extends AbstractUser
     }
 
     /**
-     * @param \Illuminate\Support\Collection $guilds
+     * @param  \Illuminate\Support\Collection  $guilds
      * @return void
      */
     public function setGuilds(Collection $guilds): void

@@ -13,7 +13,7 @@ class ApplicationCommandPermission extends Model
     /**
      * Create a new Eloquent model instance.
      *
-     * @param array $attributes
+     * @param  array  $attributes
      * @return void
      */
     public function __construct(array $attributes = [])
@@ -33,9 +33,9 @@ class ApplicationCommandPermission extends Model
     /**
      * Helper to get the corresponding route for an API call.
      *
-     * @param string $method
-     * @param int|null $guildId
-     * @param array ...$values
+     * @param  string  $method
+     * @param  int|null  $guildId
+     * @param  array  ...$values
      * @return string
      */
     protected static function getRoute(string $method, int|null $guildId = null, mixed ...$values): string
@@ -59,7 +59,7 @@ class ApplicationCommandPermission extends Model
     /**
      * Send an HTTP GET request to retrieve data from Discord.
      *
-     * @param int $guildId
+     * @param  int  $guildId
      * @return \Illuminate\Support\Collection
      */
     public static function get(int $guildId): Collection
@@ -75,9 +75,9 @@ class ApplicationCommandPermission extends Model
     /**
      * Send an HTTP PUT request to Discord with the given data.
      *
-     * @param int|null $guildId
-     * @param int $commandId
-     * @param array $data
+     * @param  int|null  $guildId
+     * @param  int  $commandId
+     * @param  array  $data
      * @return \Kyzegs\Laracord\Models\ApplicationCommandPermission
      */
     public static function update(int|null $guildId = null, int $commandId, array $data): self
@@ -100,9 +100,9 @@ class ApplicationCommandPermission extends Model
     /**
      * Add a new overwrite.
      *
-     * @param int $id
-     * @param \Kyzegs\Laracord\Enums\ApplicationCommandPermissionType|int $type
-     * @param bool $permission
+     * @param  int  $id
+     * @param  \Kyzegs\Laracord\Enums\ApplicationCommandPermissionType|int  $type
+     * @param  bool  $permission
      * @return void
      */
     public function add(int $id, ApplicationCommandPermissionType|int $type, bool $permission): void
@@ -113,7 +113,7 @@ class ApplicationCommandPermission extends Model
     /**
      * Remove overwrites for all the given IDs.
      *
-     * @param int[] ...$ids
+     * @param  int[]  ...$ids
      * @return void
      */
     public function remove(int ...$ids): void
@@ -124,7 +124,7 @@ class ApplicationCommandPermission extends Model
     /**
      * Set the permission overwrites from an array.
      *
-     * @param array $permissions
+     * @param  array  $permissions
      * @return void
      */
     public function set(array $permissions): void
