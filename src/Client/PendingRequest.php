@@ -12,10 +12,11 @@ class PendingRequest extends \Illuminate\Http\Client\PendingRequest
     /**
      * Send the request to the given URL.
      *
-     * @param string $method
-     * @param string $url
-     * @param array $options
+     * @param  string  $method
+     * @param  string  $url
+     * @param  array  $options
      * @return \Illuminate\Http\Client\Response
+     *
      * @throws \Exception
      */
     public function send(string $method, string $url, array $options = []): Response
@@ -32,7 +33,7 @@ class PendingRequest extends \Illuminate\Http\Client\PendingRequest
     /**
      * Create new Guzzle client.
      *
-     * @param \GuzzleHttp\HandlerStack $handlerStack
+     * @param  \GuzzleHttp\HandlerStack  $handlerStack
      * @return \GuzzleHttp\Client
      */
     public function createClient($handlerStack): Client
