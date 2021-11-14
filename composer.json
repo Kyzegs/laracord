@@ -14,6 +14,14 @@
         }
     },
     "require": {
-        "php": "^8.0"
+        "php": "^8.0",
+        "laravel/socialite": "^5.2"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Kyzegs\\Laracord\\LaracordServiceProvider"
+            ]
+        }
     }
 }
