@@ -21,7 +21,7 @@ class PendingRequest extends \Illuminate\Http\Client\PendingRequest
      */
     public function send(string $method, string $url, array $options = []): Response
     {
-       if (! array_key_exists('Authorization', $this->options['headers'] ?? [])) {
+        if (! array_key_exists('Authorization', $this->options['headers'] ?? [])) {
             if (str_starts_with($url, '/users/@me')) {
                 $this->withToken(session(config('laracord.session.user.key'))?->token);
             } else {
