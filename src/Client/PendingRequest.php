@@ -9,6 +9,19 @@ use Kyzegs\Laracord\RateLimiter\RateLimiter;
 
 class PendingRequest extends \Illuminate\Http\Client\PendingRequest
 {
+    /** @var bool */
+    private $authorizationHeader = true;
+
+    /**
+     * @return \Kyzegs\Laracord\Client\PendingRequest
+     */
+    public function withoutToken(): self
+    {
+        $this->authorizationHeader = false;
+
+        return $this;
+    }
+
     /**
      * Send the request to the given URL.
      *
@@ -21,7 +34,7 @@ class PendingRequest extends \Illuminate\Http\Client\PendingRequest
      */
     public function send(string $method, string $url, array $options = []): Response
     {
-        if (! array_key_exists('Authorization', $this->options['headers'] ?? [])) {
+        if ($this->authorizationHeader && ! array_key_exists('Authorization', $this->options['headers'] ?? [])) {
             if (str_starts_with($url, '/users/@me')) {
                 $this->withToken(session(config('laracord.session.user.key'))?->token);
             } else {
