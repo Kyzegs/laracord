@@ -9,7 +9,7 @@ class PartialGuild
     /**
      * @param  int  $id
      * @param  string  $name
-     * @param  string  $icon
+     * @param  string|null  $icon
      * @param  bool  $owner
      * @param  int  $permissions
      * @param  array  $features
@@ -18,7 +18,7 @@ class PartialGuild
     public function __construct(
         public int $id,
         public string $name,
-        public string $icon,
+        public string|null $icon,
         public bool $owner,
         public int $permissions,
         public array $features,
