@@ -145,7 +145,7 @@ class ApplicationCommand extends Model
      */
     public function permissions(): ApplicationCommandPermission
     {
-        if (empty($this->permissions)) {
+        if (empty($this->permissions) || is_array($this->permissions)) {
             $this->permissions = new ApplicationCommandPermission([
                 'id' => $this->id,
                 'guild_id' => $this->guild_id,
