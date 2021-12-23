@@ -103,10 +103,12 @@ class DiscordProvider extends AbstractProvider implements ProviderInterface
     {
         return (new User())->setRaw($user)->map([
             'id' => $user['id'],
-            'nickname' => $user['id'],
-            'name' => $user['id'],
-            'email' => $user['id'],
-            'avatar' => $user['id'],
+            'nickname' => sprintf('%s#%d', $user['username'], $user['discriminator']),
+            'name' => $user['username'],
+            'email' => $user['email'],
+            'avatar' => $user['avatar']
+                ? sprintf('https://cdn.discordapp.com/avatars/%d/%s.png', $user['id'], $user['avatar'])
+                : sprintf('https://cdn.discordapp.com/embed/avatars/%d.png', $user['discriminator']),
         ]);
     }
 
