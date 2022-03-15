@@ -94,7 +94,8 @@ abstract class AbstractRateLimitProvider
                 preg_match('/^(https:\/\/discord\.com\/api\/v\d+\/channels\/\d*).*?$/', $url, $matches) === 1 ||
                 preg_match('/^(https:\/\/discord\.com\/api\/v\d+\/guilds\/\d*).*?$/', $url, $matches) === 1 ||
                 preg_match('/^(https:\/\/discord\.com\/api\/v\d+\/users\/@me\/guilds\/\d*).*?$/', $url, $matches) === 1 ||
-                preg_match('/^(https:\/\/discord\.com\/api\/v\d+\/webhooks\/\d*).*?$/', $url, $matches) === 1
+                preg_match('/^(https:\/\/discord\.com\/api\/v\d+\/webhooks\/\d*).*?$/', $url, $matches) === 1 ||
+                preg_match('/^(https:\/\/discord\.com\/api\/v\d+\/applications\/\d*\/guilds\/\d*).*?$/', $url, $matches) === 1
             ) && count($matches) === 2
         ) {
             $url = $matches[1].preg_replace('/[0-9]+/', '', substr($url, strlen($matches[1])));
