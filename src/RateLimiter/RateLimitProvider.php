@@ -69,7 +69,7 @@ class RateLimitProvider extends AbstractRateLimitProvider
         $remaining = $response->getHeader('x-ratelimit-remaining');
         $reset = $response->getHeader('x-ratelimit-reset');
 
-        if (empty($remaining) || empty($reset) || (int) $remaining[0] > 0) {
+        if (empty($remaining) || empty($reset)) {
             return;
         }
 
