@@ -69,10 +69,11 @@ class RateLimitProvider extends AbstractRateLimitProvider
         $remaining = $response->getHeader('x-ratelimit-remaining');
         $reset = $response->getHeader('x-ratelimit-reset');
 
-        if (empty($remaining) || empty($reset)) {
+        if (empty($remaining) || empty($reset) || (int) $remaining[0] > 0) {
             return;
         }
 
-        Cache::put($route.'request_allowance', $reset[0], static::MAX_TTL);
+        // Extra 4 seconds as a safeguard as it's inconsistent without
+        Cache::put($route.'request_allowance', $reset[0] + 4, static::MAX_TTL);
     }
 }
