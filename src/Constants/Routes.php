@@ -19,9 +19,4 @@ class Routes
     const EDIT_GUILD_APPLICATION_COMMAND = '/applications/%d/guilds/%d/commands/%d';
     const DELETE_GUILD_APPLICATION_COMMAND = '/applications/%d/guilds/%d/commands/%d';
     const BULK_OVERWRITE_GUILD_APPLICATION_COMMANDS = '/applications/%d/guilds/%d/commands';
-
-    const GET_GUILD_APPLICATION_COMMAND_PERMISSIONS = '/applications/%d/guilds/%d/commands/permissions';
-    const GET_APPLICATION_COMMAND_PERMISSIONS = '/applications/%d/guilds/%d/commands/%d/permissions';
-    const EDIT_APPLICATION_COMMAND_PERMISSIONS = '/applications/%d/guilds/%d/commands/%d/permissions';
-    const BATCH_EDIT_APPLICATION_COMMAND_PERMISSIONS = '/applications/%d/guilds/%d/commands/permissions';
 }

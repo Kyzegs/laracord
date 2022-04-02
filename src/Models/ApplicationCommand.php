@@ -3,25 +3,81 @@
 namespace Kyzegs\Laracord\Models;
 
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use Jenssegers\Model\Model;
 use Kyzegs\Laracord\Client\Http;
+use Kyzegs\Laracord\Constants\Routes;
+use Kyzegs\Laracord\Traits\HasAttributes;
 
 class ApplicationCommand extends Model
 {
+    use HasAttributes;
+
     /**
-     * Create a new Eloquent model instance.
+     * Create a new  model instance.
      *
      * @param  array  $attributes
      * @return void
      */
     public function __construct(array $attributes = [])
     {
-        Validator::make($attributes, [
-            'guild_id' => 'required|integer',
-        ])->validate();
+        $this->fill($attributes);
+        $this->syncOriginal();
+    }
 
-        parent::__construct($attributes);
+    /**
+     * @param  int  $guildId
+     * @return string
+     */
+    private static function getCacheKey(int $guildId): string
+    {
+        return sprintf('application-commands-%d', $guildId);
+    }
+
+    /**
+     * @param  int  $guildId
+     * @param  ApplicationCommand  $applicationCommand
+     * @return ApplicationCommand
+     */
+    private static function addToCache(int $guildId, ApplicationCommand $applicationCommand): ApplicationCommand
+    {
+        if (Cache::has(self::getCacheKey($guildId))) {
+            Cache::pull(self::getCacheKey($guildId))
+                ->push($applicationCommand)
+                ->tap(fn (Collection $commands) => Cache::put(self::getCacheKey($guildId), $commands, 3600));
+        }
+
+        return $applicationCommand;
+    }
+
+    /**
+     * @param  int  $guildId
+     * @param  ApplicationCommand  $applicationCommand
+     * @return ApplicationCommand
+     */
+    private static function updateCache(int $guildId, ApplicationCommand $applicationCommand): ApplicationCommand
+    {
+        if (Cache::has(self::getCacheKey($guildId))) {
+            Cache::pull(self::getCacheKey($guildId))
+                ->filter(fn (ApplicationCommand $command) => $command->id !== $applicationCommand->id)
+                ->push($applicationCommand)
+                ->tap(fn (Collection $commands) => Cache::put(self::getCacheKey($guildId), $commands, 3600));
+        }
+
+        return $applicationCommand;
+    }
+
+    /**
+     * @param  int  $guildId
+     * @param  int  $applicationCommandId
+     * @return void
+     */
+    private static function deleteFromCache(int $guildId, int $applicationCommandId): void
+    {
+        Cache::pull(self::getCacheKey($guildId))
+            ->filter(fn (ApplicationCommand $command) => $command->id !== $applicationCommandId)
+            ->tap(fn (Collection $commands) => Cache::put(self::getCacheKey($guildId), $commands, 3600));
     }
 
     /**
@@ -39,7 +95,7 @@ class ApplicationCommand extends Model
         $constant = 'Kyzegs\Laracord\Constants\Routes::%s_%s_APPLICATION_COMMAND';
 
         if ($method === 'GET') {
-            $constant = $constant.'S';
+            $constant = Str::of($constant)->append('S')->toString();
         }
 
         $route = constant(sprintf($constant, $method, $scope));
@@ -52,23 +108,45 @@ class ApplicationCommand extends Model
     }
 
     /**
-     * Send an HTTP GET request to retrieve data from Discord.
-     *
-     * @param  int|null  $guildId
-     * @return \Illuminate\Support\Collection
+     * @param  int  $guildId
+     * @param  int | null  $applicationCommandId
+     * @return ApplicationCommand
      */
-    public static function get(int|null $guildId = null): Collection
+    public static function firstOrNew(int $guildId, int|null $applicationCommandId): static
     {
-        $route = self::getRoute('GET', $guildId);
-        $permissions = ApplicationCommandPermission::get($guildId);
+        return self::get($guildId)->firstWhere('id', $applicationCommandId) ?? new self(['guild_id' => $guildId]);
+    }
 
-        return Http::get($route)
+    /**
+     * @param  int|null  $guildId
+     * @param  array  $applicationCommands
+     * @return Collection
+     *
+     * @throws \Illuminate\Http\Client\RequestException
+     */
+    public static function bulkOverwrite(int|null $guildId = null, array $applicationCommands): Collection
+    {
+        return Http::put(sprintf(Routes::BULK_OVERWRITE_GUILD_APPLICATION_COMMANDS, config('laracord.client_id'), $guildId), $applicationCommands)
             ->throw()
             ->collect()
             ->map(fn (array $data) => new self($data))
-            ->each(function (ApplicationCommand $applicationCommand) use ($permissions) {
-                $applicationCommand->permissions = $permissions->firstWhere('id', $applicationCommand->id);
-            });
+            ->tap(fn (Collection $applicationCommands) => Cache::put(self::getCacheKey($guildId), $applicationCommands, 3600));
+    }
+
+    /**
+     * Send an HTTP GET request to retrieve data from Discord.
+     *
+     * @param  int|null  $guildId
+     * @return Collection
+     */
+    public static function get(int|null $guildId = null): Collection
+    {
+        return Cache::remember(self::getCacheKey($guildId), 3600, function () use ($guildId) {
+            return Http::get(self::getRoute('GET', $guildId))
+                ->throw()
+                ->collect()
+                ->map(fn (array $data) => new self($data));
+        });
     }
 
     /**
@@ -76,13 +154,11 @@ class ApplicationCommand extends Model
      *
      * @param  int|null  $guildId
      * @param  array  $data
-     * @return \Kyzegs\Laracord\Models\ApplicationCommand
+     * @return ApplicationCommand
      */
-    public static function create(int|null $guildId = null, array $data): self
+    public static function create(int|null $guildId = null, array $data): static
     {
-        $route = self::getRoute('CREATE', $guildId);
-
-        return new self(Http::post($route, $data)->throw()->json());
+        return self::addToCache($guildId, new self(Http::post(self::getRoute('CREATE', $guildId), $data)->throw()->json()));
     }
 
     /**
@@ -91,27 +167,29 @@ class ApplicationCommand extends Model
      * @param  int|null  $guildId
      * @param  int  $id
      * @param  array  $data
-     * @return \Kyzegs\Laracord\Models\ApplicationCommand
+     * @return ApplicationCommand
      */
-    public static function update(int|null $guildId = null, int $id, array $data): self
+    public static function update(int|null $guildId = null, int $id, array $data): static
     {
-        $route = self::getRoute('EDIT', $guildId, $id);
-
-        return new self(Http::patch($route, $data)->throw()->json());
+        return self::updateCache($guildId, new self(Http::patch(self::getRoute('EDIT', $guildId, $id), $data)->throw()->json()));
     }
 
     /**
      * Send an HTTP POST or PATCH request to Discord with the current data.
      *
-     * @return \Kyzegs\Laracord\Models\ApplicationCommand
+     * @return ApplicationCommand
      */
-    public function save(): self
+    public function save(): static
     {
+        if ($this->isClean()) {
+            return $this;
+        }
+
         $applicationCommand = is_null($this->id)
             ? self::create($this->guild_id, $this->attributes)
             : self::update($this->guild_id, $this->id, $this->attributes);
 
-        return $this->fill($applicationCommand->toArray())->fill($this->permissions()->toArray());
+        return $this->fill($applicationCommand->toArray());
     }
 
     /**
@@ -123,9 +201,8 @@ class ApplicationCommand extends Model
      */
     public static function delete(int|null $guildId = null, int $id): void
     {
-        $route = self::getRoute('DELETE', $guildId, $id);
-
-        Http::delete($route);
+        Http::delete(self::getRoute('DELETE', $guildId, $id));
+        self::deleteFromCache($guildId, $id);
     }
 
     /**
@@ -136,22 +213,6 @@ class ApplicationCommand extends Model
     public function destroy(): void
     {
         self::delete($this->guild_id, $this->id);
-    }
-
-    /**
-     * Get the permissions for the application command. It'll default to a new permission instance if none exists yet.
-     *
-     * @return \Kyzegs\Laracord\Models\ApplicationCommandPermission
-     */
-    public function permissions(): ApplicationCommandPermission
-    {
-        if (empty($this->permissions) || is_array($this->permissions)) {
-            $this->permissions = new ApplicationCommandPermission([
-                'id' => $this->id,
-                'guild_id' => $this->guild_id,
-            ]);
-        }
-
-        return $this->permissions;
+        self::deleteFromCache($this->guild_id, $this->id);
     }
 }
