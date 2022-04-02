@@ -27,7 +27,7 @@ class ApplicationCommand extends Model
     }
 
     /**
-     * @param int $guildId
+     * @param  int  $guildId
      * @return string
      */
     private static function getCacheKey(int $guildId): string
@@ -36,8 +36,8 @@ class ApplicationCommand extends Model
     }
 
     /**
-     * @param int $guildId
-     * @param ApplicationCommand $applicationCommand
+     * @param  int  $guildId
+     * @param  ApplicationCommand  $applicationCommand
      * @return ApplicationCommand
      */
     private static function addToCache(int $guildId, ApplicationCommand $applicationCommand): ApplicationCommand
@@ -52,8 +52,8 @@ class ApplicationCommand extends Model
     }
 
     /**
-     * @param int $guildId
-     * @param ApplicationCommand $applicationCommand
+     * @param  int  $guildId
+     * @param  ApplicationCommand  $applicationCommand
      * @return ApplicationCommand
      */
     private static function updateCache(int $guildId, ApplicationCommand $applicationCommand): ApplicationCommand
@@ -69,8 +69,8 @@ class ApplicationCommand extends Model
     }
 
     /**
-     * @param int $guildId
-     * @param int $applicationCommandId
+     * @param  int  $guildId
+     * @param  int  $applicationCommandId
      * @return void
      */
     private static function deleteFromCache(int $guildId, int $applicationCommandId): void
@@ -108,19 +108,20 @@ class ApplicationCommand extends Model
     }
 
     /**
-     * @param int $guildId
-     * @param int | null $applicationCommandId
+     * @param  int  $guildId
+     * @param  int | null  $applicationCommandId
      * @return ApplicationCommand
      */
-    public static function firstOrNew(int $guildId, int | null $applicationCommandId): static
+    public static function firstOrNew(int $guildId, int|null $applicationCommandId): static
     {
         return self::get($guildId)->firstWhere('id', $applicationCommandId) ?? new self(['guild_id' => $guildId]);
     }
 
     /**
-     * @param int|null $guildId
-     * @param array $applicationCommands
+     * @param  int|null  $guildId
+     * @param  array  $applicationCommands
      * @return Collection
+     *
      * @throws \Illuminate\Http\Client\RequestException
      */
     public static function bulkOverwrite(int|null $guildId = null, array $applicationCommands): Collection
