@@ -11,7 +11,7 @@ class Model extends \Jenssegers\Model\Model
     /**
      * Create a new model instance.
      *
-     * @param array $attributes
+     * @param  array  $attributes
      * @return void
      */
     public function __construct(array $attributes = [])

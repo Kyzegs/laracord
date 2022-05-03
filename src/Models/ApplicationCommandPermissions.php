@@ -20,9 +20,9 @@ class ApplicationCommandPermissions extends Model
     }
 
     /**
-     * @param int $guildId
-     * @param int|null $commandId
-     * @param mixed ...$values
+     * @param  int  $guildId
+     * @param  int|null  $commandId
+     * @param  mixed  ...$values
      * @return string
      */
     public function getRoute(int $guildId, int|null $commandIds): string
@@ -35,8 +35,8 @@ class ApplicationCommandPermissions extends Model
     }
 
     /**
-     * @param int $guildId
-     * @param int|null $commandId
+     * @param  int  $guildId
+     * @param  int|null  $commandId
      * @return Collection
      */
     public function get(int $guildId, int|null $commandId): Collection
@@ -45,9 +45,9 @@ class ApplicationCommandPermissions extends Model
     }
 
     /**
-     * @param int $guildId
-     * @param int $commandId
-     * @param array $permissions
+     * @param  int  $guildId
+     * @param  int  $commandId
+     * @param  array  $permissions
      * @return Collection
      */
     public function update(int $guildId, int $commandId, array $permissions): Collection

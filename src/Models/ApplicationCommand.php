@@ -23,9 +23,9 @@ class ApplicationCommand extends Model
     /**
      * Helper to get the corresponding route for an API call.
      *
-     * @param string $method
-     * @param int|null $guildId
-     * @param array ...$values
+     * @param  string  $method
+     * @param  int|null  $guildId
+     * @param  array  ...$values
      * @return string
      */
     private function getRoute(string $method, ?int $guildId, mixed ...$values): string
@@ -43,9 +43,9 @@ class ApplicationCommand extends Model
     /**
      * Get the first related model record matching the attributes or instantiate it.
      *
-     * @param int|null $guildId
-     * @param array $attributes
-     * @param array $values
+     * @param  int|null  $guildId
+     * @param  array  $attributes
+     * @param  array  $values
      * @return static
      */
     public function firstOrNew(array $attributes = [], array $values = [], ?int $guildId = null): static
@@ -56,9 +56,9 @@ class ApplicationCommand extends Model
     /**
      * Get the first related record matching the attributes or create it.
      *
-     * @param int|null $guildId
-     * @param array $attributes
-     * @param array $values
+     * @param  int|null  $guildId
+     * @param  array  $attributes
+     * @param  array  $values
      * @return static
      */
     public function firstOrCreate(array $attributes = [], array $values = [], ?int $guildId = null): static
@@ -69,9 +69,9 @@ class ApplicationCommand extends Model
     /**
      * Create or update a related record matching the attributes, and fill it with values.
      *
-     * @param integer|null $guildId
-     * @param array $attributes
-     * @param array $values
+     * @param  int|null  $guildId
+     * @param  array  $attributes
+     * @param  array  $values
      * @return static
      */
     public function updateOrCreate(array $attributes, array $values = [], ?int $guildId = null): static
@@ -80,9 +80,9 @@ class ApplicationCommand extends Model
     }
 
     /**
-     * Send an HTTP GET request to retrieve data from Discord
+     * Send an HTTP GET request to retrieve data from Discord.
      *
-     * @param int|null $guildId
+     * @param  int|null  $guildId
      * @return Collection<ApplicationCommand>
      */
     public function get(?int $guildId = null): Collection
@@ -90,10 +90,9 @@ class ApplicationCommand extends Model
         return $this->remember(Http::get($this->getRoute('GET', $guildId))->collect()->mapInto(self::class));
     }
 
-
     /**
-     * @param array $applicationCommands
-     * @param int|null $guildId
+     * @param  array  $applicationCommands
+     * @param  int|null  $guildId
      * @return Collection<ApplicationCommand>
      */
     public function bulk(array $applicationCommands, ?int $guildId = null): Collection
@@ -105,8 +104,8 @@ class ApplicationCommand extends Model
     /**
      * Send an HTTP POST request to Discord to make a new application command.
      *
-     * @param int|null $guildId
-     * @param array $attributes
+     * @param  int|null  $guildId
+     * @param  array  $attributes
      * @return ApplicationCommand
      */
     public function create(array $attributes, ?int $guildId = null): static
@@ -117,9 +116,9 @@ class ApplicationCommand extends Model
     /**
      * Send an HTTP PATCH request to Discord with the given data.
      *
-     * @param int|null $guildId
-     * @param int $id
-     * @param array $attributes
+     * @param  int|null  $guildId
+     * @param  int  $id
+     * @param  array  $attributes
      * @return ApplicationCommand
      */
     public function update(array $attributes, int $applicationCommandId, ?int $guildId = null): static
@@ -148,8 +147,8 @@ class ApplicationCommand extends Model
     /**
      * Send an HTTP DELETE request to Discord to delete a given application command.
      *
-     * @param int|null $guildId
-     * @param int $id
+     * @param  int|null  $guildId
+     * @param  int  $id
      * @return void
      */
     public function delete(int $applicationCommandId, ?int $guildId = null): void

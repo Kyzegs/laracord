@@ -21,9 +21,9 @@ class LaracordServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
         if (! $this->app->environment('testing')) {
-             Socialite::extend('discord', function (Application $app) {
-                 return Socialite::buildProvider(DiscordProvider::class, $app['config']['laracord']);
-             });
+            Socialite::extend('discord', function (Application $app) {
+                return Socialite::buildProvider(DiscordProvider::class, $app['config']['laracord']);
+            });
         }
     }
 

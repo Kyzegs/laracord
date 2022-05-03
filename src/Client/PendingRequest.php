@@ -21,7 +21,7 @@ class PendingRequest extends \Illuminate\Http\Client\PendingRequest
     /**
      * Get a header for the pending request.
      *
-     * @param string $headers
+     * @param  string  $headers
      * @return mixed
      */
     public function header(string $header): mixed

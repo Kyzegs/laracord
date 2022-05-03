@@ -114,8 +114,8 @@ class RateLimiter
         $reset = $response->header('x-ratelimit-reset');
         $retryAfter = $response->header('x-ratelimit-reset-after');
 
-        Log::info('X-RateLimit-Remaining: ' . $remaining);
-        Log::info('X-Ratelimit-Bucket: ' . $response->header('x-ratelimit-bucket'));
+        Log::info('X-RateLimit-Remaining: '.$remaining);
+        Log::info('X-Ratelimit-Bucket: '.$response->header('x-ratelimit-bucket'));
 
         if ($remaining == 0 && $retryAfter) {
             $diff = $retryAfter;
@@ -152,7 +152,7 @@ class RateLimiter
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return void
      */
     public static function delay(Request $request)
@@ -165,7 +165,7 @@ class RateLimiter
     }
 
     /**
-     * @param Response $response
+     * @param  Response  $response
      * @return void
      */
     public static function delayFromHeader(Response $response)

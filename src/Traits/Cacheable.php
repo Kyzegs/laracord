@@ -25,7 +25,7 @@ trait Cacheable
     }
 
     /**
-     * @param Collection $items
+     * @param  Collection  $items
      * @return Collection
      */
     protected function put(Collection $items): Collection
@@ -34,7 +34,7 @@ trait Cacheable
     }
 
     /**
-     * @param Collection $items
+     * @param  Collection  $items
      * @return Collection
      */
     protected function remember(Collection $items): Collection
