@@ -123,7 +123,7 @@ class ApplicationCommand extends Model
      */
     public function update(array $attributes, int $applicationCommandId, ?int $guildId = null): static
     {
-        return $this->newInstance(Http::patch($this->getRoute('PATCH', $guildId, $applicationCommandId), $attributes)->json())->update();
+        return $this->newInstance(Http::patch($this->getRoute('PATCH', $guildId, $applicationCommandId), $attributes)->json())->refresh();
     }
 
     /**
@@ -139,7 +139,7 @@ class ApplicationCommand extends Model
 
         $applicationCommand = is_null($this->id)
             ? self::create($this->attributes, $this->guild_id)
-            : self::update($this->attribute, $this->id, $this->guild_id);
+            : self::update($this->attributes, $this->id, $this->guild_id);
 
         return $this->fill($applicationCommand->toArray());
     }

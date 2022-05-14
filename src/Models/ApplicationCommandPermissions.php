@@ -25,13 +25,13 @@ class ApplicationCommandPermissions extends Model
      * @param  mixed  ...$values
      * @return string
      */
-    public function getRoute(int $guildId, int|null $commandIds): string
+    public function getRoute(int $guildId, int|null $commandId): string
     {
         $route = isset($commandId)
             ? Route::APPLICATION_COMMAND_PERMISSIONS
             : Route::GUILD_APPLICATION_COMMAND_PERMISSONS;
 
-        return sprintf($route->value, config('laracord.client_id'), $guildId, ...array_filter([$commandIds]));
+        return sprintf($route->value, config('laracord.client_id'), $guildId, ...array_filter([$commandId]));
     }
 
     /**
@@ -52,6 +52,7 @@ class ApplicationCommandPermissions extends Model
      */
     public function update(int $guildId, int $commandId, array $permissions): Collection
     {
-        return $this->put(Http::put($this->getRoute($guildId, $commandId), ['permissions' => $permissions])->collect()->mapInto(self::class));
+        // Only update if dirtyy
+        return $this->put(Http::withToken(auth()->user()->access_token)->put($this->getRoute($guildId, $commandId), ['permissions' => $permissions])->collect()->mapInto(self::class));
     }
 }

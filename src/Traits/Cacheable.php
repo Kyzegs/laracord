@@ -58,7 +58,7 @@ trait Cacheable
      * @param  int  $guildId
      * @return mixed
      */
-    protected function update(): static
+    protected function refresh(): static
     {
         if (Cache::has($this->cacheKey)) {
             $this->forget($this->id)->push($this)->tap(fn (Collection $items) => $this->put($items));

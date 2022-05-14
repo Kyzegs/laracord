@@ -14,7 +14,7 @@ return [
     'client_id' => env('DISCORD_CLIENT_ID'),
     'client_secret' => env('DISCORD_CLIENT_SECRET'),
     'redirect' => env('DISCORD_REDIRECT_URI', '/callback'),
-    'scopes' => explode(',', env('DISCORD_SCOPES', 'identify,email,guilds')),
+    'scopes' => explode(',', env('DISCORD_SCOPES', 'identify,email,guilds,applications.commands.permissions.update')),
 
     /*
     |--------------------------------------------------------------------------

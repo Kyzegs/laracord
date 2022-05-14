@@ -9,7 +9,7 @@ enum Route: string
 
     case GUILD_APPLICATION_COMMANDS = '/applications/%d/guilds/%d/commands';
     case GUILD_APPLICATION_COMMAND = '/applications/%d/guilds/%d/commands/%d';
-    case GUILD_APPLICATION_COMMAND_PERMISSONS = '/applications/%d/commands/%d/permissions';
+    case GUILD_APPLICATION_COMMAND_PERMISSONS = '/applications/%d/guilds/%d/commands/permissions';
 
     case APPLICATION_COMMAND_PERMISSIONS = '/applications/%d/guilds/%d/commands/%d/permissions';
 }

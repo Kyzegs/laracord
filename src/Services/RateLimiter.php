@@ -114,9 +114,6 @@ class RateLimiter
         $reset = $response->header('x-ratelimit-reset');
         $retryAfter = $response->header('x-ratelimit-reset-after');
 
-        Log::info('X-RateLimit-Remaining: '.$remaining);
-        Log::info('X-Ratelimit-Bucket: '.$response->header('x-ratelimit-bucket'));
-
         if ($remaining == 0 && $retryAfter) {
             $diff = $retryAfter;
             $epoch = substr_replace(Carbon::now()->addSeconds($retryAfter)->getPreciseTimestamp(3), '.', 10, 0);
