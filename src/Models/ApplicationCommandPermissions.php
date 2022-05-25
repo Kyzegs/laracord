@@ -9,16 +9,6 @@ use Kyzegs\Laracord\Traits\Cacheable;
 
 class ApplicationCommandPermissions extends Model
 {
-    use Cacheable;
-
-    /**
-     * @return string
-     */
-    public function getCacheKeyAttribute(): string
-    {
-        return sprintf('application-commands-permissions:%d', $this->guild_id);
-    }
-
     /**
      * @param  int  $guildId
      * @param  int|null  $commandId
@@ -41,7 +31,7 @@ class ApplicationCommandPermissions extends Model
      */
     public function get(int $guildId, int|null $commandId = null): Collection
     {
-        return $this->remember(Http::get($this->getRoute($guildId, $commandId))->collect()->mapInto(self::class));
+        return Http::get($this->getRoute($guildId, $commandId))->collect()->mapInto(self::class);
     }
 
     /**
@@ -53,6 +43,6 @@ class ApplicationCommandPermissions extends Model
     public function update(int $guildId, int $commandId, array $permissions): static
     {
         // Only update if dirty
-        return $this->newInstance(Http::withToken(auth()->user()->access_token)->put($this->getRoute($guildId, $commandId), ['permissions' => $permissions]))->refresh();
+        return $this->newInstance(Http::withToken(auth()->user()->access_token)->put($this->getRoute($guildId, $commandId), ['permissions' => $permissions]));
     }
 }
