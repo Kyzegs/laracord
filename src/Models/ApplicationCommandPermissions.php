@@ -39,7 +39,7 @@ class ApplicationCommandPermissions extends Model
      * @param  int|null  $commandId
      * @return Collection
      */
-    public function get(int $guildId, int|null $commandId): Collection
+    public function get(int $guildId, int|null $commandId = null): Collection
     {
         return $this->remember(Http::get($this->getRoute($guildId, $commandId))->collect()->mapInto(self::class));
     }
@@ -48,11 +48,11 @@ class ApplicationCommandPermissions extends Model
      * @param  int  $guildId
      * @param  int  $commandId
      * @param  array  $permissions
-     * @return Collection
+     * @return ApplicationCommandPermissions
      */
-    public function update(int $guildId, int $commandId, array $permissions): Collection
+    public function update(int $guildId, int $commandId, array $permissions): static
     {
-        // Only update if dirtyy
-        return $this->put(Http::withToken(auth()->user()->access_token)->put($this->getRoute($guildId, $commandId), ['permissions' => $permissions])->collect()->mapInto(self::class));
+        // Only update if dirty
+        return $this->newInstance(Http::withToken(auth()->user()->access_token)->put($this->getRoute($guildId, $commandId), ['permissions' => $permissions]))->refresh();
     }
 }
