@@ -40,9 +40,9 @@ class ApplicationCommandPermissions extends Model
      * @param  array  $permissions
      * @return ApplicationCommandPermissions
      */
-    public function update(int $guildId, int $commandId, array $permissions): static
+    public function update(int $guildId, int $commandId, array $permissions, ?string $accessToken = null): static
     {
         // Only update if dirty
-        return $this->newInstance(Http::withToken(auth()->user()->access_token)->put($this->getRoute($guildId, $commandId), ['permissions' => $permissions]));
+        return $this->newInstance(Http::withToken($accessToken ?? auth()->user()->access_token)->put($this->getRoute($guildId, $commandId), ['permissions' => $permissions]));
     }
 }
