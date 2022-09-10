@@ -6,20 +6,9 @@ use Illuminate\Support\Collection;
 use Kyzegs\Laracord\Constants\Route;
 use Kyzegs\Laracord\Facades\ApplicationCommandPermissions;
 use Kyzegs\Laracord\Facades\Http;
-use Kyzegs\Laracord\Traits\Cacheable;
 
 class ApplicationCommand extends Model
 {
-    use Cacheable;
-
-    /**
-     * @return string
-     */
-    public function getCacheKeyAttribute(): string
-    {
-        return sprintf('application-commands:%d', $this->guild_id);
-    }
-
     /**
      * Helper to get the corresponding route for an API call.
      *
@@ -87,7 +76,7 @@ class ApplicationCommand extends Model
      */
     public function get(?int $guildId = null): Collection
     {
-        return $this->remember(Http::get($this->getRoute('GET', $guildId))->collect()->mapInto(self::class));
+        return Http::get($this->getRoute('GET', $guildId))->collect()->mapInto(self::class);
     }
 
     /**
@@ -97,8 +86,7 @@ class ApplicationCommand extends Model
      */
     public function bulk(array $applicationCommands, ?int $guildId = null): Collection
     {
-        // TODO: Only do this if the cache is dirty?
-        return $this->put(Http::put($this->getRoute('PUT', $guildId), $applicationCommands)->collect()->mapInto(self::class));
+        return Http::put($this->getRoute('PUT', $guildId), $applicationCommands)->collect()->mapInto(self::class);
     }
 
     /**
@@ -110,7 +98,7 @@ class ApplicationCommand extends Model
      */
     public function create(array $attributes, ?int $guildId = null): static
     {
-        return $this->newInstance(Http::post($this->getRoute('POST', $guildId), $attributes)->json())->push();
+        return $this->newInstance(Http::post($this->getRoute('POST', $guildId), $attributes)->json());
     }
 
     /**
@@ -123,7 +111,7 @@ class ApplicationCommand extends Model
      */
     public function update(array $attributes, int $applicationCommandId, ?int $guildId = null): static
     {
-        return $this->newInstance(Http::patch($this->getRoute('PATCH', $guildId, $applicationCommandId), $attributes)->json())->refresh();
+        return $this->newInstance(Http::patch($this->getRoute('PATCH', $guildId, $applicationCommandId), $attributes)->json());
     }
 
     /**
@@ -154,7 +142,6 @@ class ApplicationCommand extends Model
     public function delete(int $applicationCommandId, ?int $guildId = null): void
     {
         Http::delete($this->getRoute('DELETE', $guildId, $applicationCommandId));
-        self::forget($applicationCommandId);
     }
 
     /**
