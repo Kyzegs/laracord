@@ -17,8 +17,11 @@ class LaracordServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->publishes([__DIR__.'/../../laracord.php' => config_path('laracord.php')], 'config');
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        if ($this->app->runningInConsole()) {
+            $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+            $this->publishes([__DIR__.'/../database/migrations' => database_path('migrations')], 'laracord-migrations');
+            $this->publishes([__DIR__.'/../../laracord.php' => config_path('laracord.php')], 'laracord-config');
+        }
 
         if (! $this->app->environment('testing')) {
             Socialite::extend('discord', function (Application $app) {
