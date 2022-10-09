@@ -18,8 +18,8 @@ class LaracordServiceProvider extends ServiceProvider
     public function boot(): void
     {
         if ($this->app->runningInConsole()) {
-            $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-            $this->publishes([__DIR__.'/../database/migrations' => database_path('migrations')], 'laracord-migrations');
+            $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
+            $this->publishes([__DIR__.'/../../database/migrations' => database_path('migrations')], 'laracord-migrations');
             $this->publishes([__DIR__.'/../../laracord.php' => config_path('laracord.php')], 'laracord-config');
         }
 
