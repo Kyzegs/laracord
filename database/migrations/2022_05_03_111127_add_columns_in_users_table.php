@@ -15,19 +15,19 @@ return new class extends Migration
     {
         if (! Schema::hasColumn('users', 'access_token')) {
             Schema::table('users', function (Blueprint $table) {
-                $table->string('access_token');
+                $table->string('access_token')->nullable()->after('remember_token');
             });
         }
 
         if (! Schema::hasColumn('users', 'access_token_expires_at')) {
             Schema::table('users', function (Blueprint $table) {
-                $table->timestamp('access_token_expires_at');
+                $table->timestamp('access_token_expires_at')->nullable()->after('access_token');
             });
         }
 
         if (! Schema::hasColumn('users', 'refresh_token')) {
             Schema::table('users', function (Blueprint $table) {
-                $table->string('refresh_token');
+                $table->string('refresh_token')->nullable()->after('access_token_expires_at');
             });
         }
     }
