@@ -4,7 +4,7 @@ namespace Kyzegs\Laracord\Constants;
 
 class Routes
 {
-    const BASE_URL = 'https://discord.com/api/v8/';
+    const BASE_URL = 'https://discord.com/api/v9/';
 
     const GET_GLOBAL_APPLICATION_COMMANDS = '/applications/%d/commands';
     const CREATE_GLOBAL_APPLICATION_COMMAND = '/applications/%d/commands';
