@@ -14,8 +14,8 @@ class DiscordChannel
     /**
      * Send the given notification.
      *
-     * @param mixed $notifiable
-     * @param Notification $notification
+     * @param  mixed  $notifiable
+     * @param  Notification  $notification
      * @return mixed
      */
     public function send($notifiable, Notification $notification): mixed

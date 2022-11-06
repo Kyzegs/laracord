@@ -89,7 +89,7 @@ class DiscordEmbed
     public array $fields = [];
 
     /**
-     * @param string|null $title
+     * @param  string|null  $title
      * @return DiscordEmbed
      */
     public function title(?string $title): DiscordEmbed
@@ -100,7 +100,7 @@ class DiscordEmbed
     }
 
     /**
-     * @param string|null $type
+     * @param  string|null  $type
      * @return DiscordEmbed
      */
     public function type(?string $type): DiscordEmbed
@@ -111,7 +111,7 @@ class DiscordEmbed
     }
 
     /**
-     * @param string|null $description
+     * @param  string|null  $description
      * @return DiscordEmbed
      */
     public function description(?string $description): DiscordEmbed
@@ -122,7 +122,7 @@ class DiscordEmbed
     }
 
     /**
-     * @param string|null $url
+     * @param  string|null  $url
      * @return DiscordEmbed
      */
     public function url(?string $url): DiscordEmbed
@@ -133,7 +133,7 @@ class DiscordEmbed
     }
 
     /**
-     * @param int|null $timestamp
+     * @param  int|null  $timestamp
      * @return DiscordEmbed
      */
     public function timestamp(?int $timestamp): DiscordEmbed
@@ -144,7 +144,7 @@ class DiscordEmbed
     }
 
     /**
-     * @param int|null $color
+     * @param  int|null  $color
      * @return DiscordEmbed
      */
     public function color(?int $color): DiscordEmbed
@@ -155,7 +155,7 @@ class DiscordEmbed
     }
 
     /**
-     * @param array|null $footer
+     * @param  array|null  $footer
      * @return DiscordEmbed
      */
     public function footer(?array $footer): DiscordEmbed
@@ -166,7 +166,7 @@ class DiscordEmbed
     }
 
     /**
-     * @param array|null $image
+     * @param  array|null  $image
      * @return DiscordEmbed
      */
     public function image(?array $image): DiscordEmbed
@@ -177,7 +177,7 @@ class DiscordEmbed
     }
 
     /**
-     * @param array|null $thumbnail
+     * @param  array|null  $thumbnail
      * @return DiscordEmbed
      */
     public function thumbnail(?array $thumbnail): DiscordEmbed
@@ -188,7 +188,7 @@ class DiscordEmbed
     }
 
     /**
-     * @param array|null $video
+     * @param  array|null  $video
      * @return DiscordEmbed
      */
     public function video(?array $video): DiscordEmbed
@@ -199,7 +199,7 @@ class DiscordEmbed
     }
 
     /**
-     * @param array|null $provider
+     * @param  array|null  $provider
      * @return DiscordEmbed
      */
     public function provider(?array $provider): DiscordEmbed
@@ -210,7 +210,7 @@ class DiscordEmbed
     }
 
     /**
-     * @param array|null $author
+     * @param  array|null  $author
      * @return DiscordEmbed
      */
     public function author(?array $author): DiscordEmbed
@@ -221,7 +221,7 @@ class DiscordEmbed
     }
 
     /**
-     * @param array $fields
+     * @param  array  $fields
      * @return DiscordEmbed
      */
     public function fields(array $fields): DiscordEmbed
