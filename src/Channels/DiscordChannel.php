@@ -2,12 +2,9 @@
 
 namespace Kyzegs\Laracord\Channels;
 
-use GuzzleHttp\Promise\PromiseInterface;
-use Illuminate\Http\Client\RequestException;
-use Illuminate\Http\Client\Response;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Cache;
-use Kyzegs\Laracord\Client\Http;
+use Kyzegs\Laracord\Facades\Http;
 
 class DiscordChannel
 {
