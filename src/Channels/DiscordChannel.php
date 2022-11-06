@@ -30,7 +30,8 @@ class DiscordChannel
 
         if ($message->private) {
             $channelId = Cache::rememberForever(sprintf('%s:%d', $route, $channelId), function () use ($route, $channelId) {
-                return Http::post($route, ['recipient_id' => $channelId])->json('id');
+                // NOTE: Override HTTP since route has users/@me
+                return Http::withToken(config('laracord.bot_token'), 'Bot')->post($route, ['recipient_id' => $channelId])->json('id');
             });
         }
 
