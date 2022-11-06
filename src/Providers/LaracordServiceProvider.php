@@ -3,7 +3,9 @@
 namespace Kyzegs\Laracord\Providers;
 
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\ServiceProvider;
+use Kyzegs\Laracord\Channels\DiscordChannel;
 use Kyzegs\Laracord\Providers\EventServiceProvider;
 use Kyzegs\Laracord\Socialite\DiscordProvider;
 use Laravel\Socialite\Facades\Socialite;
@@ -20,7 +22,7 @@ class LaracordServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
             $this->publishes([__DIR__.'/../../database/migrations' => database_path('migrations')], 'laracord-migrations');
-            $this->publishes([__DIR__.'/../../laracord.php' => config_path('laracord.php')], 'laracord-config');
+            $this->publishes([__DIR__.'/../../config/laracord.php' => config_path('laracord.php')], 'laracord-config');
         }
 
         if (! $this->app->environment('testing')) {
@@ -28,6 +30,10 @@ class LaracordServiceProvider extends ServiceProvider
                 return Socialite::buildProvider(DiscordProvider::class, $app['config']['laracord']);
             });
         }
+
+        Notification::extend('discord', function (Application $app) {
+            return new DiscordChannel();
+        });
     }
 
     /**
