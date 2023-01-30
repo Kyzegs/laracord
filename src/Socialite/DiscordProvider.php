@@ -79,21 +79,6 @@ class DiscordProvider extends AbstractProvider implements ProviderInterface
     }
 
     /**
-     * @param  string  $token
-     * @return array
-     */
-    protected function getGuildsByToken(string $token): array
-    {
-        $response = $this->getHttpClient()->get('https://discord.com/api/users/@me/guilds', [
-            'headers' => [
-                'Authorization' => 'Bearer '.$token,
-            ],
-        ]);
-
-        return json_decode($response->getBody(), true);
-    }
-
-    /**
      * Map the raw user array to a Socialite User instance.
      *
      * @param  array  $user
@@ -110,36 +95,5 @@ class DiscordProvider extends AbstractProvider implements ProviderInterface
                 ? sprintf('https://cdn.discordapp.com/avatars/%d/%s.png', $user['id'], $user['avatar'])
                 : sprintf('https://cdn.discordapp.com/embed/avatars/%d.png', $user['discriminator']),
         ]);
-    }
-
-    /**
-     * @param  array[]  $guilds
-     * @return \Illuminate\Support\Collection
-     */
-    protected function mapGuildsToObjects(array $guilds): Collection
-    {
-        return collect($guilds)->map(function ($guild) {
-            return new PartialGuild(...collect($guild)->except('permissions_new'));
-        });
-    }
-
-    /**
-     * Get the User instance for the authenticated user.
-     *
-     * @return \Kyzegs\Laracord\Socialite\User
-     */
-    public function user(): User
-    {
-        $user = parent::user();
-
-        if (in_array('guilds', $this->scopes)) {
-            $user->setGuilds($this->mapGuildsToObjects($this->getGuildsByToken($this->user->token)));
-        }
-
-        if (config('laracord.session.user.store')) {
-            Session::put(config('laracord.session.user.key'), $user);
-        }
-
-        return $user;
     }
 }
