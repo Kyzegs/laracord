@@ -22,7 +22,7 @@
     "require": {
         "php": "^8.1",
         "laravel/socialite": "^5.5",
-        "jenssegers/model": "^1.5"
+        "kyzegs/model": "^0.1.0"
     },
     "require-dev": {
         "orchestra/testbench": "^7.4",

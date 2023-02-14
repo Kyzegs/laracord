@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a2a5994d7849e1a15e74b456f969262a",
+    "content-hash": "23501338c351c147a6531709a1497341",
     "packages": [
         {
             "name": "brick/math",
@@ -898,22 +898,22 @@
             "time": "2022-08-28T14:45:39+00:00"
         },
         {
-            "name": "jenssegers/model",
-            "version": "v1.5.0",
+            "name": "kyzegs/model",
+            "version": "v0.1.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/jenssegers/model.git",
-                "reference": "7f037da934e07e448fe1eead259e37d4aaa0d83d"
+                "url": "https://github.com/Kyzegs/model.git",
+                "reference": "86849ee6ef82acadc625e286914ddd836e78a7d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jenssegers/model/zipball/7f037da934e07e448fe1eead259e37d4aaa0d83d",
-                "reference": "7f037da934e07e448fe1eead259e37d4aaa0d83d",
+                "url": "https://api.github.com/repos/Kyzegs/model/zipball/86849ee6ef82acadc625e286914ddd836e78a7d4",
+                "reference": "86849ee6ef82acadc625e286914ddd836e78a7d4",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "^5.0|^6.0|^7.0|^8.0|^9.0",
-                "illuminate/support": "^4.0|^5.0|^6.0|^7.0|^8.0|^9.0"
+                "illuminate/contracts": "^5.0|^6.0|^7.0|^8.0|^9.0|^10.0",
+                "illuminate/support": "^4.0|^5.0|^6.0|^7.0|^8.0|^9.0|^10.0"
             },
             "require-dev": {
                 "php-coveralls/php-coveralls": "*",
@@ -922,7 +922,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Jenssegers\\Model\\": "src/"
+                    "Kyzegs\\Model\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -933,20 +933,23 @@
                 {
                     "name": "Jens Segers",
                     "homepage": "https://jenssegers.com"
+                },
+                {
+                    "name": "Sebastiaan \"Sebastiaan\" Zegers",
+                    "homepage": "https://kyzegs.com"
                 }
             ],
             "description": "An Laravel eloquent-like model class, for Laravel and other frameworks",
-            "homepage": "https://github.com/jenssegers/model",
+            "homepage": "https://github.com/kyzegs/model",
             "keywords": [
                 "eloquent",
                 "laravel",
                 "model"
             ],
             "support": {
-                "issues": "https://github.com/jenssegers/model/issues",
-                "source": "https://github.com/jenssegers/model/tree/v1.5.0"
+                "source": "https://github.com/Kyzegs/model/tree/v0.1.0"
             },
-            "time": "2022-02-15T05:45:48+00:00"
+            "time": "2023-02-14T17:46:32+00:00"
         },
         {
             "name": "laravel/framework",

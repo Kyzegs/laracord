@@ -4,7 +4,7 @@ namespace Kyzegs\Laracord\Models;
 
 use Kyzegs\Laracord\Traits\HasAttributes;
 
-class Model extends \Jenssegers\Model\Model
+class Model extends \Kyzegs\Model\Model
 {
     use HasAttributes;
 
