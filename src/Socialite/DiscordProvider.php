@@ -90,7 +90,7 @@ class DiscordProvider extends AbstractProvider implements ProviderInterface
             'id' => $user['id'],
             'nickname' => sprintf('%s#%d', $user['username'], $user['discriminator']),
             'name' => $user['username'],
-            'email' => $user['email'],
+            'email' => $user['email'] ?? null,
             'avatar' => $user['avatar']
                 ? sprintf('https://cdn.discordapp.com/avatars/%d/%s.png', $user['id'], $user['avatar'])
                 : sprintf('https://cdn.discordapp.com/embed/avatars/%d.png', $user['discriminator']),
