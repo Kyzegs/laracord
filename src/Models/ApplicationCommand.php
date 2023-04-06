@@ -3,162 +3,102 @@
 namespace Kyzegs\Laracord\Models;
 
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Str;
-use Jenssegers\Model\Model;
-use Kyzegs\Laracord\Client\Http;
-use Kyzegs\Laracord\Constants\Routes;
-use Kyzegs\Laracord\Traits\HasAttributes;
+use Kyzegs\Laracord\Constants\Route;
+use Kyzegs\Laracord\Facades\ApplicationCommandPermissions;
+use Kyzegs\Laracord\Facades\Http;
 
 class ApplicationCommand extends Model
 {
-    use HasAttributes;
-
-    /**
-     * Create a new  model instance.
-     *
-     * @param  array  $attributes
-     * @return void
-     */
-    public function __construct(array $attributes = [])
-    {
-        $this->fill($attributes);
-        $this->syncOriginal();
-    }
-
-    /**
-     * @param  int  $guildId
-     * @return string
-     */
-    private static function getCacheKey(int $guildId): string
-    {
-        return sprintf('application-commands-%d', $guildId);
-    }
-
-    /**
-     * @param  int  $guildId
-     * @param  ApplicationCommand  $applicationCommand
-     * @return ApplicationCommand
-     */
-    private static function addToCache(int $guildId, ApplicationCommand $applicationCommand): ApplicationCommand
-    {
-        if (Cache::has(self::getCacheKey($guildId))) {
-            Cache::pull(self::getCacheKey($guildId))
-                ->push($applicationCommand)
-                ->tap(fn (Collection $commands) => Cache::put(self::getCacheKey($guildId), $commands, 3600));
-        }
-
-        return $applicationCommand;
-    }
-
-    /**
-     * @param  int  $guildId
-     * @param  ApplicationCommand  $applicationCommand
-     * @return ApplicationCommand
-     */
-    private static function updateCache(int $guildId, ApplicationCommand $applicationCommand): ApplicationCommand
-    {
-        if (Cache::has(self::getCacheKey($guildId))) {
-            Cache::pull(self::getCacheKey($guildId))
-                ->filter(fn (ApplicationCommand $command) => $command->id !== $applicationCommand->id)
-                ->push($applicationCommand)
-                ->tap(fn (Collection $commands) => Cache::put(self::getCacheKey($guildId), $commands, 3600));
-        }
-
-        return $applicationCommand;
-    }
-
-    /**
-     * @param  int  $guildId
-     * @param  int  $applicationCommandId
-     * @return void
-     */
-    private static function deleteFromCache(int $guildId, int $applicationCommandId): void
-    {
-        Cache::pull(self::getCacheKey($guildId))
-            ->filter(fn (ApplicationCommand $command) => $command->id !== $applicationCommandId)
-            ->tap(fn (Collection $commands) => Cache::put(self::getCacheKey($guildId), $commands, 3600));
-    }
-
     /**
      * Helper to get the corresponding route for an API call.
      *
      * @param  string  $method
      * @param  int|null  $guildId
-     * @param  bool  $multiple
      * @param  array  ...$values
      * @return string
      */
-    protected static function getRoute(string $method, int|null $guildId = null, mixed ...$values): string
+    private function getRoute(string $method, ?int $guildId, mixed ...$values): string
     {
-        $scope = $guildId ? 'GUILD' : 'GLOBAL';
-        $constant = 'Kyzegs\Laracord\Constants\Routes::%s_%s_APPLICATION_COMMAND';
+        $route = match (true) {
+            in_array($method, ['GET', 'POST', 'PUT']) && isset($guildId) => Route::GUILD_APPLICATION_COMMANDS,
+            in_array($method, ['GET', 'POST', 'PUT']) && is_null($guildId) => Route::GLOBAL_APPLICATION_COMMANDS,
+            isset($guildId) => Route::GUILD_APPLICATION_COMMAND,
+            is_null($guildId) => Route::GLOBAL_APPLICATION_COMMAND,
+        };
 
-        if ($method === 'GET') {
-            $constant = Str::of($constant)->append('S')->toString();
-        }
-
-        $route = constant(sprintf($constant, $method, $scope));
-
-        if (is_null($guildId)) {
-            return sprintf($route, config('laracord.client_id'), ...$values);
-        } else {
-            return sprintf($route, config('laracord.client_id'), $guildId, ...$values);
-        }
+        return sprintf($route->value, config('laracord.client_id'), ...array_filter([$guildId, ...$values]));
     }
 
     /**
-     * @param  int  $guildId
-     * @param  int | null  $applicationCommandId
-     * @return ApplicationCommand
-     */
-    public static function firstOrNew(int $guildId, int|null $applicationCommandId): static
-    {
-        return self::get($guildId)->firstWhere('id', $applicationCommandId) ?? new self(['guild_id' => $guildId]);
-    }
-
-    /**
-     * @param  int|null  $guildId
-     * @param  array  $applicationCommands
-     * @return Collection
+     * Get the first related model record matching the attributes or instantiate it.
      *
-     * @throws \Illuminate\Http\Client\RequestException
+     * @param  int|null  $guildId
+     * @param  array  $attributes
+     * @param  array  $values
+     * @return static
      */
-    public static function bulkOverwrite(int|null $guildId = null, array $applicationCommands): Collection
+    public function firstOrNew(array $attributes = [], array $values = [], ?int $guildId = null): static
     {
-        return Http::put(sprintf(Routes::BULK_OVERWRITE_GUILD_APPLICATION_COMMANDS, config('laracord.client_id'), $guildId), $applicationCommands)
-            ->throw()
-            ->collect()
-            ->map(fn (array $data) => new self($data))
-            ->tap(fn (Collection $applicationCommands) => Cache::put(self::getCacheKey($guildId), $applicationCommands, 3600));
+        return $this->get()->where($attributes)->first() ?? $this->newInstance(['guild_id' => $guildId, ...array_merge($attributes, $values)]);
+    }
+
+    /**
+     * Get the first related record matching the attributes or create it.
+     *
+     * @param  int|null  $guildId
+     * @param  array  $attributes
+     * @param  array  $values
+     * @return static
+     */
+    public function firstOrCreate(array $attributes = [], array $values = [], ?int $guildId = null): static
+    {
+        return $this->get()->where($attributes)->first() ?? $this->create(array_merge($attributes, $values), $guildId);
+    }
+
+    /**
+     * Create or update a related record matching the attributes, and fill it with values.
+     *
+     * @param  int|null  $guildId
+     * @param  array  $attributes
+     * @param  array  $values
+     * @return static
+     */
+    public function updateOrCreate(array $attributes, array $values = [], ?int $guildId = null): static
+    {
+        return $this->firstOrNew($attributes, [], $guildId)->fill($values)->save();
     }
 
     /**
      * Send an HTTP GET request to retrieve data from Discord.
      *
      * @param  int|null  $guildId
-     * @return Collection
+     * @return Collection<ApplicationCommand>
      */
-    public static function get(int|null $guildId = null): Collection
+    public function get(?int $guildId = null): Collection
     {
-        return Cache::remember(self::getCacheKey($guildId), 3600, function () use ($guildId) {
-            return Http::get(self::getRoute('GET', $guildId))
-                ->throw()
-                ->collect()
-                ->map(fn (array $data) => new self($data));
-        });
+        return Http::get($this->getRoute('GET', $guildId))->collect()->mapInto(self::class);
+    }
+
+    /**
+     * @param  array  $applicationCommands
+     * @param  int|null  $guildId
+     * @return Collection<ApplicationCommand>
+     */
+    public function bulk(array $applicationCommands, ?int $guildId = null): Collection
+    {
+        return Http::put($this->getRoute('PUT', $guildId), $applicationCommands)->collect()->mapInto(self::class);
     }
 
     /**
      * Send an HTTP POST request to Discord to make a new application command.
      *
      * @param  int|null  $guildId
-     * @param  array  $data
+     * @param  array  $attributes
      * @return ApplicationCommand
      */
-    public static function create(int|null $guildId = null, array $data): static
+    public function create(array $attributes, ?int $guildId = null): static
     {
-        return self::addToCache($guildId, new self(Http::post(self::getRoute('CREATE', $guildId), $data)->throw()->json()));
+        return $this->newInstance(Http::post($this->getRoute('POST', $guildId), $attributes)->json());
     }
 
     /**
@@ -166,12 +106,12 @@ class ApplicationCommand extends Model
      *
      * @param  int|null  $guildId
      * @param  int  $id
-     * @param  array  $data
+     * @param  array  $attributes
      * @return ApplicationCommand
      */
-    public static function update(int|null $guildId = null, int $id, array $data): static
+    public function update(array $attributes, int $applicationCommandId, ?int $guildId = null): static
     {
-        return self::updateCache($guildId, new self(Http::patch(self::getRoute('EDIT', $guildId, $id), $data)->throw()->json()));
+        return $this->newInstance(Http::patch($this->getRoute('PATCH', $guildId, $applicationCommandId), $attributes)->json());
     }
 
     /**
@@ -186,8 +126,8 @@ class ApplicationCommand extends Model
         }
 
         $applicationCommand = is_null($this->id)
-            ? self::create($this->guild_id, $this->attributes)
-            : self::update($this->guild_id, $this->id, $this->attributes);
+            ? self::create($this->attributes, $this->guild_id)
+            : self::update($this->attributes, $this->id, $this->guild_id);
 
         return $this->fill($applicationCommand->toArray());
     }
@@ -199,10 +139,9 @@ class ApplicationCommand extends Model
      * @param  int  $id
      * @return void
      */
-    public static function delete(int|null $guildId = null, int $id): void
+    public function delete(int $applicationCommandId, ?int $guildId = null): void
     {
-        Http::delete(self::getRoute('DELETE', $guildId, $id));
-        self::deleteFromCache($guildId, $id);
+        Http::delete($this->getRoute('DELETE', $guildId, $applicationCommandId));
     }
 
     /**
@@ -213,6 +152,13 @@ class ApplicationCommand extends Model
     public function destroy(): void
     {
         self::delete($this->guild_id, $this->id);
-        self::deleteFromCache($this->guild_id, $this->id);
+    }
+
+    /**
+     * @return Collection
+     */
+    public function permissions(): Collection
+    {
+        return ApplicationCommandPermissions::get($this->guild_id, $this->id);
     }
 }
