@@ -13,11 +13,8 @@ class RateLimitProvider extends AbstractRateLimitProvider
 
     /**
      * Returns when the last request was made.
-     *
-     * @param  RequestInterface  $request
-     * @return float|null
      */
-    public function getLastRequestTime(RequestInterface $request): float|null
+    public function getLastRequestTime(RequestInterface $request): ?float
     {
         $route = $this->getRoute($request);
 
@@ -26,9 +23,6 @@ class RateLimitProvider extends AbstractRateLimitProvider
 
     /**
      * Used to set the current time as the last request time to be queried when the next request is attempted.
-     *
-     * @param  RequestInterface  $request
-     * @return void
      */
     public function setLastRequestTime(RequestInterface $request): void
     {
@@ -39,9 +33,6 @@ class RateLimitProvider extends AbstractRateLimitProvider
 
     /**
      * Returns the minimum amount of time that is required to have passed since the last request was made. This value is used to determine if the current request should be delayed, based on when the last request was made.
-     *
-     * @param  RequestInterface  $request
-     * @return float
      */
     public function getRequestAllowance(RequestInterface $request): float
     {
@@ -57,10 +48,6 @@ class RateLimitProvider extends AbstractRateLimitProvider
 
     /**
      * Used to set the minimum amount of time that is required to pass between this request and the next (in microseconds).
-     *
-     * @param  RequestInterface  $request
-     * @param  ResponseInterface  $response
-     * @return void
      */
     public function setRequestAllowance(RequestInterface $request, ResponseInterface $response): void
     {
