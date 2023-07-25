@@ -17,7 +17,6 @@ class ApplicationCommand extends Model
     /**
      * Create a new  model instance.
      *
-     * @param  array  $attributes
      * @return void
      */
     public function __construct(array $attributes = [])
@@ -26,20 +25,11 @@ class ApplicationCommand extends Model
         $this->syncOriginal();
     }
 
-    /**
-     * @param  int  $guildId
-     * @return string
-     */
     private static function getCacheKey(int $guildId): string
     {
         return sprintf('application-commands-%d', $guildId);
     }
 
-    /**
-     * @param  int  $guildId
-     * @param  ApplicationCommand  $applicationCommand
-     * @return ApplicationCommand
-     */
     private static function addToCache(int $guildId, ApplicationCommand $applicationCommand): ApplicationCommand
     {
         if (Cache::has(self::getCacheKey($guildId))) {
@@ -51,11 +41,6 @@ class ApplicationCommand extends Model
         return $applicationCommand;
     }
 
-    /**
-     * @param  int  $guildId
-     * @param  ApplicationCommand  $applicationCommand
-     * @return ApplicationCommand
-     */
     private static function updateCache(int $guildId, ApplicationCommand $applicationCommand): ApplicationCommand
     {
         if (Cache::has(self::getCacheKey($guildId))) {
@@ -68,11 +53,6 @@ class ApplicationCommand extends Model
         return $applicationCommand;
     }
 
-    /**
-     * @param  int  $guildId
-     * @param  int  $applicationCommandId
-     * @return void
-     */
     private static function deleteFromCache(int $guildId, int $applicationCommandId): void
     {
         Cache::pull(self::getCacheKey($guildId))
@@ -83,13 +63,11 @@ class ApplicationCommand extends Model
     /**
      * Helper to get the corresponding route for an API call.
      *
-     * @param  string  $method
      * @param  int|null  $guildId
      * @param  bool  $multiple
      * @param  array  ...$values
-     * @return string
      */
-    protected static function getRoute(string $method, int|null $guildId = null, mixed ...$values): string
+    protected static function getRoute(string $method, int $guildId = null, mixed ...$values): string
     {
         $scope = $guildId ? 'GUILD' : 'GLOBAL';
         $constant = 'Kyzegs\Laracord\Constants\Routes::%s_%s_APPLICATION_COMMAND';
@@ -108,23 +86,19 @@ class ApplicationCommand extends Model
     }
 
     /**
-     * @param  int  $guildId
-     * @param  int | null  $applicationCommandId
      * @return ApplicationCommand
      */
-    public static function firstOrNew(int $guildId, int|null $applicationCommandId): static
+    public static function firstOrNew(int $guildId, ?int $applicationCommandId): static
     {
         return self::get($guildId)->firstWhere('id', $applicationCommandId) ?? new self(['guild_id' => $guildId]);
     }
 
     /**
      * @param  int|null  $guildId
-     * @param  array  $applicationCommands
-     * @return Collection
      *
      * @throws \Illuminate\Http\Client\RequestException
      */
-    public static function bulkOverwrite(int|null $guildId = null, array $applicationCommands): Collection
+    public static function bulkOverwrite(int $guildId = null, array $applicationCommands): Collection
     {
         return Http::put(sprintf(Routes::BULK_OVERWRITE_GUILD_APPLICATION_COMMANDS, config('laracord.client_id'), $guildId), $applicationCommands)
             ->throw()
@@ -137,9 +111,8 @@ class ApplicationCommand extends Model
      * Send an HTTP GET request to retrieve data from Discord.
      *
      * @param  int|null  $guildId
-     * @return Collection
      */
-    public static function get(int|null $guildId = null): Collection
+    public static function get(int $guildId = null): Collection
     {
         return Cache::remember(self::getCacheKey($guildId), 3600, function () use ($guildId) {
             return Http::get(self::getRoute('GET', $guildId))
@@ -153,10 +126,9 @@ class ApplicationCommand extends Model
      * Send an HTTP POST request to Discord to make a new application command.
      *
      * @param  int|null  $guildId
-     * @param  array  $data
      * @return ApplicationCommand
      */
-    public static function create(int|null $guildId = null, array $data): static
+    public static function create(int $guildId = null, array $data): static
     {
         return self::addToCache($guildId, new self(Http::post(self::getRoute('CREATE', $guildId), $data)->throw()->json()));
     }
@@ -165,11 +137,9 @@ class ApplicationCommand extends Model
      * Send an HTTP PATCH request to Discord with the given data.
      *
      * @param  int|null  $guildId
-     * @param  int  $id
-     * @param  array  $data
      * @return ApplicationCommand
      */
-    public static function update(int|null $guildId = null, int $id, array $data): static
+    public static function update(int $guildId = null, int $id, array $data): static
     {
         return self::updateCache($guildId, new self(Http::patch(self::getRoute('EDIT', $guildId, $id), $data)->throw()->json()));
     }
@@ -196,10 +166,8 @@ class ApplicationCommand extends Model
      * Send an HTTP DELETE request to Discord to delete a given application command.
      *
      * @param  int|null  $guildId
-     * @param  int  $id
-     * @return void
      */
-    public static function delete(int|null $guildId = null, int $id): void
+    public static function delete(int $guildId = null, int $id): void
     {
         Http::delete(self::getRoute('DELETE', $guildId, $id));
         self::deleteFromCache($guildId, $id);
@@ -207,8 +175,6 @@ class ApplicationCommand extends Model
 
     /**
      * Send an HTTP DELETE request to Discord to delete the current application command.
-     *
-     * @return void
      */
     public function destroy(): void
     {

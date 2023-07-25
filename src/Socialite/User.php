@@ -10,10 +10,6 @@ class User extends AbstractUser
     /** @var \Illuminate\Support\Collection */
     public $guilds;
 
-    /**
-     * @param  bool  $admin
-     * @return \Illuminate\Support\Collection
-     */
     public function getGuilds(bool $admin = false): Collection
     {
         if ($admin) {
@@ -23,10 +19,6 @@ class User extends AbstractUser
         return $this->guilds;
     }
 
-    /**
-     * @param  \Illuminate\Support\Collection  $guilds
-     * @return void
-     */
     public function setGuilds(Collection $guilds): void
     {
         $this->guilds = $guilds;

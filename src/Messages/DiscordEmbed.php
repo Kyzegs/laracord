@@ -6,92 +6,64 @@ class DiscordEmbed
 {
     /**
      * Title of embed.
-     *
-     * @var string|null
      */
     public ?string $title = null;
 
     /**
      * Description of embed.
-     *
-     * @var string|null
      */
     public ?string $description = null;
 
     /**
      * URL of embed.
-     *
-     * @var string|null
      */
     public ?string $url = null;
 
     /**
      * Timestamp of embed content.
-     *
-     * @var int|null
      */
     public ?int $timestamp = null;
 
     /**
      * Color code of the embed.
-     *
-     * @var int|null
      */
     public ?int $color = null;
 
     /**
      * Footer information.
-     *
-     * @var array|null
      */
     public ?array $footer = null;
 
     /**
      * Image information.
-     *
-     * @var array|null
      */
     public ?array $image = null;
 
     /**
      * Thumbnail information.
-     *
-     * @var array|null
      */
     public ?array $thumbnail = null;
 
     /**
      * Video information.
-     *
-     * @var array|null
      */
     public ?array $video = null;
 
     /**
      * Provider information.
-     *
-     * @var array|null
      */
     public ?array $provider = null;
 
     /**
      * Author information.
-     *
-     * @var array|null
      */
     public ?array $author = null;
 
     /**
      * Fields information.
-     *
-     * @var array
      */
     public array $fields = [];
 
-    /**
-     * @param  string|null  $title
-     * @return DiscordEmbed
-     */
     public function title(?string $title): DiscordEmbed
     {
         $this->title = $title;
@@ -99,10 +71,6 @@ class DiscordEmbed
         return $this;
     }
 
-    /**
-     * @param  string|null  $type
-     * @return DiscordEmbed
-     */
     public function type(?string $type): DiscordEmbed
     {
         $this->type = $type;
@@ -110,10 +78,6 @@ class DiscordEmbed
         return $this;
     }
 
-    /**
-     * @param  string|null  $description
-     * @return DiscordEmbed
-     */
     public function description(?string $description): DiscordEmbed
     {
         $this->description = $description;
@@ -121,10 +85,6 @@ class DiscordEmbed
         return $this;
     }
 
-    /**
-     * @param  string|null  $url
-     * @return DiscordEmbed
-     */
     public function url(?string $url): DiscordEmbed
     {
         $this->url = $url;
@@ -132,10 +92,6 @@ class DiscordEmbed
         return $this;
     }
 
-    /**
-     * @param  int|null  $timestamp
-     * @return DiscordEmbed
-     */
     public function timestamp(?int $timestamp): DiscordEmbed
     {
         $this->timestamp = $timestamp;
@@ -143,10 +99,6 @@ class DiscordEmbed
         return $this;
     }
 
-    /**
-     * @param  int|null  $color
-     * @return DiscordEmbed
-     */
     public function color(?int $color): DiscordEmbed
     {
         $this->color = $color;
@@ -154,10 +106,6 @@ class DiscordEmbed
         return $this;
     }
 
-    /**
-     * @param  array|null  $footer
-     * @return DiscordEmbed
-     */
     public function footer(?array $footer): DiscordEmbed
     {
         $this->footer = $footer;
@@ -165,10 +113,6 @@ class DiscordEmbed
         return $this;
     }
 
-    /**
-     * @param  array|null  $image
-     * @return DiscordEmbed
-     */
     public function image(?array $image): DiscordEmbed
     {
         $this->image = $image;
@@ -176,10 +120,6 @@ class DiscordEmbed
         return $this;
     }
 
-    /**
-     * @param  array|null  $thumbnail
-     * @return DiscordEmbed
-     */
     public function thumbnail(?array $thumbnail): DiscordEmbed
     {
         $this->thumbnail = $thumbnail;
@@ -187,10 +127,6 @@ class DiscordEmbed
         return $this;
     }
 
-    /**
-     * @param  array|null  $video
-     * @return DiscordEmbed
-     */
     public function video(?array $video): DiscordEmbed
     {
         $this->video = $video;
@@ -198,10 +134,6 @@ class DiscordEmbed
         return $this;
     }
 
-    /**
-     * @param  array|null  $provider
-     * @return DiscordEmbed
-     */
     public function provider(?array $provider): DiscordEmbed
     {
         $this->provider = $provider;
@@ -209,10 +141,6 @@ class DiscordEmbed
         return $this;
     }
 
-    /**
-     * @param  array|null  $author
-     * @return DiscordEmbed
-     */
     public function author(?array $author): DiscordEmbed
     {
         $this->author = $author;
@@ -220,10 +148,6 @@ class DiscordEmbed
         return $this;
     }
 
-    /**
-     * @param  array  $fields
-     * @return DiscordEmbed
-     */
     public function fields(array $fields): DiscordEmbed
     {
         $this->fields = $fields;
@@ -231,9 +155,6 @@ class DiscordEmbed
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function toArray(): array
     {
         return [

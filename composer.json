@@ -18,11 +18,19 @@
         "laravel/socialite": "^5.2",
         "jenssegers/model": "^1.4"
     },
+    "require-dev": {
+        "laravel/pint": "^1.10"
+    },
     "extra": {
         "laravel": {
             "providers": [
                 "Kyzegs\\Laracord\\LaracordServiceProvider"
             ]
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
         }
     }
 }

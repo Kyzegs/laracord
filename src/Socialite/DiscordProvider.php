@@ -26,7 +26,6 @@ class DiscordProvider extends AbstractProvider implements ProviderInterface
     /**
      * Create a new provider instance.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  string  $clientId
      * @param  string  $clientSecret
      * @param  string  $redirectUrl
@@ -53,8 +52,6 @@ class DiscordProvider extends AbstractProvider implements ProviderInterface
 
     /**
      * Get the token URL for the provider.
-     *
-     * @return string
      */
     protected function getTokenUrl(): string
     {
@@ -65,7 +62,6 @@ class DiscordProvider extends AbstractProvider implements ProviderInterface
      * Get the raw user for the given access token.
      *
      * @param  string  $token
-     * @return array
      */
     protected function getUserByToken(mixed $token): array
     {
@@ -78,10 +74,6 @@ class DiscordProvider extends AbstractProvider implements ProviderInterface
         return json_decode($response->getBody(), true);
     }
 
-    /**
-     * @param  string  $token
-     * @return array
-     */
     protected function getGuildsByToken(string $token): array
     {
         $response = $this->getHttpClient()->get('https://discord.com/api/users/@me/guilds', [
@@ -96,7 +88,6 @@ class DiscordProvider extends AbstractProvider implements ProviderInterface
     /**
      * Map the raw user array to a Socialite User instance.
      *
-     * @param  array  $user
      * @return \Kyzegs\Laracord\Socialite\User
      */
     protected function mapUserToObject(array $user): User
@@ -114,7 +105,6 @@ class DiscordProvider extends AbstractProvider implements ProviderInterface
 
     /**
      * @param  array[]  $guilds
-     * @return \Illuminate\Support\Collection
      */
     protected function mapGuildsToObjects(array $guilds): Collection
     {

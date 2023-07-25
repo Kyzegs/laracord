@@ -13,8 +13,6 @@ class LaracordServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the service provider.
-     *
-     * @return void
      */
     public function boot(): void
     {
@@ -33,8 +31,6 @@ class LaracordServiceProvider extends ServiceProvider
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
     public function register(): void
     {

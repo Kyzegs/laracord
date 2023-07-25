@@ -23,9 +23,6 @@ class RateLimiter
 
     /**
      * Delay the request then sets the allowance for the next request.
-     *
-     * @param  callable  $handler
-     * @return \Closure
      */
     public function __invoke(callable $handler): Closure
     {
@@ -42,9 +39,6 @@ class RateLimiter
 
     /**
      * Returns the delay duration for the given request (in microseconds).
-     *
-     * @param  \Psr\Http\Message\RequestInterface  $request
-     * @return float
      */
     protected function getDelay(RequestInterface $request): float
     {
@@ -57,9 +51,6 @@ class RateLimiter
 
     /**
      * Delays the given request by an amount of microseconds.
-     *
-     * @param  float  $time
-     * @return void
      */
     protected function delay(float $time): void
     {
@@ -69,9 +60,6 @@ class RateLimiter
     /**
      * Returns a callable handler which allows the provider to set the request
      * allowance for the next request, using the current response.
-     *
-     * @param  \Psr\Http\Message\RequestInterface  $request
-     * @return \Closure
      */
     protected function setAllowance(RequestInterface $request): Closure
     {

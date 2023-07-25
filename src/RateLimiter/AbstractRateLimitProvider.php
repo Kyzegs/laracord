@@ -9,9 +9,6 @@ abstract class AbstractRateLimitProvider
 {
     /**
      * Returns the route for the current URL.
-     *
-     * @param  \Psr\Http\Message\RequestInterface  $request
-     * @return string
      */
     public function getRoute(RequestInterface $request): string
     {
@@ -20,8 +17,6 @@ abstract class AbstractRateLimitProvider
 
     /**
      * Returns what is considered the time when a given request is being made.
-     *
-     * @return string|float
      */
     final public function getRequestTime(): string|float
     {
@@ -30,18 +25,12 @@ abstract class AbstractRateLimitProvider
 
     /**
      * Returns when the last request was made.
-     *
-     * @param  RequestInterface  $request
-     * @return float|null
      */
-    abstract public function getLastRequestTime(RequestInterface $request): float|null;
+    abstract public function getLastRequestTime(RequestInterface $request): ?float;
 
     /**
      * Used to set the current time as the last request time to be queried when
      * the next request is attempted.
-     *
-     * @param  RequestInterface  $request
-     * @return void
      */
     abstract public function setLastRequestTime(RequestInterface $request): void;
 
@@ -52,19 +41,12 @@ abstract class AbstractRateLimitProvider
      *
      * Returns the allowed  between the last request and the next, which
      * is used to determine if a request should be delayed and by how much.
-     *
-     * @param  RequestInterface  $request
-     * @return float
      */
     abstract public function getRequestAllowance(RequestInterface $request): float;
 
     /**
      * Used to set the minimum amount of time that is required to pass between
      * this request and the next (in microseconds).
-     *
-     * @param  RequestInterface  $request
-     * @param  ResponseInterface  $response
-     * @return void
      */
     abstract public function setRequestAllowance(RequestInterface $request, ResponseInterface $response): void;
 
@@ -73,9 +55,6 @@ abstract class AbstractRateLimitProvider
      * remove minor parameters / numbers. This has to be done
      * to ensure correct rate limiting according to:
      * https://discord.com/developers/docs/topics/rate-limits.
-     *
-     * @param  string  $url
-     * @return string
      */
     protected function stripMinorParameters(string $url): string
     {
