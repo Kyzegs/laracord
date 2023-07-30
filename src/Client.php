@@ -461,10 +461,9 @@ class Client
         return $this->request(new Route('POST', '/guilds'), $data);
     }
 
-    public function getGuild(int $guildId): array
+    public function getGuild(int $guildId, array $query = []): array
     {
-        // TODO: Add query param
-        return $this->request(new Route('GET', '/guilds/{guild_id}', ['guild_id' => $guildId]));
+        return $this->request(new Route('GET', '/guilds/{guild_id}', ['guild_id' => $guildId]), query: $query);
     }
 
     public function getGuildPreview(int $guildId): array
@@ -512,10 +511,9 @@ class Client
         return $this->request(new Route('GET', '/guilds/{guild_id}/members', ['guild_id' => $guildId]), $data);
     }
 
-    public function searchGuildMembers(int $guildId, array $data = []): array
+    public function searchGuildMembers(int $guildId, array $query = []): array
     {
-        // TODO: Should be query string
-        return $this->request(new Route('GET', '/guilds/{guild_id}/members/search', ['guild_id' => $guildId]), $data);
+        return $this->request(new Route('GET', '/guilds/{guild_id}/members/search', ['guild_id' => $guildId]), query: $query);
     }
 
     public function addGuildMember(int $guildId, int $userId, array $data): array

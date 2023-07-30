@@ -21,9 +21,6 @@ class Bucket
     public function get(): Ratelimit
     {
         return cache()->get($this->key()) ?? new Ratelimit();
-        //return tap(cache()->get($this->key()) ?? new Ratelimit(), function (Ratelimit $ratelimit) {
-        //    $this->set($ratelimit);
-        //});
     }
 
     public function put(Ratelimit $ratelimit): bool
