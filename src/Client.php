@@ -13,7 +13,6 @@ class Client
 {
     public function __construct(private GuzzleClient $client)
     {
-
     }
 
     private function request(Route $route, array $payload = null, array $query = []): array

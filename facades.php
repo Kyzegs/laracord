@@ -132,7 +132,7 @@ function resolveFacades($finder)
 }
 
 /**
- * Resolve the classes referenced in the @param  \ReflectionClass  $class
+ * Resolve the classes referenced in the @param  \ReflectionClass  $class.
  *
  * @return \Illuminate\Support\Collection<class-string>
  *
@@ -187,7 +187,7 @@ function resolveDocParamType($method, $parameter)
 }
 
 /**
- * Resolve the return type from the @param  \ReflectionMethodDecorator  $method
+ * Resolve the return type from the @param  \ReflectionMethodDecorator  $method.
  *
  * @return docblock.
  * @return string|null
@@ -525,7 +525,7 @@ function isMagic($method)
 }
 
 /**
- * Determine if the method is marked as @param  \ReflectionMethod|string  $method
+ * Determine if the method is marked as @param  \ReflectionMethod|string  $method.
  *
  * @return bool
  *
