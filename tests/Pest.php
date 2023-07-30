@@ -41,9 +41,9 @@ expect()->extend('toBeApplicationCommand', function (bool $guildScope = false, b
                 'default_permission',
                 'version',
             ])
-            ->when($guildScope, fn (Collection $keys) => $keys->push('guild_id'))
-            ->when($hasLocalizations, fn (Collection $keys) => $keys->merge(['name_localizations', 'description_localizations']))
-            ->toArray()
+                ->when($guildScope, fn (Collection $keys) => $keys->push('guild_id'))
+                ->when($hasLocalizations, fn (Collection $keys) => $keys->merge(['name_localizations', 'description_localizations']))
+                ->toArray()
         );
 });
 

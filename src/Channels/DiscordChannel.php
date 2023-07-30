@@ -3,8 +3,8 @@
 namespace Kyzegs\Laracord\Channels;
 
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Cache;
 use Kyzegs\Laracord\Facades\Http;
+use Kyzegs\Laracord\Facades\Laracord;
 
 class DiscordChannel
 {
@@ -12,8 +12,6 @@ class DiscordChannel
      * Send the given notification.
      *
      * @param  mixed  $notifiable
-     * @param  Notification  $notification
-     * @return mixed
      */
     public function send($notifiable, Notification $notification): mixed
     {
@@ -23,18 +21,10 @@ class DiscordChannel
 
         $message = $notification->toDiscord($notifiable);
 
-        $route = 'users/@me/channels';
-
-        // TODO: Come up with cache key naming convention
-        // TODO: Move all API calls to their own location
-
         if ($message->private) {
-            $channelId = Cache::rememberForever(sprintf('%s:%d', $route, $channelId), function () use ($route, $channelId) {
-                // NOTE: Override HTTP since route has users/@me
-                return Http::withToken(config('laracord.bot_token'), 'Bot')->post($route, ['recipient_id' => $channelId])->json('id');
-            });
+            $channelId = Laracord::createDm(['recipient_id' => $channelId])['id'];
         }
 
-        return Http::post(sprintf('channels/%s/messages', $channelId), $message->toArray())->json();
+        return Laracord::createMessage($channelId, $message->toArray());
     }
 }

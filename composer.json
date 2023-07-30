@@ -20,15 +20,21 @@
         }
     },
     "require": {
-        "php": "^8.1",
-        "laravel/socialite": "^5.5",
-        "kyzegs/model": "^0.1.0"
+        "php": "^8.0",
+        "ext-json": "*",
+        "illuminate/cache": "^10.16",
+        "illuminate/collections": "^10.16",
+        "illuminate/support": "^10.16",
+        "kyzegs/model": "^0.1.0",
+        "laravel/socialite": "^5.8"
     },
     "require-dev": {
-        "orchestra/testbench": "^7.4",
-        "phpunit/phpunit": "^9.5",
+        "laravel/pint": "^1.10",
+        "orchestra/testbench": "^8.5",
         "pestphp/pest": "^1.21",
-        "pestphp/pest-plugin-laravel": "^1.2"
+        "pestphp/pest-plugin-laravel": "^1.2",
+        "phpunit/phpunit": "^9.5",
+        "phpstan/phpdoc-parser": "^1.23"
     },
     "scripts": {
         "test": "vendor/bin/phpunit"
@@ -36,18 +42,14 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Kyzegs\\Laracord\\Providers\\LaracordServiceProvider"
-            ],
-            "aliases": {
-                "ApplicationCommand": "Kyzegs\\Laracord\\Facades\\ApplicationCommand",
-                "ApplicationCommandPermissions": "Kyzegs\\Laracord\\Facades\\ApplicationCommandPermissions",
-                "Http": "Kyzegs\\Laracord\\Facades\\Http"
-            }
+                "Kyzegs\\Laracord\\ServiceProvider"
+            ]
         }
     },
     "config": {
         "allow-plugins": {
-            "pestphp/pest-plugin": true
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
         }
     }
 }

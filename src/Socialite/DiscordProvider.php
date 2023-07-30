@@ -3,8 +3,6 @@
 namespace Kyzegs\Laracord\Socialite;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Session;
 use Laravel\Socialite\Two\AbstractProvider;
 
 class DiscordProvider extends AbstractProvider implements ProviderInterface
@@ -26,7 +24,6 @@ class DiscordProvider extends AbstractProvider implements ProviderInterface
     /**
      * Create a new provider instance.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  string  $clientId
      * @param  string  $clientSecret
      * @param  string  $redirectUrl
@@ -53,8 +50,6 @@ class DiscordProvider extends AbstractProvider implements ProviderInterface
 
     /**
      * Get the token URL for the provider.
-     *
-     * @return string
      */
     protected function getTokenUrl(): string
     {
@@ -65,7 +60,6 @@ class DiscordProvider extends AbstractProvider implements ProviderInterface
      * Get the raw user for the given access token.
      *
      * @param  string  $token
-     * @return array
      */
     protected function getUserByToken(mixed $token): array
     {
@@ -81,7 +75,6 @@ class DiscordProvider extends AbstractProvider implements ProviderInterface
     /**
      * Map the raw user array to a Socialite User instance.
      *
-     * @param  array  $user
      * @return \Kyzegs\Laracord\Socialite\User
      */
     protected function mapUserToObject(array $user): User
