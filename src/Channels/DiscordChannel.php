@@ -3,7 +3,6 @@
 namespace Kyzegs\Laracord\Channels;
 
 use Illuminate\Notifications\Notification;
-use Kyzegs\Laracord\Facades\Http;
 use Kyzegs\Laracord\Facades\Laracord;
 
 class DiscordChannel

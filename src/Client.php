@@ -7,10 +7,13 @@ use GuzzleHttp\RequestOptions;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Sleep;
+use Illuminate\Support\Traits\ForwardsCalls;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Client
 {
+    use ForwardsCalls;
+
     public function __construct(private GuzzleClient $client)
     {
     }
@@ -190,7 +193,7 @@ class Client
         return $this->request(new Route('GET', '/applications/{application_id}/guilds/{guild_id}/commands/{command_id}/permissions', ['application_id' => $applicationId, 'guild_id' => $guildId, 'command_id' => $commandId]));
     }
 
-    public function editAPplicationCommandPermissions(string $applicationId, string $guildId, string $commandId, array $data): array
+    public function editApplicationCommandPermissions(string $applicationId, string $guildId, string $commandId, array $data): array
     {
         return $this->request(new Route('PUT', '/applications/{application_id}/guilds/{guild_id}/commands/{command_id}/permissions', ['application_id' => $applicationId, 'guild_id' => $guildId, 'command_id' => $commandId]), $data);
     }
@@ -948,5 +951,10 @@ class Client
     public function deleteWebhookMessage(int $webhookId, string $webhookToken, string $messageId): array
     {
         return $this->request(new Route('DELETE', '/webhooks/{webhook_id}/{webhook_token}/messages/{message_id}', ['webhook_id' => $webhookId, 'webhook_token' => $webhookToken, 'message_id' => $messageId]));
+    }
+
+    public function __call($name, $arguments)
+    {
+        return $this->forwardCallTo($this->client, $name, $arguments);
     }
 }

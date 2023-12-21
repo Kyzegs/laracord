@@ -2,6 +2,7 @@
 
 namespace Kyzegs\Laracord\Facades;
 
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Facade;
 
 /**
@@ -19,7 +20,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static array bulkOverwriteGuildApplicationCommands(string $applicationId, string $guildId, array $data)
  * @method static array getGuildApplicationCommandPermissions(string $applicationId, string $guildId)
  * @method static array getApplicationCommandPermissions(string $applicationId, string $guildId, string $commandId)
- * @method static array editAPplicationCommandPermissions(string $applicationId, string $guildId, string $commandId, array $data)
+ * @method static array editApplicationCommandPermissions(string $applicationId, string $guildId, string $commandId, array $data)
  * @method static array batchEditApplicationCommandPermissions(string $applicationId, string $guildId, array $data)
  * @method static array getCurrentApplication()
  * @method static array getApplicationRoleConnectionMetadataRecords(string $applicationId)
@@ -73,7 +74,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static array modifyGuildEmoji(int $guildId, int $emojiId, array $data)
  * @method static array deleteGuildEmoji(int $guildId, int $emojiId)
  * @method static array createGuild(array $data)
- * @method static array getGuild(int $guildId)
+ * @method static array getGuild(int $guildId, array $query = [])
  * @method static array getGuildPreview(int $guildId)
  * @method static array modifyGuild(int $guildId, array $data)
  * @method static array deleteGuild(int $guildId)
@@ -83,7 +84,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static array listActiveGuildThreads(int $guildId)
  * @method static array getGuildMember(int $guildId, int $userId)
  * @method static array listGuildMembers(int $guildId, array $data = [])
- * @method static array searchGuildMembers(int $guildId, array $data = [])
+ * @method static array searchGuildMembers(int $guildId, array $query = [])
  * @method static array addGuildMember(int $guildId, int $userId, array $data)
  * @method static array modifyGuildMember(int $guildId, int $userId, array $data)
  * @method static array modifyCurrentMember(int $guildId, array $data)
@@ -173,6 +174,8 @@ use Illuminate\Support\Facades\Facade;
  * @method static array deleteWebhookMessage(int $webhookId, string $webhookToken, string $messageId)
  *
  * @see \Kyzegs\Laracord\Client
+ *
+ * @extends Client
  */
 class Laracord extends Facade
 {
