@@ -11,7 +11,8 @@
     "homepage": "https://github.com/Kyzegs/laracord",
     "autoload": {
         "psr-4": {
-            "Kyzegs\\Laracord\\": "src"
+            "Kyzegs\\Laracord\\": "src",
+            "Spatie\\LaravelRay\\": "stubs/Spatie/LaravelRay"
         }
     },
     "autoload-dev": {
@@ -20,13 +21,13 @@
         }
     },
     "require": {
-        "php": "^8.0",
+        "php": "^8.1",
         "ext-json": "*",
-        "illuminate/cache": "^10.16",
-        "illuminate/collections": "^10.16",
-        "illuminate/support": "^10.16",
         "kyzegs/model": "^0.1.0",
-        "laravel/socialite": "^5.8"
+        "illuminate/cache": "^10.0",
+        "illuminate/collections": "^v10.0",
+        "illuminate/support": "^10.0",
+        "laravel/socialite": "^5.23"
     },
     "require-dev": {
         "laravel/pint": "^1.10",

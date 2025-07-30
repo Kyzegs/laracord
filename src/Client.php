@@ -4,7 +4,6 @@ namespace Kyzegs\Laracord;
 
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\RequestOptions;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Sleep;
 use Illuminate\Support\Traits\ForwardsCalls;
@@ -18,109 +17,41 @@ class Client
     {
     }
 
-    private function request(Route $route, array $payload = null, array $query = []): array
+    private function request(Route $route, ?array $payload = null, array $query = []): array
     {
         for ($tries = 0; $tries < 3; $tries++) {
-            $bucketHash = $route->getBucketHash()->get();
-            $ratelimit = $route->getBucket()->get();
+            $response = $this->client->request($route->getMethod(), $route->getUrl(), [
+                RequestOptions::HTTP_ERRORS => false,
+                RequestOptions::JSON => $payload,
+                RequestOptions::QUERY => $query,
+                'laracord_route' => $route,
+            ]);
 
-            $lock = $route->getBucket()->lock();
+            $body = $response->getBody();
+            $contents = $body->getContents();
+            $statusCode = $response->getStatusCode();
 
-            try {
-                $lock->block(PHP_INT_MAX);
+            $data = json_decode($contents, true, 512, JSON_THROW_ON_ERROR);
 
-                // TODO: Also check for a expiration. If it's after the expires at then just do the request
-                if ($ratelimit->getRemaining() === 0) {
-                    Log::debug(sprintf('Sleeping rate limit bucket %s for %.2f seconds.', $bucketHash ?? $route->getKey(), $ratelimit->getResetAfter()));
+            if ($statusCode >= 200 && $statusCode <= 300) {
+                Log::debug(sprintf('%s %s has received %s', $route->getMethod(), $route->getUrl(), json_encode($data)));
 
-                    // TODO: Calculate the reset after on demand? That way it doesn't intervene sleep the same amount of time even if 4s have passed. We can even use sleep until...
-                    Sleep::sleep($ratelimit->getResetAfter());
-                }
-
-                // NOTE: Handle these exceptions by retrying...?
-                $response = $this->client->request($route->getMethod(), $route->getUrl(), [
-                    RequestOptions::HTTP_ERRORS => false,
-                    RequestOptions::JSON => $payload,
-                    RequestOptions::QUERY => $query,
-                ]);
-
-                $discordHash = Arr::get($response->getHeader('X-Ratelimit-Bucket'), 0);
-
-                $body = $response->getBody();
-                $contents = $body->getContents();
-                $statusCode = $response->getStatusCode();
-
-                $data = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
-
-                if ($discordHash !== null && $bucketHash !== $discordHash) {
-                    if ($bucketHash !== null) {
-                        Log::debug(sprintf('A route (%s) has changed hashes: %s -> %s.', $route->getKey(), $bucketHash, $discordHash));
-
-                        $route->getBucket()->forget();
-                    } elseif ($route->getBucketHash()->missing()) {
-                        Log::debug(sprintf('%s has found its initial rate limit bucket hash (%s).', $route->getKey(), $discordHash));
-                    }
-
-                    $route->getBucketHash()->put($discordHash);
-                    $route->getBucket()->put($ratelimit);
-                }
-
-                if ($response->hasHeader('X-Ratelimit-Remaining') && $response->getStatusCode() !== 429) {
-                    $route->getBucket()->put($ratelimit->update($response));
-
-                    if ($ratelimit->getRemaining() === 0) {
-                        Log::debug(sprintf('A rate limit bucket (%s) has been exhausted. Pre-emptively rate limiting...', $discordHash ?? $route->getKey()));
-                    }
-                }
-
-                if ($response->getStatusCode() >= 200 && $response->getStatusCode() <= 300) {
-                    Log::debug(sprintf('%s %s has received %s', $route->getMethod(), $route->getUrl(), json_encode($data)));
-
-                    return $data;
-                }
-
-                if ($response->getStatusCode() === 429) {
-                    // NOTE: Should we update the rate limit here too?
-
-                    if (! $response->hasHeader('Via')) {
-                        throw new HttpException($statusCode, $contents);
-                    }
-
-                    if ($ratelimit->getRemaining() > 0) {
-                        Log::debug(sprintf('%s %s received a 429 despite having %d remaining requests. This is a sub-ratelimit.', $route->getMethod(), $route->getUrl(), $ratelimit->getRemaining()));
-                    }
-
-                    Log::warning(sprintf('We are being rate limited. %s %s responded with 429. Retrying in %.2f seconds.', $route->getMethod(), $route->getUrl(), $data['retry_after']));
-                    Log::debug(sprintf('Rate limit is being handled by bucket hash %s with %s major parameters.', $bucketHash, $route->getMajorParameters()));
-
-                    continue;
-                }
-
-                if (in_array($response->getStatusCode(), [500, 502, 504, 524], true)) {
-                    $backoff = 1 + $tries * 2;
-
-                    Log::debug(sprintf('Encountered a %s status code. Retrying in %s seconds.', $statusCode, $backoff));
-                    Sleep::sleep($backoff);
-
-                    continue;
-                }
-
-                // TODO: Add global check and throw errors for other methods
-
-                throw new HttpException($statusCode, $contents);
-            } finally {
-                $lock->release();
+                return $data;
             }
+
+            if (in_array($statusCode, [500, 502, 504, 524], true)) {
+                $backoff = 1 + $tries * 2;
+
+                Log::debug(sprintf('Encountered a %s status code. Retrying in %s seconds.', $statusCode, $backoff));
+                Sleep::sleep($backoff);
+
+                continue;
+            }
+
+            throw new HttpException($statusCode, $contents);
         }
 
-        //if response is not None:
-        //        # We've run out of retries, raise.
-        //        if response.status >= 500:
-        //            raise DiscordServerError(response, data)
-        //
-        //        raise HTTPException(response, data)
-        //
-        //    raise RuntimeError('Unreachable code in HTTP handling')
+        throw new HttpException($statusCode ?? 0, $contents ?? '');
     }
 
     public function getGlobalApplicationCommands(string $applicationId, array $query = []): array

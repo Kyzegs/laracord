@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         bootstrap="vendor/autoload.php"
+        bootstrap="tests/bootstrap.php"
          backupGlobals="false"
          backupStaticAttributes="false"
          colors="true"
@@ -16,6 +16,9 @@
         <testsuite name="Api">
             <directory suffix="Test.php">./tests/Api</directory>
         </testsuite>
+        <testsuite name="Unit">
+            <directory suffix="Test.php">./tests/Unit</directory>
+        </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">
         <include>
@@ -24,6 +27,7 @@
         </include>
     </coverage>
     <php>
+        <ini name="error_reporting" value="E_ALL &amp; ~E_DEPRECATED &amp; ~E_USER_DEPRECATED"/>
         <server name="CACHE_DRIVER" value="file"/>
         <server name="DISCORD_GUILD_ID" value=""/>
         <server name="DISCORD_CLIENT_ID" value=""/>

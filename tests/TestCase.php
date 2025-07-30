@@ -2,7 +2,7 @@
 
 namespace Kyzegs\Laracord\Tests;
 
-use Kyzegs\Laracord\Providers\LaracordServiceProvider;
+use Kyzegs\Laracord\ServiceProvider as LaracordServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 abstract class TestCase extends Orchestra

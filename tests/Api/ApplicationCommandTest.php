@@ -3,6 +3,12 @@
 use Illuminate\Support\Facades\Cache;
 use Kyzegs\Laracord\Facades\ApplicationCommand;
 
+beforeEach(function () {
+    if (env('DISCORD_BOT_TOKEN') === '') {
+        $this->markTestSkipped('Discord credentials not configured.');
+    }
+});
+
 dataset('guildId', [env('DISCORD_GUILD_ID')]);
 
 dataset('applicationCommands', [[[

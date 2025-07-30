@@ -3,7 +3,6 @@
 namespace Kyzegs\Laracord;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Carbon;
 use Psr\Http\Message\ResponseInterface;
 
 class Ratelimit
@@ -30,6 +29,10 @@ class Ratelimit
 
     public function getResetAfter(): float
     {
+        if ($this->reset > 0.0) {
+            return max(0.0, $this->reset - microtime(true));
+        }
+
         return $this->resetAfter;
     }
 
@@ -50,6 +53,16 @@ class Ratelimit
         $this->dirty = false;
     }
 
+    public function retry(float $retryAfter): static
+    {
+        $this->remaining = 0;
+        $this->resetAfter = $retryAfter;
+        $this->reset = microtime(true) + $retryAfter;
+        $this->dirty = true;
+
+        return $this;
+    }
+
     public function update(ResponseInterface $response): static
     {
         $limit = (int) Arr::get($response->getHeader('X-Ratelimit-Limit'), 0, 1);
@@ -68,7 +81,7 @@ class Ratelimit
         }
 
         if (! $resetAfter) {
-            $this->resetAfter = Carbon::createFromTimestamp($reset)->subtract(Carbon::now('UTC'))->get('second');
+            $this->resetAfter = max(0.0, $reset - microtime(true));
         } else {
             $this->resetAfter = (float) $resetAfter;
         }
