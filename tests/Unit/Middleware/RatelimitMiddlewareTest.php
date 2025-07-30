@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -12,13 +14,13 @@ use Kyzegs\Laracord\Tests\TestCase;
 
 uses(TestCase::class);
 
-beforeEach(function () {
+beforeEach(function (): void {
     config(['cache.default' => 'array']);
     Sleep::fake();
 });
 
-describe('RatelimitMiddleware', function () {
-    it('sleeps when bucket is exhausted', function () {
+describe('RatelimitMiddleware', function (): void {
+    it('sleeps when bucket is exhausted', function (): void {
         $mock = new MockHandler([
             new Response(200, [
                 'Content-Type' => 'application/json',
@@ -31,10 +33,10 @@ describe('RatelimitMiddleware', function () {
             new Response(200, ['Content-Type' => 'application/json'], '{}'),
         ]);
 
-        $stack = HandlerStack::create($mock);
-        $stack->push(new RatelimitMiddleware);
+        $handlerStack = HandlerStack::create($mock);
+        $handlerStack->push(new RatelimitMiddleware);
 
-        $client = new Client(new GuzzleClient(['handler' => $stack]));
+        $client = new Client(new GuzzleClient(['handler' => $handlerStack]));
 
         $client->getChannelMessages(1);
         $client->getChannelMessages(1);
@@ -42,7 +44,7 @@ describe('RatelimitMiddleware', function () {
         Sleep::assertSleptTimes(1);
     });
 
-    it('retries after 429 response', function () {
+    it('retries after 429 response', function (): void {
         $mock = new MockHandler([
             new Response(429, [
                 'Content-Type' => 'application/json',
@@ -51,31 +53,31 @@ describe('RatelimitMiddleware', function () {
             new Response(200, ['Content-Type' => 'application/json', 'X-Ratelimit-Bucket' => 'abc'], '{}'),
         ]);
 
-        $stack = HandlerStack::create($mock);
-        $stack->push(new RatelimitMiddleware);
+        $handlerStack = HandlerStack::create($mock);
+        $handlerStack->push(new RatelimitMiddleware);
 
-        $client = new Client(new GuzzleClient(['handler' => $stack]));
+        $client = new Client(new GuzzleClient(['handler' => $handlerStack]));
 
         $client->getChannelMessages(1);
 
         Sleep::assertSleptTimes(1);
     });
 
-    it('handles requests without route', function () {
+    it('handles requests without route', function (): void {
         $mock = new MockHandler([
             new Response(200, ['Content-Type' => 'application/json'], '{}'),
         ]);
 
-        $stack = HandlerStack::create($mock);
-        $stack->push(new RatelimitMiddleware);
+        $handlerStack = HandlerStack::create($mock);
+        $handlerStack->push(new RatelimitMiddleware);
 
-        $client = new Client(new GuzzleClient(['handler' => $stack]));
+        $client = new Client(new GuzzleClient(['handler' => $handlerStack]));
 
         // This should not throw any exceptions
-        expect(fn () => $client->getChannel(1))->not->toThrow(\Exception::class);
+        expect(fn (): array => $client->getChannel(1))->not->toThrow(\Exception::class);
     });
 
-    it('updates bucket hash when received from response', function () {
+    it('updates bucket hash when received from response', function (): void {
         $mock = new MockHandler([
             new Response(200, [
                 'Content-Type' => 'application/json',
@@ -86,21 +88,21 @@ describe('RatelimitMiddleware', function () {
             ], '{}'),
         ]);
 
-        $stack = HandlerStack::create($mock);
-        $stack->push(new RatelimitMiddleware);
+        $handlerStack = HandlerStack::create($mock);
+        $handlerStack->push(new RatelimitMiddleware);
 
-        $client = new Client(new GuzzleClient(['handler' => $stack]));
+        $client = new Client(new GuzzleClient(['handler' => $handlerStack]));
 
         $client->getChannel(1);
 
         // The bucket hash should be updated in cache
-        $route = new Route('GET', '/channels/{channel_id}', ['channel_id' => '1']);
+        $route = new Route('GET', '/channels/{channel_id}', ['channel_id' => 1]);
         $bucketHash = $route->getBucketHash();
 
         expect($bucketHash->get())->toBe('new-hash-123');
     });
 
-    it('handles missing retry_after in 429 response', function () {
+    it('handles missing retry_after in 429 response', function (): void {
         $mock = new MockHandler([
             new Response(429, [
                 'Content-Type' => 'application/json',
@@ -109,10 +111,10 @@ describe('RatelimitMiddleware', function () {
             new Response(200, ['Content-Type' => 'application/json'], '{}'),
         ]);
 
-        $stack = HandlerStack::create($mock);
-        $stack->push(new RatelimitMiddleware);
+        $handlerStack = HandlerStack::create($mock);
+        $handlerStack->push(new RatelimitMiddleware);
 
-        $client = new Client(new GuzzleClient(['handler' => $stack]));
+        $client = new Client(new GuzzleClient(['handler' => $handlerStack]));
 
         $client->getChannel(1);
 
@@ -120,7 +122,7 @@ describe('RatelimitMiddleware', function () {
         expect(true)->toBeTrue();
     });
 
-    it('handles invalid JSON in 429 response', function () {
+    it('handles invalid JSON in 429 response', function (): void {
         $mock = new MockHandler([
             new Response(429, [
                 'Content-Type' => 'application/json',
@@ -129,10 +131,10 @@ describe('RatelimitMiddleware', function () {
             new Response(200, ['Content-Type' => 'application/json'], '{}'),
         ]);
 
-        $stack = HandlerStack::create($mock);
-        $stack->push(new RatelimitMiddleware);
+        $handlerStack = HandlerStack::create($mock);
+        $handlerStack->push(new RatelimitMiddleware);
 
-        $client = new Client(new GuzzleClient(['handler' => $stack]));
+        $client = new Client(new GuzzleClient(['handler' => $handlerStack]));
 
         $client->getChannel(1);
 
@@ -140,7 +142,7 @@ describe('RatelimitMiddleware', function () {
         expect(true)->toBeTrue();
     });
 
-    it('handles sub-ratelimit scenarios', function () {
+    it('handles sub-ratelimit scenarios', function (): void {
         $mock = new MockHandler([
             new Response(200, [
                 'Content-Type' => 'application/json',
@@ -155,10 +157,10 @@ describe('RatelimitMiddleware', function () {
             new Response(200, ['Content-Type' => 'application/json'], '{}'),
         ]);
 
-        $stack = HandlerStack::create($mock);
-        $stack->push(new RatelimitMiddleware);
+        $handlerStack = HandlerStack::create($mock);
+        $handlerStack->push(new RatelimitMiddleware);
 
-        $client = new Client(new GuzzleClient(['handler' => $stack]));
+        $client = new Client(new GuzzleClient(['handler' => $handlerStack]));
 
         $client->getChannel(1);
         $client->getChannel(1);
@@ -166,7 +168,7 @@ describe('RatelimitMiddleware', function () {
         Sleep::assertSleptTimes(1);
     });
 
-    it('handles bucket hash changes', function () {
+    it('handles bucket hash changes', function (): void {
         $mock = new MockHandler([
             new Response(200, [
                 'Content-Type' => 'application/json',
@@ -182,22 +184,22 @@ describe('RatelimitMiddleware', function () {
             ], '{}'),
         ]);
 
-        $stack = HandlerStack::create($mock);
-        $stack->push(new RatelimitMiddleware);
+        $handlerStack = HandlerStack::create($mock);
+        $handlerStack->push(new RatelimitMiddleware);
 
-        $client = new Client(new GuzzleClient(['handler' => $stack]));
+        $client = new Client(new GuzzleClient(['handler' => $handlerStack]));
 
         $client->getChannel(1);
         $client->getChannel(1);
 
         // Both hashes should be stored
-        $route = new Route('GET', '/channels/{channel_id}', ['channel_id' => '1']);
+        $route = new Route('GET', '/channels/{channel_id}', ['channel_id' => 1]);
         $bucketHash = $route->getBucketHash();
 
         expect($bucketHash->get())->toBe('hash2');
     });
 
-    it('handles missing rate limit headers', function () {
+    it('handles missing rate limit headers', function (): void {
         $mock = new MockHandler([
             new Response(200, [
                 'Content-Type' => 'application/json',
@@ -205,16 +207,16 @@ describe('RatelimitMiddleware', function () {
             ], '{}'),
         ]);
 
-        $stack = HandlerStack::create($mock);
-        $stack->push(new RatelimitMiddleware);
+        $handlerStack = HandlerStack::create($mock);
+        $handlerStack->push(new RatelimitMiddleware);
 
-        $client = new Client(new GuzzleClient(['handler' => $stack]));
+        $client = new Client(new GuzzleClient(['handler' => $handlerStack]));
 
         // Should handle gracefully without rate limit headers
-        expect(fn () => $client->getChannel(1))->not->toThrow(\Exception::class);
+        expect(fn (): array => $client->getChannel(1))->not->toThrow(\Exception::class);
     });
 
-    it('handles multiple 429 responses', function () {
+    it('handles multiple 429 responses', function (): void {
         $mock = new MockHandler([
             new Response(429, [
                 'Content-Type' => 'application/json',
@@ -227,17 +229,17 @@ describe('RatelimitMiddleware', function () {
             new Response(200, ['Content-Type' => 'application/json'], '{}'),
         ]);
 
-        $stack = HandlerStack::create($mock);
-        $stack->push(new RatelimitMiddleware);
+        $handlerStack = HandlerStack::create($mock);
+        $handlerStack->push(new RatelimitMiddleware);
 
-        $client = new Client(new GuzzleClient(['handler' => $stack]));
+        $client = new Client(new GuzzleClient(['handler' => $handlerStack]));
 
         $client->getChannel(1);
 
         Sleep::assertSleptTimes(2);
     });
 
-    it('handles max retry attempts', function () {
+    it('handles max retry attempts', function (): void {
         $mock = new MockHandler([
             new Response(429, [
                 'Content-Type' => 'application/json',
@@ -257,13 +259,13 @@ describe('RatelimitMiddleware', function () {
             ], json_encode(['retry_after' => 0.1])),
         ]);
 
-        $stack = HandlerStack::create($mock);
-        $stack->push(new RatelimitMiddleware);
+        $handlerStack = HandlerStack::create($mock);
+        $handlerStack->push(new RatelimitMiddleware);
 
-        $client = new Client(new GuzzleClient(['handler' => $stack]));
+        $client = new Client(new GuzzleClient(['handler' => $handlerStack]));
 
         // Should throw an exception after max retries
-        expect(fn () => $client->getChannel(1))->toThrow(\Symfony\Component\HttpKernel\Exception\HttpException::class);
+        expect(fn (): array => $client->getChannel(1))->toThrow(\Symfony\Component\HttpKernel\Exception\HttpException::class);
 
         // Should only retry 3 times max
         Sleep::assertSleptTimes(3);

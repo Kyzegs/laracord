@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Kyzegs\Laracord;
 
 use Illuminate\Contracts\Cache\Lock;
 
 class Bucket
 {
-    private BucketHash $bucketHash;
+    private readonly BucketHash $bucketHash;
 
-    public function __construct(private Route $route)
+    public function __construct(private readonly Route $route)
     {
         $this->bucketHash = new BucketHash($route);
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Kyzegs\Laracord\Tests;
 
 use Kyzegs\Laracord\ServiceProvider as LaracordServiceProvider;

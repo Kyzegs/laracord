@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -11,22 +13,22 @@ use Kyzegs\Laracord\Tests\TestCase;
 
 uses(TestCase::class);
 
-beforeEach(function () {
+beforeEach(function (): void {
     config(['cache.default' => 'array']);
     Sleep::fake();
 });
 
-describe('Client', function () {
-    it('retries server errors', function () {
+describe('Client', function (): void {
+    it('retries server errors', function (): void {
         $mock = new MockHandler([
             new Response(500, ['Content-Type' => 'application/json'], '{}'),
             new Response(200, ['Content-Type' => 'application/json'], json_encode(['ok' => true])),
         ]);
 
-        $stack = HandlerStack::create($mock);
-        $stack->push(new RatelimitMiddleware);
+        $handlerStack = HandlerStack::create($mock);
+        $handlerStack->push(new RatelimitMiddleware);
 
-        $client = new Client(new GuzzleClient(['handler' => $stack]));
+        $client = new Client(new GuzzleClient(['handler' => $handlerStack]));
 
         $data = $client->getChannel(1);
 
@@ -34,110 +36,110 @@ describe('Client', function () {
         Sleep::assertSleptTimes(1);
     });
 
-    it('handles application command methods', function () {
+    it('handles application command methods', function (): void {
         $mock = new MockHandler([
             new Response(200, ['Content-Type' => 'application/json'], json_encode([
                 ['id' => 'cmd1', 'name' => 'test-command'],
             ])),
         ]);
 
-        $stack = HandlerStack::create($mock);
-        $stack->push(new RatelimitMiddleware);
+        $handlerStack = HandlerStack::create($mock);
+        $handlerStack->push(new RatelimitMiddleware);
 
-        $client = new Client(new GuzzleClient(['handler' => $stack]));
+        $client = new Client(new GuzzleClient(['handler' => $handlerStack]));
 
-        $commands = $client->getGlobalApplicationCommands('app123');
+        $commands = $client->getGlobalApplicationCommands(123);
 
         expect($commands)->toBe([['id' => 'cmd1', 'name' => 'test-command']]);
     });
 
-    it('handles guild application command methods', function () {
+    it('handles guild application command methods', function (): void {
         $mock = new MockHandler([
             new Response(200, ['Content-Type' => 'application/json'], json_encode([
                 ['id' => 'guild-cmd1', 'name' => 'guild-command'],
             ])),
         ]);
 
-        $stack = HandlerStack::create($mock);
-        $stack->push(new RatelimitMiddleware);
+        $handlerStack = HandlerStack::create($mock);
+        $handlerStack->push(new RatelimitMiddleware);
 
-        $client = new Client(new GuzzleClient(['handler' => $stack]));
+        $client = new Client(new GuzzleClient(['handler' => $handlerStack]));
 
-        $commands = $client->getGuildApplicationCommands('app123', 456);
+        $commands = $client->getGuildApplicationCommands(123, 456);
 
         expect($commands)->toBe([['id' => 'guild-cmd1', 'name' => 'guild-command']]);
     });
 
-    it('handles message creation', function () {
+    it('handles message creation', function (): void {
         $mock = new MockHandler([
             new Response(200, ['Content-Type' => 'application/json'], json_encode([
                 'id' => 'msg123',
                 'content' => 'Hello World',
-                'channel_id' => '123',
+                'channel_id' => 123,
             ])),
         ]);
 
-        $stack = HandlerStack::create($mock);
-        $stack->push(new RatelimitMiddleware);
+        $handlerStack = HandlerStack::create($mock);
+        $handlerStack->push(new RatelimitMiddleware);
 
-        $client = new Client(new GuzzleClient(['handler' => $stack]));
+        $client = new Client(new GuzzleClient(['handler' => $handlerStack]));
 
         $message = $client->createMessage(123, ['content' => 'Hello World']);
 
         expect($message)->toBe([
             'id' => 'msg123',
             'content' => 'Hello World',
-            'channel_id' => '123',
+            'channel_id' => 123,
         ]);
     });
 
-    it('handles channel operations', function () {
+    it('handles channel operations', function (): void {
         $mock = new MockHandler([
             new Response(200, ['Content-Type' => 'application/json'], json_encode([
-                'id' => '123',
+                'id' => 123,
                 'name' => 'test-channel',
                 'type' => 0,
             ])),
         ]);
 
-        $stack = HandlerStack::create($mock);
-        $stack->push(new RatelimitMiddleware);
+        $handlerStack = HandlerStack::create($mock);
+        $handlerStack->push(new RatelimitMiddleware);
 
-        $client = new Client(new GuzzleClient(['handler' => $stack]));
+        $client = new Client(new GuzzleClient(['handler' => $handlerStack]));
 
         $channel = $client->getChannel(123);
 
         expect($channel)->toBe([
-            'id' => '123',
+            'id' => 123,
             'name' => 'test-channel',
             'type' => 0,
         ]);
     });
 
-    it('handles guild operations', function () {
+    it('handles guild operations', function (): void {
         $mock = new MockHandler([
             new Response(200, ['Content-Type' => 'application/json'], json_encode([
-                'id' => '456',
+                'id' => 456,
                 'name' => 'Test Guild',
                 'member_count' => 100,
             ])),
         ]);
 
-        $stack = HandlerStack::create($mock);
-        $stack->push(new RatelimitMiddleware);
+        $handlerStack = HandlerStack::create($mock);
+        $handlerStack->push(new RatelimitMiddleware);
 
-        $client = new Client(new GuzzleClient(['handler' => $stack]));
+        $client = new Client(new GuzzleClient(['handler' => $handlerStack]));
 
         $guild = $client->getGuild(456);
 
         expect($guild)->toBe([
-            'id' => '456',
+            'id' => 456,
             'name' => 'Test Guild',
             'member_count' => 100,
         ]);
     });
 
-    it('handles user operations', function () {
+    it('handles user operations', function (): void {
         $mock = new MockHandler([
             new Response(200, ['Content-Type' => 'application/json'], json_encode([
                 'id' => 'user123',
@@ -146,10 +148,10 @@ describe('Client', function () {
             ])),
         ]);
 
-        $stack = HandlerStack::create($mock);
-        $stack->push(new RatelimitMiddleware);
+        $handlerStack = HandlerStack::create($mock);
+        $handlerStack->push(new RatelimitMiddleware);
 
-        $client = new Client(new GuzzleClient(['handler' => $stack]));
+        $client = new Client(new GuzzleClient(['handler' => $handlerStack]));
 
         $user = $client->getCurrentUser();
 
@@ -160,40 +162,40 @@ describe('Client', function () {
         ]);
     });
 
-    it('handles webhook operations', function () {
+    it('handles webhook operations', function (): void {
         $mock = new MockHandler([
             new Response(200, ['Content-Type' => 'application/json'], json_encode([
-                'id' => 'webhook123',
+                'id' => 123,
                 'name' => 'Test Webhook',
-                'channel_id' => '123',
+                'channel_id' => 123,
             ])),
         ]);
 
-        $stack = HandlerStack::create($mock);
-        $stack->push(new RatelimitMiddleware);
+        $handlerStack = HandlerStack::create($mock);
+        $handlerStack->push(new RatelimitMiddleware);
 
-        $client = new Client(new GuzzleClient(['handler' => $stack]));
+        $client = new Client(new GuzzleClient(['handler' => $handlerStack]));
 
         $webhook = $client->getWebhook(123);
 
         expect($webhook)->toBe([
-            'id' => 'webhook123',
+            'id' => 123,
             'name' => 'Test Webhook',
-            'channel_id' => '123',
+            'channel_id' => 123,
         ]);
     });
 
-    it('handles emoji operations', function () {
+    it('handles emoji operations', function (): void {
         $mock = new MockHandler([
             new Response(200, ['Content-Type' => 'application/json'], json_encode([
                 ['id' => 'emoji1', 'name' => 'smile', 'animated' => false],
             ])),
         ]);
 
-        $stack = HandlerStack::create($mock);
-        $stack->push(new RatelimitMiddleware);
+        $handlerStack = HandlerStack::create($mock);
+        $handlerStack->push(new RatelimitMiddleware);
 
-        $client = new Client(new GuzzleClient(['handler' => $stack]));
+        $client = new Client(new GuzzleClient(['handler' => $handlerStack]));
 
         $emojis = $client->listGuildEmojis(123);
 
@@ -202,7 +204,7 @@ describe('Client', function () {
         ]);
     });
 
-    it('handles HTTP exceptions', function () {
+    it('handles HTTP exceptions', function (): void {
         $mock = new MockHandler([
             new Response(404, ['Content-Type' => 'application/json'], json_encode([
                 'message' => 'Unknown Channel',
@@ -210,25 +212,25 @@ describe('Client', function () {
             ])),
         ]);
 
-        $stack = HandlerStack::create($mock);
-        $stack->push(new RatelimitMiddleware);
+        $handlerStack = HandlerStack::create($mock);
+        $handlerStack->push(new RatelimitMiddleware);
 
-        $client = new Client(new GuzzleClient(['handler' => $stack]));
+        $client = new Client(new GuzzleClient(['handler' => $handlerStack]));
 
-        expect(fn () => $client->getChannel(999))->toThrow(\Symfony\Component\HttpKernel\Exception\HttpException::class);
+        expect(fn (): array => $client->getChannel(999))->toThrow(\Symfony\Component\HttpKernel\Exception\HttpException::class);
     });
 
-    it('handles multiple retries for server errors', function () {
+    it('handles multiple retries for server errors', function (): void {
         $mock = new MockHandler([
             new Response(502, ['Content-Type' => 'application/json'], '{}'),
             new Response(504, ['Content-Type' => 'application/json'], '{}'),
             new Response(200, ['Content-Type' => 'application/json'], json_encode(['success' => true])),
         ]);
 
-        $stack = HandlerStack::create($mock);
-        $stack->push(new RatelimitMiddleware);
+        $handlerStack = HandlerStack::create($mock);
+        $handlerStack->push(new RatelimitMiddleware);
 
-        $client = new Client(new GuzzleClient(['handler' => $stack]));
+        $client = new Client(new GuzzleClient(['handler' => $handlerStack]));
 
         $data = $client->getChannel(1);
 
@@ -236,32 +238,32 @@ describe('Client', function () {
         Sleep::assertSleptTimes(2);
     });
 
-    it('throws exception after max retries', function () {
+    it('throws exception after max retries', function (): void {
         $mock = new MockHandler([
             new Response(500, ['Content-Type' => 'application/json'], '{}'),
             new Response(502, ['Content-Type' => 'application/json'], '{}'),
             new Response(524, ['Content-Type' => 'application/json'], '{}'),
         ]);
 
-        $stack = HandlerStack::create($mock);
-        $stack->push(new RatelimitMiddleware);
+        $handlerStack = HandlerStack::create($mock);
+        $handlerStack->push(new RatelimitMiddleware);
 
-        $client = new Client(new GuzzleClient(['handler' => $stack]));
+        $client = new Client(new GuzzleClient(['handler' => $handlerStack]));
 
-        expect(fn () => $client->getChannel(1))->toThrow(\Symfony\Component\HttpKernel\Exception\HttpException::class);
+        expect(fn (): array => $client->getChannel(1))->toThrow(\Symfony\Component\HttpKernel\Exception\HttpException::class);
         Sleep::assertSleptTimes(3);
     });
 
-    it('handles JSON decode errors gracefully', function () {
+    it('handles JSON decode errors gracefully', function (): void {
         $mock = new MockHandler([
             new Response(200, ['Content-Type' => 'application/json'], 'invalid json'),
         ]);
 
-        $stack = HandlerStack::create($mock);
-        $stack->push(new RatelimitMiddleware);
+        $handlerStack = HandlerStack::create($mock);
+        $handlerStack->push(new RatelimitMiddleware);
 
-        $client = new Client(new GuzzleClient(['handler' => $stack]));
+        $client = new Client(new GuzzleClient(['handler' => $handlerStack]));
 
-        expect(fn () => $client->getChannel(1))->toThrow(\JsonException::class);
+        expect(fn (): array => $client->getChannel(1))->toThrow(\JsonException::class);
     });
 });

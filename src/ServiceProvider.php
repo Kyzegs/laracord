@@ -1,12 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Kyzegs\Laracord;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Support\DeferrableProvider;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
-use Kyzegs\Laracord\Channels\DiscordChannel;
 use Kyzegs\Laracord\Socialite\DiscordProvider;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -22,14 +22,8 @@ class ServiceProvider extends BaseServiceProvider implements DeferrableProvider
         }
 
         if (! $this->app->environment('testing')) {
-            Socialite::extend('discord', static function (Application $app) {
-                return Socialite::buildProvider(DiscordProvider::class, $app['config']['laracord']);
-            });
+            Socialite::extend('discord', static fn (Application $application) => Socialite::buildProvider(DiscordProvider::class, $application['config']['laracord']));
         }
-
-        Notification::extend('discord', static function () {
-            return new DiscordChannel;
-        });
     }
 
     /**
@@ -39,7 +33,7 @@ class ServiceProvider extends BaseServiceProvider implements DeferrableProvider
     {
         $this->mergeConfigFrom(__DIR__.'/../config/laracord.php', 'laracord');
 
-        $this->app->singleton(Client::class, static fn () => Laracord::factory()->make());
+        $this->app->singleton(Client::class, static fn (): Client => Laracord::factory()->make());
         $this->app->alias(Client::class, 'laracord');
     }
 

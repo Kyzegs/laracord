@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 use GuzzleHttp\Psr7\Response;
 use Kyzegs\Laracord\Ratelimit;
 use Kyzegs\Laracord\Tests\TestCase;
 
 uses(TestCase::class);
 
-describe('Ratelimit', function () {
-    it('creates a ratelimit with default values', function () {
+describe('Ratelimit', function (): void {
+    it('creates a ratelimit with default values', function (): void {
         $ratelimit = new Ratelimit;
 
         expect($ratelimit->getLimit())->toBe(1);
@@ -17,7 +19,7 @@ describe('Ratelimit', function () {
         expect($ratelimit->isDirty())->toBeFalse();
     });
 
-    it('resets ratelimit to default values', function () {
+    it('resets ratelimit to default values', function (): void {
         $ratelimit = new Ratelimit;
         $ratelimit->retry(5.0);
 
@@ -34,7 +36,7 @@ describe('Ratelimit', function () {
         expect($ratelimit->isDirty())->toBeFalse();
     });
 
-    it('sets retry values correctly', function () {
+    it('sets retry values correctly', function (): void {
         $ratelimit = new Ratelimit;
         $retryAfter = 10.5;
 
@@ -48,14 +50,14 @@ describe('Ratelimit', function () {
         expect($ratelimit->isDirty())->toBeTrue();
     });
 
-    it('calculates reset after correctly when reset is set', function () {
+    it('calculates reset after correctly when reset is set', function (): void {
         $ratelimit = new Ratelimit;
         $resetTime = microtime(true) + 5.0;
 
         // Use reflection to set private property
         $reflection = new ReflectionClass($ratelimit);
-        $resetProperty = $reflection->getProperty('reset');
-        $resetProperty->setValue($ratelimit, $resetTime);
+        $reflectionProperty = $reflection->getProperty('reset');
+        $reflectionProperty->setValue($ratelimit, $resetTime);
 
         $resetAfter = $ratelimit->getResetAfter();
 
@@ -63,31 +65,31 @@ describe('Ratelimit', function () {
         expect($resetAfter)->toBeLessThanOrEqual(5.0);
     });
 
-    it('calculates reset after correctly when reset is not set', function () {
+    it('calculates reset after correctly when reset is not set', function (): void {
         $ratelimit = new Ratelimit;
         $resetAfter = 3.5;
 
         // Use reflection to set private property
         $reflection = new ReflectionClass($ratelimit);
-        $resetAfterProperty = $reflection->getProperty('resetAfter');
-        $resetAfterProperty->setValue($ratelimit, $resetAfter);
+        $reflectionProperty = $reflection->getProperty('resetAfter');
+        $reflectionProperty->setValue($ratelimit, $resetAfter);
 
         expect($ratelimit->getResetAfter())->toBe($resetAfter);
     });
 
-    it('returns zero when reset time has passed', function () {
+    it('returns zero when reset time has passed', function (): void {
         $ratelimit = new Ratelimit;
         $pastTime = microtime(true) - 5.0;
 
         // Use reflection to set private property
         $reflection = new ReflectionClass($ratelimit);
-        $resetProperty = $reflection->getProperty('reset');
-        $resetProperty->setValue($ratelimit, $pastTime);
+        $reflectionProperty = $reflection->getProperty('reset');
+        $reflectionProperty->setValue($ratelimit, $pastTime);
 
         expect($ratelimit->getResetAfter())->toBe(0.0);
     });
 
-    it('updates from response headers correctly', function () {
+    it('updates from response headers correctly', function (): void {
         $ratelimit = new Ratelimit;
         $response = new Response(200, [
             'X-Ratelimit-Limit' => '10',
@@ -107,7 +109,7 @@ describe('Ratelimit', function () {
         expect($ratelimit->isDirty())->toBeTrue();
     });
 
-    it('handles missing response headers gracefully', function () {
+    it('handles missing response headers gracefully', function (): void {
         $ratelimit = new Ratelimit;
         $response = new Response(200, []);
 
@@ -119,7 +121,7 @@ describe('Ratelimit', function () {
         expect($ratelimit->getResetAfter())->toBeGreaterThanOrEqual(0.0);
     });
 
-    it('handles missing reset after header', function () {
+    it('handles missing reset after header', function (): void {
         $ratelimit = new Ratelimit;
         $response = new Response(200, [
             'X-Ratelimit-Limit' => '5',
@@ -133,7 +135,7 @@ describe('Ratelimit', function () {
         expect($ratelimit->getResetAfter())->toBeLessThanOrEqual(10.1);
     });
 
-    it('handles dirty state when updating', function () {
+    it('handles dirty state when updating', function (): void {
         $ratelimit = new Ratelimit;
         $ratelimit->retry(5.0); // Make it dirty
 
@@ -148,7 +150,7 @@ describe('Ratelimit', function () {
         expect($ratelimit->getRemaining())->toBe(5); // Should use remaining from response
     });
 
-    it('handles non-dirty state when updating', function () {
+    it('handles non-dirty state when updating', function (): void {
         $ratelimit = new Ratelimit;
 
         $response = new Response(200, [
@@ -163,7 +165,7 @@ describe('Ratelimit', function () {
         expect($ratelimit->isDirty())->toBeTrue();
     });
 
-    it('limits remaining to limit when dirty', function () {
+    it('limits remaining to limit when dirty', function (): void {
         $ratelimit = new Ratelimit;
         $ratelimit->retry(5.0); // Make it dirty
 
@@ -178,7 +180,7 @@ describe('Ratelimit', function () {
         expect($ratelimit->getRemaining())->toBe(5); // Should be limited to limit
     });
 
-    it('handles string header values', function () {
+    it('handles string header values', function (): void {
         $ratelimit = new Ratelimit;
         $response = new Response(200, [
             'X-Ratelimit-Limit' => ['10'], // Array format
@@ -196,7 +198,7 @@ describe('Ratelimit', function () {
         expect($ratelimit->getReset())->toBe(1234567890.123);
     });
 
-    it('handles invalid header values', function () {
+    it('handles invalid header values', function (): void {
         $ratelimit = new Ratelimit;
         $response = new Response(200, [
             'X-Ratelimit-Limit' => 'invalid',

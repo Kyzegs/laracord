@@ -1,40 +1,42 @@
 <?php
 
+declare(strict_types=1);
+
 use Kyzegs\Laracord\BucketHash;
 use Kyzegs\Laracord\Route;
 use Kyzegs\Laracord\Tests\TestCase;
 
 uses(TestCase::class);
 
-beforeEach(function () {
+beforeEach(function (): void {
     config(['cache.default' => 'array']);
 });
 
-describe('BucketHash', function () {
-    it('creates a bucket hash with a route', function () {
+describe('BucketHash', function (): void {
+    it('creates a bucket hash with a route', function (): void {
         $route = new Route('GET', '/test/path');
         $bucketHash = new BucketHash($route);
 
         expect($bucketHash)->toBeInstanceOf(BucketHash::class);
     });
 
-    it('generates correct cache key', function () {
+    it('generates correct cache key', function (): void {
         $route = new Route('GET', '/channels/{channel_id}', [
-            'channel_id' => '123456789',
+            'channel_id' => 123456789,
         ]);
         $bucketHash = new BucketHash($route);
 
         // Use reflection to test private method
         $reflection = new ReflectionClass($bucketHash);
-        $keyMethod = $reflection->getMethod('key');
+        $reflectionMethod = $reflection->getMethod('key');
 
-        $key = $keyMethod->invoke($bucketHash);
+        $key = $reflectionMethod->invoke($bucketHash);
 
         expect($key)->toContain('bucket_hashes:');
         expect($key)->toContain('GET /channels/{channel_id}');
     });
 
-    it('returns null when cache is empty', function () {
+    it('returns null when cache is empty', function (): void {
         $route = new Route('GET', '/test/path');
         $bucketHash = new BucketHash($route);
 
@@ -43,7 +45,7 @@ describe('BucketHash', function () {
         expect($hash)->toBeNull();
     });
 
-    it('stores and retrieves hash from cache', function () {
+    it('stores and retrieves hash from cache', function (): void {
         $route = new Route('GET', '/test/path');
         $bucketHash = new BucketHash($route);
 
@@ -55,7 +57,7 @@ describe('BucketHash', function () {
         expect($retrieved)->toBe($testHash);
     });
 
-    it('returns true when hash is missing from cache', function () {
+    it('returns true when hash is missing from cache', function (): void {
         $route = new Route('GET', '/test/path');
         $bucketHash = new BucketHash($route);
 
@@ -64,7 +66,7 @@ describe('BucketHash', function () {
         expect($missing)->toBeTrue();
     });
 
-    it('returns false when hash exists in cache', function () {
+    it('returns false when hash exists in cache', function (): void {
         $route = new Route('GET', '/test/path');
         $bucketHash = new BucketHash($route);
 
@@ -75,7 +77,7 @@ describe('BucketHash', function () {
         expect($missing)->toBeFalse();
     });
 
-    it('handles different route methods', function () {
+    it('handles different route methods', function (): void {
         $getRoute = new Route('GET', '/test/path');
         $postRoute = new Route('POST', '/test/path');
 
@@ -89,9 +91,9 @@ describe('BucketHash', function () {
         expect($postHash->get())->toBe('post-hash');
     });
 
-    it('handles routes with parameters', function () {
+    it('handles routes with parameters', function (): void {
         $route = new Route('GET', '/applications/{application_id}/commands', [
-            'application_id' => '123456789',
+            'application_id' => 123456789,
         ]);
         $bucketHash = new BucketHash($route);
 
@@ -101,7 +103,7 @@ describe('BucketHash', function () {
         expect($bucketHash->get())->toBe($testHash);
     });
 
-    it('handles routes with metadata', function () {
+    it('handles routes with metadata', function (): void {
         $route = new Route('GET', '/test/path', [], 'metadata');
         $bucketHash = new BucketHash($route);
 
@@ -111,25 +113,25 @@ describe('BucketHash', function () {
         expect($bucketHash->get())->toBe($testHash);
     });
 
-    it('generates unique keys for different routes', function () {
-        $route1 = new Route('GET', '/channels/{channel_id}', ['channel_id' => '123']);
-        $route2 = new Route('GET', '/channels/{channel_id}', ['channel_id' => '456']);
+    it('generates unique keys for different routes', function (): void {
+        $route1 = new Route('GET', '/channels/{channel_id}', ['channel_id' => 123]);
+        $route2 = new Route('GET', '/channels/{channel_id}', ['channel_id' => 456]);
 
         $hash1 = new BucketHash($route1);
         $hash2 = new BucketHash($route2);
 
         $reflection = new ReflectionClass(BucketHash::class);
-        $keyMethod = $reflection->getMethod('key');
+        $reflectionMethod = $reflection->getMethod('key');
 
-        $key1 = $keyMethod->invoke($hash1);
-        $key2 = $keyMethod->invoke($hash2);
+        $key1 = $reflectionMethod->invoke($hash1);
+        $key2 = $reflectionMethod->invoke($hash2);
 
         expect($key1)->toBe($key2); // Same route pattern, different parameters
     });
 
-    it('handles complex route patterns', function () {
+    it('handles complex route patterns', function (): void {
         $route = new Route('PUT', '/webhooks/{webhook_id}/{webhook_token}/messages/{message_id}', [
-            'webhook_id' => '123456789',
+            'webhook_id' => 123456789,
             'webhook_token' => 'abc123',
             'message_id' => 'msg456',
         ]);
@@ -141,7 +143,7 @@ describe('BucketHash', function () {
         expect($bucketHash->get())->toBe($testHash);
     });
 
-    it('overwrites existing hash', function () {
+    it('overwrites existing hash', function (): void {
         $route = new Route('GET', '/test/path');
         $bucketHash = new BucketHash($route);
 

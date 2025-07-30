@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Kyzegs\Laracord;
 
 use Illuminate\Support\Arr;
@@ -80,11 +82,7 @@ class Ratelimit
             $this->dirty = true;
         }
 
-        if (! $resetAfter) {
-            $this->resetAfter = max(0.0, $reset - microtime(true));
-        } else {
-            $this->resetAfter = (float) $resetAfter;
-        }
+        $this->resetAfter = $resetAfter ? (float) $resetAfter : max(0.0, $reset - microtime(true));
 
         return $this;
     }

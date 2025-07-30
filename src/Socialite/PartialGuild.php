@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Kyzegs\Laracord\Socialite;
 
 use Kyzegs\Laracord\Constants\Permissions;
@@ -26,7 +28,7 @@ class PartialGuild
     public function hasPermissions(int ...$permissions): bool
     {
         return ! collect($permissions)
-            ->map(fn ($permission) => ($this->permissions & $permission) == $permission)
+            ->map(fn ($permission): bool => ($this->permissions & $permission) === $permission)
             ->containsStrict(false);
     }
 
@@ -38,7 +40,7 @@ class PartialGuild
     public function hasAnyPermissions(int ...$permissions): bool
     {
         return collect($permissions)
-            ->map(fn ($permission) => ($this->permissions & $permission) == $permission)
+            ->map(fn ($permission): bool => ($this->permissions & $permission) === $permission)
             ->containsStrict(true);
     }
 

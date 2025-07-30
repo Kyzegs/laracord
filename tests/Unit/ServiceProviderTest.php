@@ -1,19 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 use Kyzegs\Laracord\Client;
 use Kyzegs\Laracord\ServiceProvider;
 use Kyzegs\Laracord\Tests\TestCase;
 
 uses(TestCase::class);
 
-describe('ServiceProvider', function () {
-    it('registers the service provider', function () {
+describe('ServiceProvider', function (): void {
+    it('registers the service provider', function (): void {
         $provider = new ServiceProvider($this->app);
 
         expect($provider)->toBeInstanceOf(ServiceProvider::class);
     });
 
-    it('registers client as singleton', function () {
+    it('registers client as singleton', function (): void {
         $provider = new ServiceProvider($this->app);
         $provider->register();
 
@@ -25,7 +27,7 @@ describe('ServiceProvider', function () {
         expect($client1)->toBe($client2); // Should be the same instance (singleton)
     });
 
-    it('registers laracord alias', function () {
+    it('registers laracord alias', function (): void {
         $provider = new ServiceProvider($this->app);
         $provider->register();
 
@@ -34,7 +36,7 @@ describe('ServiceProvider', function () {
         expect($client)->toBeInstanceOf(Client::class);
     });
 
-    it('merges configuration', function () {
+    it('merges configuration', function (): void {
         $provider = new ServiceProvider($this->app);
         $provider->register();
 
@@ -44,7 +46,7 @@ describe('ServiceProvider', function () {
         expect($config)->toHaveKey('bot_token');
     });
 
-    it('provides correct services', function () {
+    it('provides correct services', function (): void {
         $provider = new ServiceProvider($this->app);
 
         $provides = $provider->provides();
@@ -53,19 +55,19 @@ describe('ServiceProvider', function () {
         expect($provides)->toContain('laracord');
     });
 
-    it('implements deferrable provider', function () {
+    it('implements deferrable provider', function (): void {
         $provider = new ServiceProvider($this->app);
 
         expect($provider)->toBeInstanceOf(\Illuminate\Contracts\Support\DeferrableProvider::class);
     });
 
-    it('extends base service provider', function () {
+    it('extends base service provider', function (): void {
         $provider = new ServiceProvider($this->app);
 
         expect($provider)->toBeInstanceOf(\Illuminate\Support\ServiceProvider::class);
     });
 
-    it('creates client with factory', function () {
+    it('creates client with factory', function (): void {
         $provider = new ServiceProvider($this->app);
         $provider->register();
 
@@ -75,13 +77,13 @@ describe('ServiceProvider', function () {
 
         // Verify it's created through the factory
         $reflection = new ReflectionClass($client);
-        $guzzleClientProperty = $reflection->getProperty('client');
-        $guzzleClient = $guzzleClientProperty->getValue($client);
+        $reflectionProperty = $reflection->getProperty('guzzleClient');
+        $guzzleClient = $reflectionProperty->getValue($client);
 
         expect($guzzleClient)->toBeInstanceOf(\GuzzleHttp\Client::class);
     });
 
-    it('handles multiple service provider instances', function () {
+    it('handles multiple service provider instances', function (): void {
         $provider1 = new ServiceProvider($this->app);
         $provider2 = new ServiceProvider($this->app);
 
@@ -90,7 +92,7 @@ describe('ServiceProvider', function () {
         expect($provider1)->not->toBe($provider2);
     });
 
-    it('registers services in correct order', function () {
+    it('registers services in correct order', function (): void {
         $provider = new ServiceProvider($this->app);
 
         // Register should not throw

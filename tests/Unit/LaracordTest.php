@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Kyzegs\Laracord\Client;
 use Kyzegs\Laracord\Factory;
 use Kyzegs\Laracord\Laracord;
@@ -7,14 +9,14 @@ use Kyzegs\Laracord\Tests\TestCase;
 
 uses(TestCase::class);
 
-describe('Laracord', function () {
-    it('creates a factory instance', function () {
+describe('Laracord', function (): void {
+    it('creates a factory instance', function (): void {
         $factory = Laracord::factory();
 
         expect($factory)->toBeInstanceOf(Factory::class);
     });
 
-    it('creates a client instance', function () {
+    it('creates a client instance', function (): void {
         config(['laracord.bot_token' => 'test-bot-token']);
 
         $client = Laracord::client();
@@ -22,7 +24,7 @@ describe('Laracord', function () {
         expect($client)->toBeInstanceOf(Client::class);
     });
 
-    it('creates client through factory', function () {
+    it('creates client through factory', function (): void {
         config(['laracord.bot_token' => 'test-bot-token']);
 
         $factory = Laracord::factory();
@@ -33,7 +35,7 @@ describe('Laracord', function () {
         expect($clientDirect)->toBeInstanceOf(Client::class);
     });
 
-    it('creates multiple factory instances', function () {
+    it('creates multiple factory instances', function (): void {
         $factory1 = Laracord::factory();
         $factory2 = Laracord::factory();
 
@@ -42,7 +44,7 @@ describe('Laracord', function () {
         expect($factory1)->not->toBe($factory2);
     });
 
-    it('creates multiple client instances', function () {
+    it('creates multiple client instances', function (): void {
         config(['laracord.bot_token' => 'test-bot-token']);
 
         $client1 = Laracord::client();
@@ -53,7 +55,7 @@ describe('Laracord', function () {
         expect($client1)->not->toBe($client2);
     });
 
-    it('factory creates properly configured client', function () {
+    it('factory creates properly configured client', function (): void {
         config(['laracord.bot_token' => 'test-bot-token']);
 
         $factory = Laracord::factory();
@@ -63,13 +65,13 @@ describe('Laracord', function () {
 
         // Verify the client has a properly configured Guzzle client
         $reflection = new ReflectionClass($client);
-        $guzzleClientProperty = $reflection->getProperty('client');
-        $guzzleClient = $guzzleClientProperty->getValue($client);
+        $reflectionProperty = $reflection->getProperty('guzzleClient');
+        $guzzleClient = $reflectionProperty->getValue($client);
 
         expect($guzzleClient)->toBeInstanceOf(\GuzzleHttp\Client::class);
     });
 
-    it('handles empty bot token in client creation', function () {
+    it('handles empty bot token in client creation', function (): void {
         config(['laracord.bot_token' => '']);
 
         $client = Laracord::client();
@@ -77,7 +79,7 @@ describe('Laracord', function () {
         expect($client)->toBeInstanceOf(Client::class);
     });
 
-    it('handles null bot token in client creation', function () {
+    it('handles null bot token in client creation', function (): void {
         config(['laracord.bot_token' => null]);
 
         $client = Laracord::client();
@@ -85,7 +87,7 @@ describe('Laracord', function () {
         expect($client)->toBeInstanceOf(Client::class);
     });
 
-    it('factory and client methods are consistent', function () {
+    it('factory and client methods are consistent', function (): void {
         config(['laracord.bot_token' => 'test-bot-token']);
 
         $factoryClient = Laracord::factory()->make();

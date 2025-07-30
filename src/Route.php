@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Kyzegs\Laracord;
 
 use Illuminate\Support\Arr;
@@ -17,10 +19,10 @@ class Route
     private ?string $webhookToken = null;
 
     public function __construct(
-        private string $method,
-        private string $path,
-        private array $parameters = [],
-        private ?string $metadata = null
+        private readonly string $method,
+        private readonly string $path,
+        private readonly array $parameters = [],
+        private readonly ?string $metadata = null
     ) {
         $this->channelId = Arr::get($parameters, 'channel_id');
         $this->guildId = Arr::get($parameters, 'guild_id');
@@ -38,7 +40,7 @@ class Route
         $path = $this->path;
 
         foreach ($this->parameters as $key => $value) {
-            $path = str_replace(sprintf('{%s}', $key), $value, $path);
+            $path = str_replace(sprintf('{%s}', $key), (string) $value, $path);
         }
 
         return $path;

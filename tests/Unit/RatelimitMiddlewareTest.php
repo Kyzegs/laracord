@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -11,12 +13,12 @@ use Kyzegs\Laracord\Tests\TestCase;
 
 uses(TestCase::class);
 
-beforeEach(function () {
+beforeEach(function (): void {
     config(['cache.default' => 'array']);
     Sleep::fake();
 });
 
-it('sleeps when bucket is exhausted', function () {
+it('sleeps when bucket is exhausted', function (): void {
     $mock = new MockHandler([
         new Response(200, [
             'Content-Type' => 'application/json',
@@ -29,10 +31,10 @@ it('sleeps when bucket is exhausted', function () {
         new Response(200, ['Content-Type' => 'application/json'], '{}'),
     ]);
 
-    $stack = HandlerStack::create($mock);
-    $stack->push(new RatelimitMiddleware);
+    $handlerStack = HandlerStack::create($mock);
+    $handlerStack->push(new RatelimitMiddleware);
 
-    $client = new Client(new GuzzleClient(['handler' => $stack]));
+    $client = new Client(new GuzzleClient(['handler' => $handlerStack]));
 
     $client->getChannelMessages(1);
     $client->getChannelMessages(1);
@@ -40,7 +42,7 @@ it('sleeps when bucket is exhausted', function () {
     Sleep::assertSleptTimes(1);
 });
 
-it('retries after 429 response', function () {
+it('retries after 429 response', function (): void {
     $mock = new MockHandler([
         new Response(429, [
             'Content-Type' => 'application/json',
@@ -49,10 +51,10 @@ it('retries after 429 response', function () {
         new Response(200, ['Content-Type' => 'application/json', 'X-Ratelimit-Bucket' => 'abc'], '{}'),
     ]);
 
-    $stack = HandlerStack::create($mock);
-    $stack->push(new RatelimitMiddleware);
+    $handlerStack = HandlerStack::create($mock);
+    $handlerStack->push(new RatelimitMiddleware);
 
-    $client = new Client(new GuzzleClient(['handler' => $stack]));
+    $client = new Client(new GuzzleClient(['handler' => $handlerStack]));
 
     $client->getChannelMessages(1);
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Kyzegs\Laracord\Middleware;
 
 use GuzzleHttp\Promise\Create;
@@ -51,18 +53,16 @@ class RatelimitMiddleware
                 $data = json_decode($body, true);
 
                 $discordHash = $response->getHeaderLine('X-Ratelimit-Bucket');
-                if ($discordHash !== '') {
-                    if ($bucketHash !== $discordHash) {
-                        if ($bucketHash !== null) {
-                            Log::debug(sprintf('A route (%s) has changed hashes: %s -> %s.', $route->getKey(), $bucketHash, $discordHash));
-                            $bucket->forget();
-                        } elseif ($route->getBucketHash()->missing()) {
-                            Log::debug(sprintf('%s has found its initial rate limit bucket hash (%s).', $route->getKey(), $discordHash));
-                        }
-
-                        $route->getBucketHash()->put($discordHash);
-                        $bucket->put($ratelimit);
+                if ($discordHash !== '' && $bucketHash !== $discordHash) {
+                    if ($bucketHash !== null) {
+                        Log::debug(sprintf('A route (%s) has changed hashes: %s -> %s.', $route->getKey(), $bucketHash, $discordHash));
+                        $bucket->forget();
+                    } elseif ($route->getBucketHash()->missing()) {
+                        Log::debug(sprintf('%s has found its initial rate limit bucket hash (%s).', $route->getKey(), $discordHash));
                     }
+
+                    $route->getBucketHash()->put($discordHash);
+                    $bucket->put($ratelimit);
                 }
 
                 if ($response->hasHeader('X-Ratelimit-Remaining') && $response->getStatusCode() !== 429) {

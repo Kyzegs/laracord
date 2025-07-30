@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Kyzegs\Laracord;
 
 use GuzzleHttp\Client as GuzzleClient;
@@ -10,11 +12,11 @@ class Factory
 {
     public function make(): Client
     {
-        $stack = HandlerStack::create();
-        $stack->push(new RatelimitMiddleware);
+        $handlerStack = HandlerStack::create();
+        $handlerStack->push(new RatelimitMiddleware);
 
         $client = new GuzzleClient([
-            'handler' => $stack,
+            'handler' => $handlerStack,
             'base_uri' => Route::BASE_URL,
             'headers' => [
                 'Authorization' => sprintf('Bot %s', config('laracord.bot_token')),

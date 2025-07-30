@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Kyzegs\Laracord;
 
 use GuzzleHttp\Client as GuzzleClient;
@@ -13,12 +15,12 @@ class Client
 {
     use ForwardsCalls;
 
-    public function __construct(private GuzzleClient $client) {}
+    public function __construct(private GuzzleClient $guzzleClient) {}
 
     private function request(Route $route, ?array $payload = null, array $query = []): array
     {
         for ($tries = 0; $tries < 3; $tries++) {
-            $response = $this->client->request($route->getMethod(), $route->getUrl(), [
+            $response = $this->guzzleClient->request($route->getMethod(), $route->getUrl(), [
                 RequestOptions::HTTP_ERRORS => false,
                 RequestOptions::JSON => $payload,
                 RequestOptions::QUERY => $query,
@@ -52,82 +54,82 @@ class Client
         throw new HttpException($statusCode ?? 0, $contents ?? '');
     }
 
-    public function getGlobalApplicationCommands(string $applicationId, array $query = []): array
+    public function getGlobalApplicationCommands(int $applicationId, array $query = []): array
     {
         return $this->request(new Route('GET', '/applications/{application_id}/commands', ['application_id' => $applicationId]), query: $query);
     }
 
-    public function createGlobalApplicationCommand(string $applicationId, array $data): array
+    public function createGlobalApplicationCommand(int $applicationId, array $data): array
     {
         return $this->request(new Route('POST', '/applications/{application_id}/commands', ['application_id' => $applicationId]), $data);
     }
 
-    public function getGlobalApplicationCommand(string $applicationId, string $commandId): array
+    public function getGlobalApplicationCommand(int $applicationId, int $commandId): array
     {
         return $this->request(new Route('GET', '/applications/{application_id}/commands/{command_id}', ['application_id' => $applicationId, 'command_id' => $commandId]));
     }
 
-    public function editGlobalApplicationCommand(string $applicationId, string $commandId, array $data): array
+    public function editGlobalApplicationCommand(int $applicationId, int $commandId, array $data): array
     {
         return $this->request(new Route('PATCH', '/applications/{application_id}/commands/{command_id}', ['application_id' => $applicationId, 'command_id' => $commandId]), $data);
     }
 
-    public function deleteGlobalApplicationCommand(string $applicationId, string $commandId): array
+    public function deleteGlobalApplicationCommand(int $applicationId, int $commandId): array
     {
         return $this->request(new Route('DELETE', '/applications/{application_id}/commands/{command_id}', ['application_id' => $applicationId, 'command_id' => $commandId]));
     }
 
-    public function bulkOverwriteGlobalApplicationCommands(string $applicationId, array $data): array
+    public function bulkOverwriteGlobalApplicationCommands(int $applicationId, array $data): array
     {
         return $this->request(new Route('PUT', '/applications/{application_id}/commands', ['application_id' => $applicationId]), $data);
     }
 
-    public function getGuildApplicationCommands(string $applicationId, string $guildId, array $query = []): array
+    public function getGuildApplicationCommands(int $applicationId, int $guildId, array $query = []): array
     {
         return $this->request(new Route('GET', '/applications/{application_id}/guilds/{guild_id}/commands', ['application_id' => $applicationId, 'guild_id' => $guildId]), query: $query);
     }
 
-    public function createGuildApplicationCommand(string $applicationId, string $guildId, array $data): array
+    public function createGuildApplicationCommand(int $applicationId, int $guildId, array $data): array
     {
         return $this->request(new Route('POST', '/applications/{application_id}/guilds/{guild_id}/commands', ['application_id' => $applicationId, 'guild_id' => $guildId]), $data);
     }
 
-    public function getGuildApplicationCommand(string $applicationId, string $guildId, string $commandId): array
+    public function getGuildApplicationCommand(int $applicationId, int $guildId, int $commandId): array
     {
         return $this->request(new Route('GET', '/applications/{application_id}/guilds/{guild_id}/commands/{command_id}', ['application_id' => $applicationId, 'guild_id' => $guildId, 'command_id' => $commandId]));
     }
 
-    public function editGuildApplicationCommand(string $applicationId, string $guildId, string $commandId, array $data): array
+    public function editGuildApplicationCommand(int $applicationId, int $guildId, int $commandId, array $data): array
     {
         return $this->request(new Route('PATCH', '/applications/{application_id}/guilds/{guild_id}/commands/{command_id}', ['application_id' => $applicationId, 'guild_id' => $guildId, 'command_id' => $commandId]), $data);
     }
 
-    public function deleteGuildApplicationCommand(string $applicationId, string $guildId, string $commandId): array
+    public function deleteGuildApplicationCommand(int $applicationId, int $guildId, int $commandId): array
     {
         return $this->request(new Route('DELETE', '/applications/{application_id}/guilds/{guild_id}/commands/{command_id}', ['application_id' => $applicationId, 'guild_id' => $guildId, 'command_id' => $commandId]));
     }
 
-    public function bulkOverwriteGuildApplicationCommands(string $applicationId, string $guildId, array $data): array
+    public function bulkOverwriteGuildApplicationCommands(int $applicationId, int $guildId, array $data): array
     {
         return $this->request(new Route('PUT', '/applications/{application_id}/guilds/{guild_id}/commands', ['application_id' => $applicationId, 'guild_id' => $guildId]), $data);
     }
 
-    public function getGuildApplicationCommandPermissions(string $applicationId, string $guildId): array
+    public function getGuildApplicationCommandPermissions(int $applicationId, int $guildId): array
     {
         return $this->request(new Route('GET', '/applications/{application_id}/guilds/{guild_id}/commands/permissions', ['application_id' => $applicationId, 'guild_id' => $guildId]));
     }
 
-    public function getApplicationCommandPermissions(string $applicationId, string $guildId, string $commandId): array
+    public function getApplicationCommandPermissions(int $applicationId, int $guildId, int $commandId): array
     {
         return $this->request(new Route('GET', '/applications/{application_id}/guilds/{guild_id}/commands/{command_id}/permissions', ['application_id' => $applicationId, 'guild_id' => $guildId, 'command_id' => $commandId]));
     }
 
-    public function editApplicationCommandPermissions(string $applicationId, string $guildId, string $commandId, array $data): array
+    public function editApplicationCommandPermissions(int $applicationId, int $guildId, int $commandId, array $data): array
     {
         return $this->request(new Route('PUT', '/applications/{application_id}/guilds/{guild_id}/commands/{command_id}/permissions', ['application_id' => $applicationId, 'guild_id' => $guildId, 'command_id' => $commandId]), $data);
     }
 
-    public function batchEditApplicationCommandPermissions(string $applicationId, string $guildId, array $data): array
+    public function batchEditApplicationCommandPermissions(int $applicationId, int $guildId, array $data): array
     {
         return $this->request(new Route('PUT', '/applications/{application_id}/guilds/{guild_id}/commands/permissions', ['application_id' => $applicationId, 'guild_id' => $guildId]), $data);
     }
@@ -137,42 +139,42 @@ class Client
         return $this->request(new Route('GET', '/applications/@me'));
     }
 
-    public function getApplicationRoleConnectionMetadataRecords(string $applicationId): array
+    public function getApplicationRoleConnectionMetadataRecords(int $applicationId): array
     {
         return $this->request(new Route('GET', '/applications/{application_id}/role-connections/metadata', ['application_id' => $applicationId]));
     }
 
-    public function updateApplicationRoleConnectionMetadataRecords(string $applicationId, array $data): array
+    public function updateApplicationRoleConnectionMetadataRecords(int $applicationId, array $data): array
     {
         return $this->request(new Route('PUT', '/applications/{application_id}/role-connections/metadata', ['application_id' => $applicationId]), $data);
     }
 
-    public function getGuildAuditLog(string $guildId, array $query = []): array
+    public function getGuildAuditLog(int $guildId, array $query = []): array
     {
         return $this->request(new Route('GET', '/guilds/{guild_id}/audit-logs', ['guild_id' => $guildId]), query: $query);
     }
 
-    public function listAutoModerationRulesForGuild(string $guildId): array
+    public function listAutoModerationRulesForGuild(int $guildId): array
     {
         return $this->request(new Route('GET', '/guilds/{guild_id}/auto-moderation/rules', ['guild_id' => $guildId]));
     }
 
-    public function getAutoModerationRule(string $guildId, string $ruleId): array
+    public function getAutoModerationRule(int $guildId, int $ruleId): array
     {
         return $this->request(new Route('GET', '/guilds/{guild_id}/auto-moderation/rules/{auto_moderation_rule_id}', ['guild_id' => $guildId, 'auto_moderation_rule_id' => $ruleId]));
     }
 
-    public function createAutoModerationRule(string $guildId, array $data): array
+    public function createAutoModerationRule(int $guildId, array $data): array
     {
         return $this->request(new Route('POST', '/guilds/{guild_id}/auto-moderation/rules', ['guild_id' => $guildId]), $data);
     }
 
-    public function modifyAutoModerationRule(string $guildId, string $ruleId, array $data): array
+    public function modifyAutoModerationRule(int $guildId, int $ruleId, array $data): array
     {
         return $this->request(new Route('PATCH', '/guilds/{guild_id}/auto-moderation/rules/{auto_moderation_rule_id}', ['guild_id' => $guildId, 'auto_moderation_rule_id' => $ruleId]), $data);
     }
 
-    public function deleteAutoModerationRule(string $guildId, string $ruleId): array
+    public function deleteAutoModerationRule(int $guildId, int $ruleId): array
     {
         return $this->request(new Route('DELETE', '/guilds/{guild_id}/auto-moderation/rules/{auto_moderation_rule_id}', ['guild_id' => $guildId, 'auto_moderation_rule_id' => $ruleId]));
     }
@@ -622,22 +624,22 @@ class Client
         return $this->request(new Route('POST', '/guilds/{guild_id}/events', ['guild_id' => $guildId]), $data);
     }
 
-    public function getGuildScheduledEvent(int $guildId, string $guildScheduledEventId): array
+    public function getGuildScheduledEvent(int $guildId, int $guildScheduledEventId): array
     {
         return $this->request(new Route('GET', '/guilds/{guild_id}/events/{guild_scheduled_event_id}', ['guild_id' => $guildId, 'guild_scheduled_event_id' => $guildScheduledEventId]));
     }
 
-    public function modifyGuildScheduledEvent(int $guildId, string $guildScheduledEventId, array $data): array
+    public function modifyGuildScheduledEvent(int $guildId, int $guildScheduledEventId, array $data): array
     {
         return $this->request(new Route('PATCH', '/guilds/{guild_id}/events/{guild_scheduled_event_id}', ['guild_id' => $guildId, 'guild_scheduled_event_id' => $guildScheduledEventId]), $data);
     }
 
-    public function deleteGuildScheduledEvent(int $guildId, string $guildScheduledEventId): array
+    public function deleteGuildScheduledEvent(int $guildId, int $guildScheduledEventId): array
     {
         return $this->request(new Route('DELETE', '/guilds/{guild_id}/events/{guild_scheduled_event_id}', ['guild_id' => $guildId, 'guild_scheduled_event_id' => $guildScheduledEventId]));
     }
 
-    public function getGuildScheduledEventUsers(int $guildId, string $guildScheduledEventId): array
+    public function getGuildScheduledEventUsers(int $guildId, int $guildScheduledEventId): array
     {
         return $this->request(new Route('GET', '/guilds/{guild_id}/events/{guild_scheduled_event_id}/users', ['guild_id' => $guildId, 'guild_scheduled_event_id' => $guildScheduledEventId]));
     }
@@ -867,23 +869,23 @@ class Client
         return $this->request(new Route('POST', '/webhooks/{webhook_id}/{webhook_token}/github', ['webhook_id' => $webhookId, 'webhook_token' => $webhookToken]), $data);
     }
 
-    public function getWebhookMessage(int $webhookId, string $webhookToken, string $messageId): array
+    public function getWebhookMessage(int $webhookId, string $webhookToken, int $messageId): array
     {
         return $this->request(new Route('GET', '/webhooks/{webhook_id}/{webhook_token}/messages/{message_id}', ['webhook_id' => $webhookId, 'webhook_token' => $webhookToken, 'message_id' => $messageId]));
     }
 
-    public function editWebhookMessage(int $webhookId, string $webhookToken, string $messageId, array $data): array
+    public function editWebhookMessage(int $webhookId, string $webhookToken, int $messageId, array $data): array
     {
         return $this->request(new Route('PATCH', '/webhooks/{webhook_id}/{webhook_token}/messages/{message_id}', ['webhook_id' => $webhookId, 'webhook_token' => $webhookToken, 'message_id' => $messageId]), $data);
     }
 
-    public function deleteWebhookMessage(int $webhookId, string $webhookToken, string $messageId): array
+    public function deleteWebhookMessage(int $webhookId, string $webhookToken, int $messageId): array
     {
         return $this->request(new Route('DELETE', '/webhooks/{webhook_id}/{webhook_token}/messages/{message_id}', ['webhook_id' => $webhookId, 'webhook_token' => $webhookToken, 'message_id' => $messageId]));
     }
 
     public function __call($name, $arguments)
     {
-        return $this->forwardCallTo($this->client, $name, $arguments);
+        return $this->forwardCallTo($this->guzzleClient, $name, $arguments);
     }
 }
