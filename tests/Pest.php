@@ -1,8 +1,5 @@
 <?php
 
-use Illuminate\Support\Collection;
-use Kyzegs\Laracord\Tests\TestCase;
-
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -14,8 +11,6 @@ use Kyzegs\Laracord\Tests\TestCase;
 |
 */
 
-uses(TestCase::class)->in('Api');
-
 /*
 |--------------------------------------------------------------------------
 | Expectations
@@ -26,27 +21,3 @@ uses(TestCase::class)->in('Api');
 | to assert different things. Of course, you may extend the Expectation API at any time.
 |
 */
-
-expect()->extend('toBeApplicationCommand', function (bool $guildScope = false, bool $hasLocalizations = true) {
-    return $this
-        ->toBeInstanceOf(\Kyzegs\Laracord\Models\ApplicationCommand::class)
-        ->toHaveKeys(
-            collect([
-                'id',
-                'type',
-                'application_id',
-                'name',
-                'description',
-                'default_member_permissions',
-                'default_permission',
-                'version',
-            ])
-                ->when($guildScope, fn (Collection $keys) => $keys->push('guild_id'))
-                ->when($hasLocalizations, fn (Collection $keys) => $keys->merge(['name_localizations', 'description_localizations']))
-                ->toArray()
-        );
-});
-
-expect()->extend('toBeCollectionOfApplicationCommands', function (int $count, bool $guildScope = false, bool $hasLocalizations = true) {
-    return $this->toBeCollection()->toHaveCount($count)->each->toBeApplicationCommand($guildScope, $hasLocalizations);
-});

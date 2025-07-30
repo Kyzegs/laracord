@@ -1,7 +1,9 @@
 {
     "name": "kyzegs/laracord",
     "description": "Discord API wrapper",
-    "keywords": ["discord"],
+    "keywords": [
+        "discord"
+    ],
     "authors": [
         {
             "name": "Sebastiaan \"Kyzegs\" Zegers",
@@ -21,21 +23,20 @@
         }
     },
     "require": {
-        "php": "^8.1",
+        "php": "^8.2",
         "ext-json": "*",
-        "kyzegs/model": "^0.1.0",
-        "illuminate/cache": "^10.0",
-        "illuminate/collections": "^v10.0",
-        "illuminate/support": "^10.0",
+        "illuminate/cache": "^11.0",
+        "illuminate/collections": "^11.0",
+        "illuminate/support": "^11.0",
         "laravel/socialite": "^5.23"
     },
     "require-dev": {
-        "laravel/pint": "^1.10",
-        "orchestra/testbench": "^8.5",
-        "pestphp/pest": "^1.21",
-        "pestphp/pest-plugin-laravel": "^1.2",
-        "phpunit/phpunit": "^9.5",
-        "phpstan/phpdoc-parser": "^1.23"
+        "laravel/pint": "^1.24",
+        "orchestra/testbench": "^9.14",
+        "pestphp/pest": "^3.8",
+        "pestphp/pest-plugin-laravel": "^3.2",
+        "phpunit/phpunit": "^11.5",
+        "phpstan/phpdoc-parser": "^2.2"
     },
     "scripts": {
         "test": "vendor/bin/phpunit"
