@@ -4,11 +4,8 @@ namespace Kyzegs\Laracord;
 
 class BucketHash
 {
-//    public function __construct(private readonly Route $route)
-    public function __construct(private Route $route)
-
-    {
-    }
+    //    public function __construct(private readonly Route $route)
+    public function __construct(private Route $route) {}
 
     private function key(): string
     {

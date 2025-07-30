@@ -28,7 +28,7 @@ class ServiceProvider extends BaseServiceProvider implements DeferrableProvider
         }
 
         Notification::extend('discord', static function () {
-            return new DiscordChannel();
+            return new DiscordChannel;
         });
     }
 

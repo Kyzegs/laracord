@@ -9,7 +9,6 @@ use Illuminate\Support\Sleep;
 use Kyzegs\Laracord\Route;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class RatelimitMiddleware
 {

@@ -7,7 +7,6 @@ use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Sleep;
 use Kyzegs\Laracord\Client;
 use Kyzegs\Laracord\Middleware\RatelimitMiddleware;
-use Kyzegs\Laracord\Route;
 use Kyzegs\Laracord\Tests\TestCase;
 
 uses(TestCase::class);
@@ -31,7 +30,7 @@ it('sleeps when bucket is exhausted', function () {
     ]);
 
     $stack = HandlerStack::create($mock);
-    $stack->push(new RatelimitMiddleware());
+    $stack->push(new RatelimitMiddleware);
 
     $client = new Client(new GuzzleClient(['handler' => $stack]));
 
@@ -51,7 +50,7 @@ it('retries after 429 response', function () {
     ]);
 
     $stack = HandlerStack::create($mock);
-    $stack->push(new RatelimitMiddleware());
+    $stack->push(new RatelimitMiddleware);
 
     $client = new Client(new GuzzleClient(['handler' => $stack]));
 

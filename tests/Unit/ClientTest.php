@@ -23,7 +23,7 @@ it('retries server errors', function () {
     ]);
 
     $stack = HandlerStack::create($mock);
-    $stack->push(new RatelimitMiddleware());
+    $stack->push(new RatelimitMiddleware);
 
     $client = new Client(new GuzzleClient(['handler' => $stack]));
 

@@ -74,12 +74,10 @@ class DiscordProvider extends AbstractProvider implements ProviderInterface
 
     /**
      * Map the raw user array to a Socialite User instance.
-     *
-     * @return \Kyzegs\Laracord\Socialite\User
      */
     protected function mapUserToObject(array $user): User
     {
-        return (new User())->setRaw($user)->map([
+        return (new User)->setRaw($user)->map([
             'id' => $user['id'],
             'nickname' => sprintf('%s#%d', $user['username'], $user['discriminator']),
             'name' => $user['username'],

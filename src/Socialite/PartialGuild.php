@@ -16,8 +16,7 @@ class PartialGuild
         public bool $owner,
         public int $permissions,
         public array $features,
-    ) {
-    }
+    ) {}
 
     /**
      * Check if the user has all the given permissions.

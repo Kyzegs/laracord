@@ -11,7 +11,7 @@ class Factory
     public function make(): Client
     {
         $stack = HandlerStack::create();
-        $stack->push(new RatelimitMiddleware());
+        $stack->push(new RatelimitMiddleware);
 
         $client = new GuzzleClient([
             'handler' => $stack,
