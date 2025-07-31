@@ -1,36 +1,58 @@
 {
     "name": "kyzegs/laracord",
     "description": "Discord API wrapper",
-    "type": "library",
+    "keywords": [
+        "discord"
+    ],
     "authors": [
         {
-            "name": "Sebastiaan Zegers",
+            "name": "Sebastiaan \"Kyzegs\" Zegers",
             "email": "kyzegs@gmail.com"
         }
     ],
+    "homepage": "https://github.com/Kyzegs/laracord",
     "autoload": {
         "psr-4": {
-            "Kyzegs\\Laracord\\": "src/"
+            "Kyzegs\\Laracord\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Kyzegs\\Laracord\\Tests\\": "tests"
         }
     },
     "require": {
-        "php": "^8.0",
-        "laravel/socialite": "^5.2",
-        "jenssegers/model": "^1.4"
+        "php": "^8.2",
+        "ext-json": "*",
+        "illuminate/cache": "^11.0",
+        "illuminate/collections": "^11.0",
+        "illuminate/support": "^11.0",
+        "laravel/socialite": "^5.23"
     },
     "require-dev": {
-        "laravel/pint": "^1.10"
+        "laravel/pint": "^1.24",
+        "orchestra/testbench": "^9.14",
+        "pestphp/pest": "^3.8",
+        "pestphp/pest-plugin-laravel": "^3.2",
+        "phpunit/phpunit": "^11.5",
+        "phpstan/phpdoc-parser": "^1.16",
+        "rector/rector": "^2.1",
+        "driftingly/rector-laravel": "^2.0"
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Kyzegs\\Laracord\\LaracordServiceProvider"
+                "Kyzegs\\Laracord\\ServiceProvider"
             ]
         }
     },
     "config": {
         "allow-plugins": {
-            "pestphp/pest-plugin": true
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
         }
     }
 }

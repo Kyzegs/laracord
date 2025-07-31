@@ -1,10 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Kyzegs\Laracord\Socialite;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Session;
 use Laravel\Socialite\Two\AbstractProvider;
 
 class DiscordProvider extends AbstractProvider implements ProviderInterface
@@ -74,62 +74,19 @@ class DiscordProvider extends AbstractProvider implements ProviderInterface
         return json_decode($response->getBody(), true);
     }
 
-    protected function getGuildsByToken(string $token): array
-    {
-        $response = $this->getHttpClient()->get('https://discord.com/api/users/@me/guilds', [
-            'headers' => [
-                'Authorization' => 'Bearer '.$token,
-            ],
-        ]);
-
-        return json_decode($response->getBody(), true);
-    }
-
     /**
      * Map the raw user array to a Socialite User instance.
-     *
-     * @return \Kyzegs\Laracord\Socialite\User
      */
     protected function mapUserToObject(array $user): User
     {
-        return (new User())->setRaw($user)->map([
+        return (new User)->setRaw($user)->map([
             'id' => $user['id'],
             'nickname' => sprintf('%s#%d', $user['username'], $user['discriminator']),
             'name' => $user['username'],
-            'email' => $user['email'],
+            'email' => $user['email'] ?? null,
             'avatar' => $user['avatar']
                 ? sprintf('https://cdn.discordapp.com/avatars/%d/%s.png', $user['id'], $user['avatar'])
                 : sprintf('https://cdn.discordapp.com/embed/avatars/%d.png', $user['discriminator']),
         ]);
-    }
-
-    /**
-     * @param  array[]  $guilds
-     */
-    protected function mapGuildsToObjects(array $guilds): Collection
-    {
-        return collect($guilds)->map(function ($guild) {
-            return new PartialGuild(...collect($guild)->except('permissions_new'));
-        });
-    }
-
-    /**
-     * Get the User instance for the authenticated user.
-     *
-     * @return \Kyzegs\Laracord\Socialite\User
-     */
-    public function user(): User
-    {
-        $user = parent::user();
-
-        if (in_array('guilds', $this->scopes)) {
-            $user->setGuilds($this->mapGuildsToObjects($this->getGuildsByToken($this->user->token)));
-        }
-
-        if (config('laracord.session.user.store')) {
-            Session::put(config('laracord.session.user.key'), $user);
-        }
-
-        return $user;
     }
 }

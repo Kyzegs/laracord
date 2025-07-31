@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Kyzegs\Laracord\Socialite;
 
 use Kyzegs\Laracord\Constants\Permissions;
@@ -16,18 +18,17 @@ class PartialGuild
         public bool $owner,
         public int $permissions,
         public array $features,
-    ) {
-    }
+    ) {}
 
     /**
-     * Check if the user has all of the given permissions.
+     * Check if the user has all the given permissions.
      *
      * @param  int[]  ...$permissions
      */
     public function hasPermissions(int ...$permissions): bool
     {
         return ! collect($permissions)
-            ->map(fn ($permission) => ($this->permissions & $permission) == $permission)
+            ->map(fn ($permission): bool => ($this->permissions & $permission) === $permission)
             ->containsStrict(false);
     }
 
@@ -39,12 +40,12 @@ class PartialGuild
     public function hasAnyPermissions(int ...$permissions): bool
     {
         return collect($permissions)
-            ->map(fn ($permission) => ($this->permissions & $permission) == $permission)
+            ->map(fn ($permission): bool => ($this->permissions & $permission) === $permission)
             ->containsStrict(true);
     }
 
     /**
-     * Return whether or not the user is an administrator.
+     * Return whether the user is an administrator.
      */
     public function isAdmin(): bool
     {
@@ -58,10 +59,12 @@ class PartialGuild
     {
         if ($this->owner) {
             return 'Owner';
-        } elseif ($this->isAdmin()) {
-            return 'Administrator';
-        } else {
-            return 'Member';
         }
+
+        if ($this->isAdmin()) {
+            return 'Administrator';
+        }
+
+        return 'Member';
     }
 }
