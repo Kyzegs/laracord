@@ -16,6 +16,11 @@
             "Kyzegs\\Laracord\\": "src"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Kyzegs\\Laracord\\Tests\\": "tests"
+        }
+    },
     "require": {
         "php": "^8.2",
         "ext-json": "*",

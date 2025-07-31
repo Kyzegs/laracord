@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Kyzegs\Laracord\Facades;
 
-use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Facade;
 
 /**
