@@ -845,7 +845,7 @@ class Client
         return $this->request(new Route('PATCH', '/webhooks/{webhook_id}', ['webhook_id' => $webhookId]), $data);
     }
 
-    public function modifyWebhookWIthToken(int $webhookId, string $webhookToken, array $data): array
+    public function modifyWebhookWithToken(int $webhookId, string $webhookToken, array $data): array
     {
         return $this->request(new Route('PATCH', '/webhooks/{webhook_id}/{webhook_token}', ['webhook_id' => $webhookId, 'webhook_token' => $webhookToken]), $data);
     }

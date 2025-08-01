@@ -85,12 +85,12 @@ Returns `array`
 
 ---
 
-## modifyWebhookWIthToken
+## modifyWebhookWithToken
 
-Modify webhook w ith token
+Modify webhook with token
 
 ```php
-public static array modifyWebhookWIthToken(int $webhookId, string $webhookToken, array $data)
+public static array modifyWebhookWithToken(int $webhookId, string $webhookToken, array $data)
 ```
 
 ### Parameters

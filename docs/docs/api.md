@@ -183,7 +183,7 @@ $message = Laracord::createMessage(123456789, [
 - [`getWebhook`](./api/webhooks.md#getWebhook) - Get webhook
 - [`getWebhookWithToken`](./api/webhooks.md#getWebhookWithToken) - Get webhook with token
 - [`modifyWebhook`](./api/webhooks.md#modifyWebhook) - Modify webhook
-- [`modifyWebhookWIthToken`](./api/webhooks.md#modifyWebhookWIthToken) - Modify webhook w ith token
+- [`modifyWebhookWithToken`](./api/webhooks.md#modifyWebhookWithToken) - Modify webhook with token
 - [`deleteWebhook`](./api/webhooks.md#deleteWebhook) - Delete webhook
 - [`deleteWebhookWithToken`](./api/webhooks.md#deleteWebhookWithToken) - Delete webhook with token
 - [`executeWebhook`](./api/webhooks.md#executeWebhook) - Execute webhook

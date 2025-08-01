@@ -164,7 +164,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static array getWebhook(int $webhookId)
  * @method static array getWebhookWithToken(int $webhookId, string $webhookToken)
  * @method static array modifyWebhook(int $webhookId, array $data)
- * @method static array modifyWebhookWIthToken(int $webhookId, string $webhookToken, array $data)
+ * @method static array modifyWebhookWithToken(int $webhookId, string $webhookToken, array $data)
  * @method static array deleteWebhook(int $webhookId)
  * @method static array deleteWebhookWithToken(int $webhookId, string $webhookToken)
  * @method static array executeWebhook(int $webhookId, string $webhookToken, array $data)
