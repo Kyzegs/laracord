@@ -1,6 +1,6 @@
-# Making Requests
+# Making API Requests
 
-This guide covers how to make API requests using Laracord.
+This guide covers how to make API requests using Laracord and handle responses effectively.
 
 ## Basic Usage
 
@@ -16,23 +16,26 @@ $channel = Laracord::getChannel(123456789);
 $message = Laracord::createMessage(123456789, [
     'content' => 'Hello, Discord!'
 ]);
+
+// Get guild information
+$guild = Laracord::getGuild(987654321);
 ```
 
 ## Request Types
 
 ### GET Requests
 
-For retrieving data:
+For retrieving data from Discord:
 
 ```php
 // Get current user
 $user = Laracord::getCurrentUser();
 
-// Get a guild
-$guild = Laracord::getGuild(987654321);
+// Get a specific channel
+$channel = Laracord::getChannel($channelId);
 
-// Get channel messages
-$messages = Laracord::getChannelMessages(123456789);
+// Get guild members
+$members = Laracord::listGuildMembers($guildId);
 ```
 
 ### POST Requests
@@ -42,7 +45,7 @@ For creating new resources:
 ```php
 // Create a message
 $message = Laracord::createMessage($channelId, [
-    'content' => 'Hello, Discord!',
+    'content' => 'Hello, world!',
     'embeds' => [
         [
             'title' => 'My Embed',
@@ -67,9 +70,9 @@ $updatedMessage = Laracord::editMessage($channelId, $messageId, [
     'content' => 'Updated message content'
 ]);
 
-// Modify a guild
-$updatedGuild = Laracord::modifyGuild($guildId, [
-    'name' => 'New Guild Name'
+// Modify a guild member
+$updatedMember = Laracord::modifyGuildMember($guildId, $userId, [
+    'nick' => 'New Nickname'
 ]);
 ```
 
@@ -85,95 +88,196 @@ Laracord::deleteMessage($channelId, $messageId);
 Laracord::deleteWebhook($webhookId);
 ```
 
-## Error Handling
+## Request Parameters
 
-Always handle potential errors when making requests:
+### Required Parameters
+
+Most methods require specific parameters:
+
+```php
+// Channel operations require channel ID
+$channel = Laracord::getChannel(123456789);
+
+// Guild operations require guild ID
+$guild = Laracord::getGuild(987654321);
+
+// User operations require user ID
+$user = Laracord::getUser(456789123);
+```
+
+### Optional Parameters
+
+Many methods accept optional parameters:
+
+```php
+// Get guild with optional query parameters
+$guild = Laracord::getGuild($guildId, [
+    'with_counts' => true
+]);
+
+// List guild members with pagination
+$members = Laracord::listGuildMembers($guildId, [
+    'limit' => 100,
+    'after' => $lastMemberId
+]);
+```
+
+### Data Arrays
+
+For creating or updating resources, pass data as arrays:
+
+```php
+// Create a message with rich content
+$message = Laracord::createMessage($channelId, [
+    'content' => 'Hello, Discord!',
+    'tts' => false,
+    'embeds' => [
+        [
+            'title' => 'Welcome!',
+            'description' => 'This is a welcome message',
+            'color' => 0x5865f2
+        ]
+    ],
+    'components' => [
+        [
+            'type' => 1, // Action Row
+            'components' => [
+                [
+                    'type' => 2, // Button
+                    'style' => 1, // Primary
+                    'label' => 'Click me!',
+                    'custom_id' => 'my_button'
+                ]
+            ]
+        ]
+    ]
+]);
+```
+
+## Response Handling
+
+### Successful Responses
+
+All methods return arrays containing the Discord API response:
+
+```php
+$channel = Laracord::getChannel($channelId);
+
+// Access response data
+echo $channel['name']; // Channel name
+echo $channel['id'];   // Channel ID
+echo $channel['type']; // Channel type
+```
+
+### Error Handling
+
+Laracord throws exceptions for API errors:
 
 ```php
 try {
     $channel = Laracord::getChannel($channelId);
-    echo "Channel name: " . $channel['name'];
 } catch (HttpException $e) {
-    if ($e->getStatusCode() === 404) {
-        echo "Channel not found";
-    } elseif ($e->getStatusCode() === 403) {
-        echo "Bot lacks permissions to view this channel";
-    } else {
-        echo "Error: " . $e->getMessage();
+    switch ($e->getStatusCode()) {
+        case 404:
+            echo "Channel not found";
+            break;
+        case 403:
+            echo "Bot lacks permissions";
+            break;
+        case 401:
+            echo "Invalid token";
+            break;
+        default:
+            echo "API error: " . $e->getMessage();
     }
 }
 ```
 
 ## Rate Limiting
 
-Laracord automatically handles Discord's rate limits, but you should be mindful of your usage:
+Laracord handles rate limiting automatically:
 
 ```php
-// Good: Batch operations when possible
-$messages = Laracord::getChannelMessages($channelId, [
-    'limit' => 100
-]);
-
-// Avoid: Making too many requests too quickly
-for ($i = 0; $i < 1000; $i++) {
-    Laracord::getChannel($channelId); // This will hit rate limits
+// Multiple requests - rate limiting is handled automatically
+for ($i = 0; $i < 10; $i++) {
+    $message = Laracord::createMessage($channelId, [
+        'content' => "Message $i"
+    ]);
+    // Laracord will automatically handle rate limits
 }
 ```
 
 ## Best Practices
 
-### 1. Validate Input
+### Batch Operations
+
+For multiple operations, consider batching:
 
 ```php
-// Always validate IDs before making requests
-if (!is_numeric($channelId) || $channelId <= 0) {
-    throw new InvalidArgumentException('Invalid channel ID');
+// Instead of multiple individual requests
+$messages = [];
+for ($i = 0; $i < 5; $i++) {
+    $messages[] = Laracord::createMessage($channelId, [
+        'content' => "Message $i"
+    ]);
 }
 
-$channel = Laracord::getChannel($channelId);
+// Consider using bulk operations when available
+// (Note: Discord doesn't have bulk message creation, but other APIs might)
 ```
 
-### 2. Use Proper Data Structures
+### Error Recovery
+
+Implement retry logic for transient errors:
 
 ```php
-// Good: Use proper array structure for embeds
-$message = Laracord::createMessage($channelId, [
-    'content' => 'Hello!',
-    'embeds' => [
-        [
-            'title' => 'My Title',
-            'description' => 'My Description',
-            'color' => 0x5865f2
-        ]
-    ]
-]);
-```
+function makeRequestWithRetry($callback, $maxRetries = 3) {
+    for ($attempt = 1; $attempt <= $maxRetries; $attempt++) {
+        try {
+            return $callback();
+        } catch (HttpException $e) {
+            if ($e->getStatusCode() >= 500 && $attempt < $maxRetries) {
+                sleep($attempt * 2); // Exponential backoff
+                continue;
+            }
+            throw $e;
+        }
+    }
+}
 
-### 3. Handle Large Responses
-
-```php
-// For large responses, consider pagination
-$messages = Laracord::getChannelMessages($channelId, [
-    'limit' => 50,
-    'before' => $lastMessageId
-]);
-```
-
-### 4. Cache When Appropriate
-
-```php
-// Cache frequently accessed data
-$cacheKey = "guild_{$guildId}";
-$guild = Cache::remember($cacheKey, 300, function () use ($guildId) {
-    return Laracord::getGuild($guildId);
+// Usage
+$channel = makeRequestWithRetry(function() use ($channelId) {
+    return Laracord::getChannel($channelId);
 });
+```
+
+### Logging
+
+Log important operations for debugging:
+
+```php
+use Illuminate\Support\Facades\Log;
+
+try {
+    $message = Laracord::createMessage($channelId, $data);
+    Log::info('Message created', [
+        'channel_id' => $channelId,
+        'message_id' => $message['id']
+    ]);
+} catch (Exception $e) {
+    Log::error('Failed to create message', [
+        'channel_id' => $channelId,
+        'error' => $e->getMessage()
+    ]);
+    throw $e;
+}
 ```
 
 ## Advanced Usage
 
 ### Custom Headers
 
-You can customize the HTTP client for special requirements:
+For advanced use cases, you can customize the HTTP client:
 
 ```php
 use GuzzleHttp\Client;
@@ -182,58 +286,24 @@ use Kyzegs\Laracord\Client as LaracordClient;
 $guzzleClient = new Client([
     'headers' => [
         'User-Agent' => 'MyApp/1.0',
-        'X-Custom-Header' => 'value',
-    ],
+        'X-Custom-Header' => 'value'
+    ]
 ]);
 
 $laracordClient = new LaracordClient($guzzleClient);
 ```
 
-### Multiple Bot Support
+### Request Timeouts
 
-For applications using multiple bots:
-
-```php
-// In a service provider
-$this->app->singleton('laracord.primary', function ($app) {
-    $client = new Client([
-        'headers' => [
-            'Authorization' => 'Bot ' . env('DISCORD_BOT_TOKEN'),
-        ],
-    ]);
-    return new LaracordClient($client);
-});
-```
-
-## Troubleshooting
-
-### Common Issues
-
-**"Invalid snowflake" errors:**
-- Ensure IDs are valid Discord snowflakes
-- Check that IDs are not negative or zero
-
-**"Missing permissions" errors:**
-- Verify your bot has the required permissions
-- Check the bot's role hierarchy in the guild
-
-**"Rate limited" errors:**
-- Laracord handles this automatically, but check your usage patterns
-- Consider implementing additional rate limiting for high-traffic applications
-
-### Debugging
-
-Enable debug logging to troubleshoot request issues:
+Configure timeouts for different operations:
 
 ```php
-// In your config/logging.php
-'channels' => [
-    'discord' => [
-        'driver' => 'single',
-        'path' => storage_path('logs/discord.log'),
-        'level' => 'debug',
-    ],
-],
+// In your config/laracord.php
+return [
+    'timeout' => 30, // 30 seconds default
+    'retry_attempts' => 3,
+    'retry_delay' => 1,
+];
 ```
 
 ## Next Steps

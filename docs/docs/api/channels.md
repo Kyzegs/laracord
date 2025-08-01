@@ -4,23 +4,21 @@ This section contains all methods related to Channels & Messages.
 
 ## getChannel
 
-Get a channel by its ID.
+Get channel
 
 ```php
-public static array getChannel()
+public static array getChannel(int $channelId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getChannel();
-```
 
 ---
 
@@ -29,20 +27,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Modify channel
 
 ```php
-public static array modifyChannel()
+public static array modifyChannel(int $channelId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::modifyChannel();
-```
 
 ---
 
@@ -51,20 +48,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Delete channel
 
 ```php
-public static array deleteChannel()
+public static array deleteChannel(int $channelId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::deleteChannel();
-```
 
 ---
 
@@ -73,20 +68,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get channel messages
 
 ```php
-public static array getChannelMessages()
+public static array getChannelMessages(int $channelId, array $data = [])
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
+| `data` | `array` | No | [] | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getChannelMessages();
-```
 
 ---
 
@@ -95,42 +89,40 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get channel message
 
 ```php
-public static array getChannelMessage()
+public static array getChannelMessage(int $channelId, int $messageId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
+| `messageId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getChannelMessage();
-```
 
 ---
 
 ## createMessage
 
-Create a new message in a channel.
+Create message
 
 ```php
-public static array createMessage()
+public static array createMessage(int $channelId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::createMessage();
-```
 
 ---
 
@@ -139,20 +131,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Crosspost message
 
 ```php
-public static array crosspostMessage()
+public static array crosspostMessage(int $channelId, int $messageId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
+| `messageId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::crosspostMessage();
-```
 
 ---
 
@@ -161,20 +152,20 @@ use Kyzegs\Laracord\Facades\Laracord;
 Edit message
 
 ```php
-public static array editMessage()
+public static array editMessage(int $channelId, int $messageId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
+| `messageId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::editMessage();
-```
 
 ---
 
@@ -183,20 +174,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Delete message
 
 ```php
-public static array deleteMessage()
+public static array deleteMessage(int $channelId, int $messageId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
+| `messageId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::deleteMessage();
-```
 
 ---
 
@@ -205,20 +195,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Bulk delete messages
 
 ```php
-public static array bulkDeleteMessages()
+public static array bulkDeleteMessages(int $channelId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::bulkDeleteMessages();
-```
 
 ---
 
@@ -227,20 +216,20 @@ use Kyzegs\Laracord\Facades\Laracord;
 Edit channel permissions
 
 ```php
-public static array editChannelPermissions()
+public static array editChannelPermissions(int $channelId, int $overwriteId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
+| `overwriteId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::editChannelPermissions();
-```
 
 ---
 
@@ -249,20 +238,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get channel invites
 
 ```php
-public static array getChannelInvites()
+public static array getChannelInvites(int $channelId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getChannelInvites();
-```
 
 ---
 
@@ -271,20 +258,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Create channel invite
 
 ```php
-public static array createChannelInvite()
+public static array createChannelInvite(int $channelId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::createChannelInvite();
-```
 
 ---
 
@@ -293,20 +279,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Delete channel permission
 
 ```php
-public static array deleteChannelPermission()
+public static array deleteChannelPermission(int $channelId, int $overwriteId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
+| `overwriteId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::deleteChannelPermission();
-```
 
 ---
 
@@ -315,20 +300,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Follow announcement channel
 
 ```php
-public static array followAnnouncementChannel()
+public static array followAnnouncementChannel(int $channelId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::followAnnouncementChannel();
-```
 
 ---
 
@@ -337,20 +321,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get pinned messages
 
 ```php
-public static array getPinnedMessages()
+public static array getPinnedMessages(int $channelId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getPinnedMessages();
-```
 
 ---
 
@@ -359,20 +341,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Pin message
 
 ```php
-public static array pinMessage()
+public static array pinMessage(int $channelId, int $messageId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
+| `messageId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::pinMessage();
-```
 
 ---
 
@@ -381,20 +362,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Unpin message
 
 ```php
-public static array unpinMessage()
+public static array unpinMessage(int $channelId, int $messageId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
+| `messageId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::unpinMessage();
-```
 
 ---
 
@@ -403,20 +383,20 @@ use Kyzegs\Laracord\Facades\Laracord;
 Start thread from message
 
 ```php
-public static array startThreadFromMessage()
+public static array startThreadFromMessage(int $channelId, int $messageId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
+| `messageId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::startThreadFromMessage();
-```
 
 ---
 
@@ -425,20 +405,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Start thread without message
 
 ```php
-public static array startThreadWithoutMessage()
+public static array startThreadWithoutMessage(int $channelId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::startThreadWithoutMessage();
-```
 
 ---
 
@@ -447,20 +426,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Start thread in forum channel
 
 ```php
-public static array startThreadInForumChannel()
+public static array startThreadInForumChannel(int $channelId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::startThreadInForumChannel();
-```
 
 ---
 
@@ -469,20 +447,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get guild channels
 
 ```php
-public static array getGuildChannels()
+public static array getGuildChannels(int $guildId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getGuildChannels();
-```
 
 ---
 
@@ -491,20 +467,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Create guild channel
 
 ```php
-public static array createGuildChannel()
+public static array createGuildChannel(int $guildId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::createGuildChannel();
-```
 
 ---
 
@@ -513,20 +488,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Modify guild channel positions
 
 ```php
-public static array modifyGuildChannelPositions()
+public static array modifyGuildChannelPositions(int $guildId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::modifyGuildChannelPositions();
-```
 
 ---
 
@@ -535,20 +509,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get channel webhooks
 
 ```php
-public static array getChannelWebhooks()
+public static array getChannelWebhooks(int $channelId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getChannelWebhooks();
-```
 
 ---
 
@@ -557,20 +529,20 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get webhook message
 
 ```php
-public static array getWebhookMessage()
+public static array getWebhookMessage(int $webhookId, string $webhookToken, int $messageId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `webhookId` | `int` | Yes | - | - |
+| `webhookToken` | `string` | Yes | - | - |
+| `messageId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getWebhookMessage();
-```
 
 ---
 
@@ -579,20 +551,21 @@ use Kyzegs\Laracord\Facades\Laracord;
 Edit webhook message
 
 ```php
-public static array editWebhookMessage()
+public static array editWebhookMessage(int $webhookId, string $webhookToken, int $messageId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `webhookId` | `int` | Yes | - | - |
+| `webhookToken` | `string` | Yes | - | - |
+| `messageId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::editWebhookMessage();
-```
 
 ---
 
@@ -601,20 +574,20 @@ use Kyzegs\Laracord\Facades\Laracord;
 Delete webhook message
 
 ```php
-public static array deleteWebhookMessage()
+public static array deleteWebhookMessage(int $webhookId, string $webhookToken, int $messageId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `webhookId` | `int` | Yes | - | - |
+| `webhookToken` | `string` | Yes | - | - |
+| `messageId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::deleteWebhookMessage();
-```
 
 ---
 

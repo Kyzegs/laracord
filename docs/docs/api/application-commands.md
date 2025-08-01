@@ -7,42 +7,40 @@ This section contains all methods related to Application Commands.
 Retrieve all global application commands for an application.
 
 ```php
-public static array getGlobalApplicationCommands()
+public static array getGlobalApplicationCommands(int $applicationId, array $query = [])
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `applicationId` | `int` | Yes | - | The ID of the application to retrieve commands for. |
+| `query` | `array` | No | [] | Optional query parameters. |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getGlobalApplicationCommands();
-```
 
 ---
 
 ## createGlobalApplicationCommand
 
-Create a new global application command.
+Create global application command
 
 ```php
-public static array createGlobalApplicationCommand()
+public static array createGlobalApplicationCommand(int $applicationId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `applicationId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::createGlobalApplicationCommand();
-```
 
 ---
 
@@ -51,20 +49,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get global application command
 
 ```php
-public static array getGlobalApplicationCommand()
+public static array getGlobalApplicationCommand(int $applicationId, int $commandId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `applicationId` | `int` | Yes | - | - |
+| `commandId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getGlobalApplicationCommand();
-```
 
 ---
 
@@ -73,20 +70,20 @@ use Kyzegs\Laracord\Facades\Laracord;
 Edit global application command
 
 ```php
-public static array editGlobalApplicationCommand()
+public static array editGlobalApplicationCommand(int $applicationId, int $commandId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `applicationId` | `int` | Yes | - | - |
+| `commandId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::editGlobalApplicationCommand();
-```
 
 ---
 
@@ -95,20 +92,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Delete global application command
 
 ```php
-public static array deleteGlobalApplicationCommand()
+public static array deleteGlobalApplicationCommand(int $applicationId, int $commandId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `applicationId` | `int` | Yes | - | - |
+| `commandId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::deleteGlobalApplicationCommand();
-```
 
 ---
 
@@ -117,20 +113,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Bulk overwrite global application commands
 
 ```php
-public static array bulkOverwriteGlobalApplicationCommands()
+public static array bulkOverwriteGlobalApplicationCommands(int $applicationId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `applicationId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::bulkOverwriteGlobalApplicationCommands();
-```
 
 ---
 
@@ -139,20 +134,20 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get guild application commands
 
 ```php
-public static array getGuildApplicationCommands()
+public static array getGuildApplicationCommands(int $applicationId, int $guildId, array $query = [])
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `applicationId` | `int` | Yes | - | - |
+| `guildId` | `int` | Yes | - | - |
+| `query` | `array` | No | [] | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getGuildApplicationCommands();
-```
 
 ---
 
@@ -161,20 +156,20 @@ use Kyzegs\Laracord\Facades\Laracord;
 Create guild application command
 
 ```php
-public static array createGuildApplicationCommand()
+public static array createGuildApplicationCommand(int $applicationId, int $guildId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `applicationId` | `int` | Yes | - | - |
+| `guildId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::createGuildApplicationCommand();
-```
 
 ---
 
@@ -183,20 +178,20 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get guild application command
 
 ```php
-public static array getGuildApplicationCommand()
+public static array getGuildApplicationCommand(int $applicationId, int $guildId, int $commandId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `applicationId` | `int` | Yes | - | - |
+| `guildId` | `int` | Yes | - | - |
+| `commandId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getGuildApplicationCommand();
-```
 
 ---
 
@@ -205,20 +200,21 @@ use Kyzegs\Laracord\Facades\Laracord;
 Edit guild application command
 
 ```php
-public static array editGuildApplicationCommand()
+public static array editGuildApplicationCommand(int $applicationId, int $guildId, int $commandId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `applicationId` | `int` | Yes | - | - |
+| `guildId` | `int` | Yes | - | - |
+| `commandId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::editGuildApplicationCommand();
-```
 
 ---
 
@@ -227,20 +223,20 @@ use Kyzegs\Laracord\Facades\Laracord;
 Delete guild application command
 
 ```php
-public static array deleteGuildApplicationCommand()
+public static array deleteGuildApplicationCommand(int $applicationId, int $guildId, int $commandId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `applicationId` | `int` | Yes | - | - |
+| `guildId` | `int` | Yes | - | - |
+| `commandId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::deleteGuildApplicationCommand();
-```
 
 ---
 
@@ -249,20 +245,20 @@ use Kyzegs\Laracord\Facades\Laracord;
 Bulk overwrite guild application commands
 
 ```php
-public static array bulkOverwriteGuildApplicationCommands()
+public static array bulkOverwriteGuildApplicationCommands(int $applicationId, int $guildId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `applicationId` | `int` | Yes | - | - |
+| `guildId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::bulkOverwriteGuildApplicationCommands();
-```
 
 ---
 
@@ -271,20 +267,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get guild application command permissions
 
 ```php
-public static array getGuildApplicationCommandPermissions()
+public static array getGuildApplicationCommandPermissions(int $applicationId, int $guildId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `applicationId` | `int` | Yes | - | - |
+| `guildId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getGuildApplicationCommandPermissions();
-```
 
 ---
 
@@ -293,20 +288,20 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get application command permissions
 
 ```php
-public static array getApplicationCommandPermissions()
+public static array getApplicationCommandPermissions(int $applicationId, int $guildId, int $commandId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `applicationId` | `int` | Yes | - | - |
+| `guildId` | `int` | Yes | - | - |
+| `commandId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getApplicationCommandPermissions();
-```
 
 ---
 
@@ -315,20 +310,21 @@ use Kyzegs\Laracord\Facades\Laracord;
 Edit application command permissions
 
 ```php
-public static array editApplicationCommandPermissions()
+public static array editApplicationCommandPermissions(int $applicationId, int $guildId, int $commandId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `applicationId` | `int` | Yes | - | - |
+| `guildId` | `int` | Yes | - | - |
+| `commandId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::editApplicationCommandPermissions();
-```
 
 ---
 
@@ -337,20 +333,20 @@ use Kyzegs\Laracord\Facades\Laracord;
 Batch edit application command permissions
 
 ```php
-public static array batchEditApplicationCommandPermissions()
+public static array batchEditApplicationCommandPermissions(int $applicationId, int $guildId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `applicationId` | `int` | Yes | - | - |
+| `guildId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::batchEditApplicationCommandPermissions();
-```
 
 ---
 

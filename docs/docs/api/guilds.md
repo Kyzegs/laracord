@@ -7,20 +7,19 @@ This section contains all methods related to Guilds.
 Get guild audit log
 
 ```php
-public static array getGuildAuditLog()
+public static array getGuildAuditLog(int $guildId, array $query = [])
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `query` | `array` | No | [] | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getGuildAuditLog();
-```
 
 ---
 
@@ -29,20 +28,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 List auto moderation rules for guild
 
 ```php
-public static array listAutoModerationRulesForGuild()
+public static array listAutoModerationRulesForGuild(int $guildId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::listAutoModerationRulesForGuild();
-```
 
 ---
 
@@ -51,20 +48,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 List guild emojis
 
 ```php
-public static array listGuildEmojis()
+public static array listGuildEmojis(int $guildId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::listGuildEmojis();
-```
 
 ---
 
@@ -73,20 +68,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get guild emoji
 
 ```php
-public static array getGuildEmoji()
+public static array getGuildEmoji(int $guildId, int $emojiId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `emojiId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getGuildEmoji();
-```
 
 ---
 
@@ -95,20 +89,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Create guild emoji
 
 ```php
-public static array createGuildEmoji()
+public static array createGuildEmoji(int $guildId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::createGuildEmoji();
-```
 
 ---
 
@@ -117,20 +110,20 @@ use Kyzegs\Laracord\Facades\Laracord;
 Modify guild emoji
 
 ```php
-public static array modifyGuildEmoji()
+public static array modifyGuildEmoji(int $guildId, int $emojiId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `emojiId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::modifyGuildEmoji();
-```
 
 ---
 
@@ -139,20 +132,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Delete guild emoji
 
 ```php
-public static array deleteGuildEmoji()
+public static array deleteGuildEmoji(int $guildId, int $emojiId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `emojiId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::deleteGuildEmoji();
-```
 
 ---
 
@@ -161,42 +153,39 @@ use Kyzegs\Laracord\Facades\Laracord;
 Create guild
 
 ```php
-public static array createGuild()
+public static array createGuild(array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::createGuild();
-```
 
 ---
 
 ## getGuild
 
-Get a guild by its ID.
+Get guild
 
 ```php
-public static array getGuild()
+public static array getGuild(int $guildId, array $query = [])
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `query` | `array` | No | [] | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getGuild();
-```
 
 ---
 
@@ -205,20 +194,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get guild preview
 
 ```php
-public static array getGuildPreview()
+public static array getGuildPreview(int $guildId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getGuildPreview();
-```
 
 ---
 
@@ -227,20 +214,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Modify guild
 
 ```php
-public static array modifyGuild()
+public static array modifyGuild(int $guildId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::modifyGuild();
-```
 
 ---
 
@@ -249,20 +235,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Delete guild
 
 ```php
-public static array deleteGuild()
+public static array deleteGuild(int $guildId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::deleteGuild();
-```
 
 ---
 
@@ -271,20 +255,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 List active guild threads
 
 ```php
-public static array listActiveGuildThreads()
+public static array listActiveGuildThreads(int $guildId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::listActiveGuildThreads();
-```
 
 ---
 
@@ -293,20 +275,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get guild member
 
 ```php
-public static array getGuildMember()
+public static array getGuildMember(int $guildId, int $userId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `userId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getGuildMember();
-```
 
 ---
 
@@ -315,20 +296,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 List guild members
 
 ```php
-public static array listGuildMembers()
+public static array listGuildMembers(int $guildId, array $data = [])
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `data` | `array` | No | [] | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::listGuildMembers();
-```
 
 ---
 
@@ -337,20 +317,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Search guild members
 
 ```php
-public static array searchGuildMembers()
+public static array searchGuildMembers(int $guildId, array $query = [])
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `query` | `array` | No | [] | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::searchGuildMembers();
-```
 
 ---
 
@@ -359,20 +338,20 @@ use Kyzegs\Laracord\Facades\Laracord;
 Add guild member
 
 ```php
-public static array addGuildMember()
+public static array addGuildMember(int $guildId, int $userId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `userId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::addGuildMember();
-```
 
 ---
 
@@ -381,20 +360,20 @@ use Kyzegs\Laracord\Facades\Laracord;
 Modify guild member
 
 ```php
-public static array modifyGuildMember()
+public static array modifyGuildMember(int $guildId, int $userId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `userId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::modifyGuildMember();
-```
 
 ---
 
@@ -403,20 +382,20 @@ use Kyzegs\Laracord\Facades\Laracord;
 Add guild member role
 
 ```php
-public static array addGuildMemberRole()
+public static array addGuildMemberRole(int $guildId, int $userId, int $roleId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `userId` | `int` | Yes | - | - |
+| `roleId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::addGuildMemberRole();
-```
 
 ---
 
@@ -425,20 +404,20 @@ use Kyzegs\Laracord\Facades\Laracord;
 Remove guild member role
 
 ```php
-public static array removeGuildMemberRole()
+public static array removeGuildMemberRole(int $guildId, int $userId, int $roleId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `userId` | `int` | Yes | - | - |
+| `roleId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::removeGuildMemberRole();
-```
 
 ---
 
@@ -447,20 +426,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Remove guild member
 
 ```php
-public static array removeGuildMember()
+public static array removeGuildMember(int $guildId, int $userId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `userId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::removeGuildMember();
-```
 
 ---
 
@@ -469,20 +447,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get guild bans
 
 ```php
-public static array getGuildBans()
+public static array getGuildBans(int $guildId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getGuildBans();
-```
 
 ---
 
@@ -491,20 +467,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get guild ban
 
 ```php
-public static array getGuildBan()
+public static array getGuildBan(int $guildId, int $userId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `userId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getGuildBan();
-```
 
 ---
 
@@ -513,20 +488,20 @@ use Kyzegs\Laracord\Facades\Laracord;
 Create guild ban
 
 ```php
-public static array createGuildBan()
+public static array createGuildBan(int $guildId, int $userId, array $data = [])
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `userId` | `int` | Yes | - | - |
+| `data` | `array` | No | [] | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::createGuildBan();
-```
 
 ---
 
@@ -535,20 +510,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Remove guild ban
 
 ```php
-public static array removeGuildBan()
+public static array removeGuildBan(int $guildId, int $userId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `userId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::removeGuildBan();
-```
 
 ---
 
@@ -557,20 +531,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get guild roles
 
 ```php
-public static array getGuildRoles()
+public static array getGuildRoles(int $guildId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getGuildRoles();
-```
 
 ---
 
@@ -579,20 +551,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Create guild role
 
 ```php
-public static array createGuildRole()
+public static array createGuildRole(int $guildId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::createGuildRole();
-```
 
 ---
 
@@ -601,20 +572,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Modify guild role positions
 
 ```php
-public static array modifyGuildRolePositions()
+public static array modifyGuildRolePositions(int $guildId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::modifyGuildRolePositions();
-```
 
 ---
 
@@ -623,20 +593,20 @@ use Kyzegs\Laracord\Facades\Laracord;
 Modify guild role
 
 ```php
-public static array modifyGuildRole()
+public static array modifyGuildRole(int $guildId, int $roleId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `roleId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::modifyGuildRole();
-```
 
 ---
 
@@ -645,20 +615,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Modify guild mfa level
 
 ```php
-public static array modifyGuildMfaLevel()
+public static array modifyGuildMfaLevel(int $guildId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::modifyGuildMfaLevel();
-```
 
 ---
 
@@ -667,20 +636,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Delete guild role
 
 ```php
-public static array deleteGuildRole()
+public static array deleteGuildRole(int $guildId, int $roleId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `roleId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::deleteGuildRole();
-```
 
 ---
 
@@ -689,20 +657,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get guild prune count
 
 ```php
-public static array getGuildPruneCount()
+public static array getGuildPruneCount(int $guildId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getGuildPruneCount();
-```
 
 ---
 
@@ -711,20 +677,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Begin guild prune
 
 ```php
-public static array beginGuildPrune()
+public static array beginGuildPrune(int $guildId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::beginGuildPrune();
-```
 
 ---
 
@@ -733,20 +697,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get guild voice regions
 
 ```php
-public static array getGuildVoiceRegions()
+public static array getGuildVoiceRegions(int $guildId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getGuildVoiceRegions();
-```
 
 ---
 
@@ -755,20 +717,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get guild invites
 
 ```php
-public static array getGuildInvites()
+public static array getGuildInvites(int $guildId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getGuildInvites();
-```
 
 ---
 
@@ -777,20 +737,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get guild integrations
 
 ```php
-public static array getGuildIntegrations()
+public static array getGuildIntegrations(int $guildId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getGuildIntegrations();
-```
 
 ---
 
@@ -799,20 +757,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Delete guild integrations
 
 ```php
-public static array deleteGuildIntegrations()
+public static array deleteGuildIntegrations(int $guildId, int $integrationId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `integrationId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::deleteGuildIntegrations();
-```
 
 ---
 
@@ -821,20 +778,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get guild widget settings
 
 ```php
-public static array getGuildWidgetSettings()
+public static array getGuildWidgetSettings(int $guildId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getGuildWidgetSettings();
-```
 
 ---
 
@@ -843,20 +798,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Modify guild widget
 
 ```php
-public static array modifyGuildWidget()
+public static array modifyGuildWidget(int $guildId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::modifyGuildWidget();
-```
 
 ---
 
@@ -865,20 +819,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get guild widget
 
 ```php
-public static array getGuildWidget()
+public static array getGuildWidget(int $guildId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getGuildWidget();
-```
 
 ---
 
@@ -887,20 +839,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get guild vanity url
 
 ```php
-public static array getGuildVanityUrl()
+public static array getGuildVanityUrl(int $guildId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getGuildVanityUrl();
-```
 
 ---
 
@@ -909,20 +859,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get guild widget image
 
 ```php
-public static array getGuildWidgetImage()
+public static array getGuildWidgetImage(int $guildId, array $data = [])
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `data` | `array` | No | [] | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getGuildWidgetImage();
-```
 
 ---
 
@@ -931,20 +880,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get guild welcome screen
 
 ```php
-public static array getGuildWelcomeScreen()
+public static array getGuildWelcomeScreen(int $guildId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getGuildWelcomeScreen();
-```
 
 ---
 
@@ -953,20 +900,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Modify guild welcome screen
 
 ```php
-public static array modifyGuildWelcomeScreen()
+public static array modifyGuildWelcomeScreen(int $guildId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::modifyGuildWelcomeScreen();
-```
 
 ---
 
@@ -975,20 +921,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get guild onboarding
 
 ```php
-public static array getGuildOnboarding()
+public static array getGuildOnboarding(int $guildId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getGuildOnboarding();
-```
 
 ---
 
@@ -997,20 +941,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Modify guild onboarding
 
 ```php
-public static array modifyGuildOnboarding()
+public static array modifyGuildOnboarding(int $guildId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::modifyGuildOnboarding();
-```
 
 ---
 
@@ -1019,20 +962,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 List scheduled events for guild
 
 ```php
-public static array listScheduledEventsForGuild()
+public static array listScheduledEventsForGuild(int $guildId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::listScheduledEventsForGuild();
-```
 
 ---
 
@@ -1041,20 +982,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Create guild scheduled event
 
 ```php
-public static array createGuildScheduledEvent()
+public static array createGuildScheduledEvent(int $guildId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::createGuildScheduledEvent();
-```
 
 ---
 
@@ -1063,20 +1003,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get guild scheduled event
 
 ```php
-public static array getGuildScheduledEvent()
+public static array getGuildScheduledEvent(int $guildId, int $guildScheduledEventId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `guildScheduledEventId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getGuildScheduledEvent();
-```
 
 ---
 
@@ -1085,20 +1024,20 @@ use Kyzegs\Laracord\Facades\Laracord;
 Modify guild scheduled event
 
 ```php
-public static array modifyGuildScheduledEvent()
+public static array modifyGuildScheduledEvent(int $guildId, int $guildScheduledEventId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `guildScheduledEventId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::modifyGuildScheduledEvent();
-```
 
 ---
 
@@ -1107,20 +1046,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Delete guild scheduled event
 
 ```php
-public static array deleteGuildScheduledEvent()
+public static array deleteGuildScheduledEvent(int $guildId, int $guildScheduledEventId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `guildScheduledEventId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::deleteGuildScheduledEvent();
-```
 
 ---
 
@@ -1129,20 +1067,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get guild scheduled event users
 
 ```php
-public static array getGuildScheduledEventUsers()
+public static array getGuildScheduledEventUsers(int $guildId, int $guildScheduledEventId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `guildScheduledEventId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getGuildScheduledEventUsers();
-```
 
 ---
 
@@ -1151,20 +1088,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get guild template
 
 ```php
-public static array getGuildTemplate()
+public static array getGuildTemplate(string $templateCode)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `templateCode` | `string` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getGuildTemplate();
-```
 
 ---
 
@@ -1173,20 +1108,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Create guild from template
 
 ```php
-public static array createGuildFromTemplate()
+public static array createGuildFromTemplate(string $templateCode, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `templateCode` | `string` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::createGuildFromTemplate();
-```
 
 ---
 
@@ -1195,20 +1129,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get guild templates
 
 ```php
-public static array getGuildTemplates()
+public static array getGuildTemplates(int $guildId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getGuildTemplates();
-```
 
 ---
 
@@ -1217,20 +1149,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Create guild template
 
 ```php
-public static array createGuildTemplate()
+public static array createGuildTemplate(int $guildId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::createGuildTemplate();
-```
 
 ---
 
@@ -1239,20 +1170,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Sync guild template
 
 ```php
-public static array syncGuildTemplate()
+public static array syncGuildTemplate(int $guildId, string $templateCode)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `templateCode` | `string` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::syncGuildTemplate();
-```
 
 ---
 
@@ -1261,20 +1191,20 @@ use Kyzegs\Laracord\Facades\Laracord;
 Modify guild template
 
 ```php
-public static array modifyGuildTemplate()
+public static array modifyGuildTemplate(int $guildId, string $templateCode, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `templateCode` | `string` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::modifyGuildTemplate();
-```
 
 ---
 
@@ -1283,20 +1213,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Delete guild template
 
 ```php
-public static array deleteGuildTemplate()
+public static array deleteGuildTemplate(int $guildId, string $templateCode)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `templateCode` | `string` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::deleteGuildTemplate();
-```
 
 ---
 
@@ -1305,20 +1234,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 List guild stickers
 
 ```php
-public static array listGuildStickers()
+public static array listGuildStickers(int $guildId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::listGuildStickers();
-```
 
 ---
 
@@ -1327,20 +1254,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get guild stickers
 
 ```php
-public static array getGuildStickers()
+public static array getGuildStickers(int $guildId, int $stickerId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `stickerId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getGuildStickers();
-```
 
 ---
 
@@ -1349,20 +1275,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get guild sticker
 
 ```php
-public static array getGuildSticker()
+public static array getGuildSticker(int $guildId, int $stickerId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `stickerId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getGuildSticker();
-```
 
 ---
 
@@ -1371,20 +1296,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Create guild sticker
 
 ```php
-public static array createGuildSticker()
+public static array createGuildSticker(int $guildId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::createGuildSticker();
-```
 
 ---
 
@@ -1393,20 +1317,20 @@ use Kyzegs\Laracord\Facades\Laracord;
 Modify guild sticker
 
 ```php
-public static array modifyGuildSticker()
+public static array modifyGuildSticker(int $guildId, int $stickerId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `stickerId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::modifyGuildSticker();
-```
 
 ---
 
@@ -1415,20 +1339,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Delete guild sticker
 
 ```php
-public static array deleteGuildSticker()
+public static array deleteGuildSticker(int $guildId, int $stickerId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `stickerId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::deleteGuildSticker();
-```
 
 ---
 
@@ -1437,20 +1360,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get current user guilds
 
 ```php
-public static array getCurrentUserGuilds()
+public static array getCurrentUserGuilds(array $data = [])
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `data` | `array` | No | [] | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getCurrentUserGuilds();
-```
 
 ---
 
@@ -1459,20 +1380,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get current user guild member
 
 ```php
-public static array getCurrentUserGuildMember()
+public static array getCurrentUserGuildMember(int $guildId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getCurrentUserGuildMember();
-```
 
 ---
 
@@ -1481,20 +1400,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Leave guild
 
 ```php
-public static array leaveGuild()
+public static array leaveGuild(int $guildId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::leaveGuild();
-```
 
 ---
 
@@ -1503,20 +1420,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get guild webhooks
 
 ```php
-public static array getGuildWebhooks()
+public static array getGuildWebhooks(int $guildId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getGuildWebhooks();
-```
 
 ---
 

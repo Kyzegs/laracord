@@ -4,23 +4,22 @@ This section contains all methods related to Webhooks.
 
 ## createWebhook
 
-Create a new webhook for a channel.
+Create webhook
 
 ```php
-public static array createWebhook()
+public static array createWebhook(int $channelId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::createWebhook();
-```
 
 ---
 
@@ -29,20 +28,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get webhook
 
 ```php
-public static array getWebhook()
+public static array getWebhook(int $webhookId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `webhookId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getWebhook();
-```
 
 ---
 
@@ -51,20 +48,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get webhook with token
 
 ```php
-public static array getWebhookWithToken()
+public static array getWebhookWithToken(int $webhookId, string $webhookToken)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `webhookId` | `int` | Yes | - | - |
+| `webhookToken` | `string` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getWebhookWithToken();
-```
 
 ---
 
@@ -73,20 +69,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Modify webhook
 
 ```php
-public static array modifyWebhook()
+public static array modifyWebhook(int $webhookId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `webhookId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::modifyWebhook();
-```
 
 ---
 
@@ -95,20 +90,20 @@ use Kyzegs\Laracord\Facades\Laracord;
 Modify webhook w ith token
 
 ```php
-public static array modifyWebhookWIthToken()
+public static array modifyWebhookWIthToken(int $webhookId, string $webhookToken, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `webhookId` | `int` | Yes | - | - |
+| `webhookToken` | `string` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::modifyWebhookWIthToken();
-```
 
 ---
 
@@ -117,20 +112,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Delete webhook
 
 ```php
-public static array deleteWebhook()
+public static array deleteWebhook(int $webhookId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `webhookId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::deleteWebhook();
-```
 
 ---
 
@@ -139,20 +132,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Delete webhook with token
 
 ```php
-public static array deleteWebhookWithToken()
+public static array deleteWebhookWithToken(int $webhookId, string $webhookToken)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `webhookId` | `int` | Yes | - | - |
+| `webhookToken` | `string` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::deleteWebhookWithToken();
-```
 
 ---
 
@@ -161,20 +153,20 @@ use Kyzegs\Laracord\Facades\Laracord;
 Execute webhook
 
 ```php
-public static array executeWebhook()
+public static array executeWebhook(int $webhookId, string $webhookToken, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `webhookId` | `int` | Yes | - | - |
+| `webhookToken` | `string` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::executeWebhook();
-```
 
 ---
 
@@ -183,20 +175,20 @@ use Kyzegs\Laracord\Facades\Laracord;
 Execute slack compatible webhook
 
 ```php
-public static array executeSlackCompatibleWebhook()
+public static array executeSlackCompatibleWebhook(int $webhookId, string $webhookToken, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `webhookId` | `int` | Yes | - | - |
+| `webhookToken` | `string` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::executeSlackCompatibleWebhook();
-```
 
 ---
 
@@ -205,20 +197,20 @@ use Kyzegs\Laracord\Facades\Laracord;
 Execute git hub compatible webhook
 
 ```php
-public static array executeGitHubCompatibleWebhook()
+public static array executeGitHubCompatibleWebhook(int $webhookId, string $webhookToken, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `webhookId` | `int` | Yes | - | - |
+| `webhookToken` | `string` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::executeGitHubCompatibleWebhook();
-```
 
 ---
 

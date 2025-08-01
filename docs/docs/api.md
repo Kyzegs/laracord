@@ -8,10 +8,10 @@ Welcome to the Laracord API reference. This documentation covers all available m
 use Kyzegs\Laracord\Facades\Laracord;
 
 // Get a channel
- = Laracord::getChannel(123456789);
+$channel = Laracord::getChannel(123456789);
 
 // Create a message
- = Laracord::createMessage(123456789, [
+$message = Laracord::createMessage(123456789, [
     'content' => 'Hello, Discord!'
 ]);
 ```
@@ -27,7 +27,7 @@ use Kyzegs\Laracord\Facades\Laracord;
 ## All Methods
 
 - [`getGlobalApplicationCommands`](./api/application-commands.md#getGlobalApplicationCommands) - Retrieve all global application commands for an application.
-- [`createGlobalApplicationCommand`](./api/application-commands.md#createGlobalApplicationCommand) - Create a new global application command.
+- [`createGlobalApplicationCommand`](./api/application-commands.md#createGlobalApplicationCommand) - Create global application command
 - [`getGlobalApplicationCommand`](./api/application-commands.md#getGlobalApplicationCommand) - Get global application command
 - [`editGlobalApplicationCommand`](./api/application-commands.md#editGlobalApplicationCommand) - Edit global application command
 - [`deleteGlobalApplicationCommand`](./api/application-commands.md#deleteGlobalApplicationCommand) - Delete global application command
@@ -51,12 +51,12 @@ use Kyzegs\Laracord\Facades\Laracord;
 - [`createAutoModerationRule`](./api/general.md#createAutoModerationRule) - Create auto moderation rule
 - [`modifyAutoModerationRule`](./api/general.md#modifyAutoModerationRule) - Modify auto moderation rule
 - [`deleteAutoModerationRule`](./api/general.md#deleteAutoModerationRule) - Delete auto moderation rule
-- [`getChannel`](./api/channels.md#getChannel) - Get a channel by its ID.
+- [`getChannel`](./api/channels.md#getChannel) - Get channel
 - [`modifyChannel`](./api/channels.md#modifyChannel) - Modify channel
 - [`deleteChannel`](./api/channels.md#deleteChannel) - Delete channel
 - [`getChannelMessages`](./api/channels.md#getChannelMessages) - Get channel messages
 - [`getChannelMessage`](./api/channels.md#getChannelMessage) - Get channel message
-- [`createMessage`](./api/channels.md#createMessage) - Create a new message in a channel.
+- [`createMessage`](./api/channels.md#createMessage) - Create message
 - [`crosspostMessage`](./api/channels.md#crosspostMessage) - Crosspost message
 - [`createReaction`](./api/general.md#createReaction) - Create reaction
 - [`deleteOwnReaction`](./api/general.md#deleteOwnReaction) - Delete own reaction
@@ -94,7 +94,7 @@ use Kyzegs\Laracord\Facades\Laracord;
 - [`modifyGuildEmoji`](./api/guilds.md#modifyGuildEmoji) - Modify guild emoji
 - [`deleteGuildEmoji`](./api/guilds.md#deleteGuildEmoji) - Delete guild emoji
 - [`createGuild`](./api/guilds.md#createGuild) - Create guild
-- [`getGuild`](./api/guilds.md#getGuild) - Get a guild by its ID.
+- [`getGuild`](./api/guilds.md#getGuild) - Get guild
 - [`getGuildPreview`](./api/guilds.md#getGuildPreview) - Get guild preview
 - [`modifyGuild`](./api/guilds.md#modifyGuild) - Modify guild
 - [`deleteGuild`](./api/guilds.md#deleteGuild) - Delete guild
@@ -165,7 +165,7 @@ use Kyzegs\Laracord\Facades\Laracord;
 - [`createGuildSticker`](./api/guilds.md#createGuildSticker) - Create guild sticker
 - [`modifyGuildSticker`](./api/guilds.md#modifyGuildSticker) - Modify guild sticker
 - [`deleteGuildSticker`](./api/guilds.md#deleteGuildSticker) - Delete guild sticker
-- [`getCurrentUser`](./api/users.md#getCurrentUser) - Get the current user information.
+- [`getCurrentUser`](./api/users.md#getCurrentUser) - Get current user
 - [`getUser`](./api/users.md#getUser) - Get user
 - [`modifyCurrentUser`](./api/users.md#modifyCurrentUser) - Modify current user
 - [`getCurrentUserGuilds`](./api/guilds.md#getCurrentUserGuilds) - Get current user guilds
@@ -177,7 +177,7 @@ use Kyzegs\Laracord\Facades\Laracord;
 - [`getUserApplicationRoleConnections`](./api/users.md#getUserApplicationRoleConnections) - Get user application role connections
 - [`updateUserApplicationRoleConnections`](./api/users.md#updateUserApplicationRoleConnections) - Update user application role connections
 - [`listVoiceRegions`](./api/general.md#listVoiceRegions) - List voice regions
-- [`createWebhook`](./api/webhooks.md#createWebhook) - Create a new webhook for a channel.
+- [`createWebhook`](./api/webhooks.md#createWebhook) - Create webhook
 - [`getChannelWebhooks`](./api/channels.md#getChannelWebhooks) - Get channel webhooks
 - [`getGuildWebhooks`](./api/guilds.md#getGuildWebhooks) - Get guild webhooks
 - [`getWebhook`](./api/webhooks.md#getWebhook) - Get webhook

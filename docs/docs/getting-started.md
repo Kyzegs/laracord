@@ -57,7 +57,7 @@ Comprehensive documentation with examples for every API method.
 1. [Install Laracord](./installation/installation.md)
 2. [Configure your Discord bot](./installation/configuration.md)
 3. [Learn about authentication](./usage/authentication.md)
-4. [Explore the API reference](../api.md)
+4. [Explore the API reference](./api.md)
 
 ## Support
 

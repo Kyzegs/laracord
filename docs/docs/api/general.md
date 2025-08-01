@@ -14,14 +14,6 @@ public static array getCurrentApplication()
 
 Returns `array`
 
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getCurrentApplication();
-```
-
 ---
 
 ## getApplicationRoleConnectionMetadataRecords
@@ -29,20 +21,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get application role connection metadata records
 
 ```php
-public static array getApplicationRoleConnectionMetadataRecords()
+public static array getApplicationRoleConnectionMetadataRecords(int $applicationId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `applicationId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getApplicationRoleConnectionMetadataRecords();
-```
 
 ---
 
@@ -51,20 +41,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Update application role connection metadata records
 
 ```php
-public static array updateApplicationRoleConnectionMetadataRecords()
+public static array updateApplicationRoleConnectionMetadataRecords(int $applicationId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `applicationId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::updateApplicationRoleConnectionMetadataRecords();
-```
 
 ---
 
@@ -73,20 +62,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get auto moderation rule
 
 ```php
-public static array getAutoModerationRule()
+public static array getAutoModerationRule(int $guildId, int $ruleId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `ruleId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getAutoModerationRule();
-```
 
 ---
 
@@ -95,20 +83,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Create auto moderation rule
 
 ```php
-public static array createAutoModerationRule()
+public static array createAutoModerationRule(int $guildId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::createAutoModerationRule();
-```
 
 ---
 
@@ -117,20 +104,20 @@ use Kyzegs\Laracord\Facades\Laracord;
 Modify auto moderation rule
 
 ```php
-public static array modifyAutoModerationRule()
+public static array modifyAutoModerationRule(int $guildId, int $ruleId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `ruleId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::modifyAutoModerationRule();
-```
 
 ---
 
@@ -139,20 +126,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Delete auto moderation rule
 
 ```php
-public static array deleteAutoModerationRule()
+public static array deleteAutoModerationRule(int $guildId, int $ruleId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `ruleId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::deleteAutoModerationRule();
-```
 
 ---
 
@@ -161,20 +147,20 @@ use Kyzegs\Laracord\Facades\Laracord;
 Create reaction
 
 ```php
-public static array createReaction()
+public static array createReaction(int $channelId, int $messageId, string $emoji)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
+| `messageId` | `int` | Yes | - | - |
+| `emoji` | `string` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::createReaction();
-```
 
 ---
 
@@ -183,20 +169,20 @@ use Kyzegs\Laracord\Facades\Laracord;
 Delete own reaction
 
 ```php
-public static array deleteOwnReaction()
+public static array deleteOwnReaction(int $channelId, int $messageId, string $emoji)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
+| `messageId` | `int` | Yes | - | - |
+| `emoji` | `string` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::deleteOwnReaction();
-```
 
 ---
 
@@ -205,20 +191,20 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get reactions
 
 ```php
-public static array getReactions()
+public static array getReactions(int $channelId, int $messageId, string $emoji)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
+| `messageId` | `int` | Yes | - | - |
+| `emoji` | `string` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getReactions();
-```
 
 ---
 
@@ -227,20 +213,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Delete all reactions
 
 ```php
-public static array deleteAllReactions()
+public static array deleteAllReactions(int $channelId, int $messageId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
+| `messageId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::deleteAllReactions();
-```
 
 ---
 
@@ -249,20 +234,20 @@ use Kyzegs\Laracord\Facades\Laracord;
 Delete all reactions for emoji
 
 ```php
-public static array deleteAllReactionsForEmoji()
+public static array deleteAllReactionsForEmoji(int $channelId, int $messageId, string $emoji)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
+| `messageId` | `int` | Yes | - | - |
+| `emoji` | `string` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::deleteAllReactionsForEmoji();
-```
 
 ---
 
@@ -271,20 +256,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Trigger typing indicator
 
 ```php
-public static array triggerTypingIndicator()
+public static array triggerTypingIndicator(int $channelId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::triggerTypingIndicator();
-```
 
 ---
 
@@ -293,20 +276,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Join thread
 
 ```php
-public static array joinThread()
+public static array joinThread(int $channelId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::joinThread();
-```
 
 ---
 
@@ -315,20 +296,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Add thread member
 
 ```php
-public static array addThreadMember()
+public static array addThreadMember(int $channelId, int $userId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
+| `userId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::addThreadMember();
-```
 
 ---
 
@@ -337,20 +317,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Leave thread
 
 ```php
-public static array leaveThread()
+public static array leaveThread(int $channelId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::leaveThread();
-```
 
 ---
 
@@ -359,20 +337,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Remove thread member
 
 ```php
-public static array removeThreadMember()
+public static array removeThreadMember(int $channelId, int $userId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
+| `userId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::removeThreadMember();
-```
 
 ---
 
@@ -381,20 +358,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get thread member
 
 ```php
-public static array getThreadMember()
+public static array getThreadMember(int $channelId, int $userId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
+| `userId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getThreadMember();
-```
 
 ---
 
@@ -403,20 +379,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 List thread members
 
 ```php
-public static array listThreadMembers()
+public static array listThreadMembers(int $channelId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::listThreadMembers();
-```
 
 ---
 
@@ -425,20 +399,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 List public archived threads
 
 ```php
-public static array listPublicArchivedThreads()
+public static array listPublicArchivedThreads(int $channelId, array $data = [])
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
+| `data` | `array` | No | [] | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::listPublicArchivedThreads();
-```
 
 ---
 
@@ -447,20 +420,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 List private archived threads
 
 ```php
-public static array listPrivateArchivedThreads()
+public static array listPrivateArchivedThreads(int $channelId, array $data = [])
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
+| `data` | `array` | No | [] | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::listPrivateArchivedThreads();
-```
 
 ---
 
@@ -469,20 +441,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 List joined private archived threads
 
 ```php
-public static array listJoinedPrivateArchivedThreads()
+public static array listJoinedPrivateArchivedThreads(int $channelId, array $data = [])
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
+| `data` | `array` | No | [] | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::listJoinedPrivateArchivedThreads();
-```
 
 ---
 
@@ -491,20 +462,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Modify current member
 
 ```php
-public static array modifyCurrentMember()
+public static array modifyCurrentMember(int $guildId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::modifyCurrentMember();
-```
 
 ---
 
@@ -513,20 +483,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get invite
 
 ```php
-public static array getInvite()
+public static array getInvite(string $inviteCode, array $data = [])
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `inviteCode` | `string` | Yes | - | - |
+| `data` | `array` | No | [] | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getInvite();
-```
 
 ---
 
@@ -535,20 +504,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Delete invite
 
 ```php
-public static array deleteInvite()
+public static array deleteInvite(string $inviteCode)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `inviteCode` | `string` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::deleteInvite();
-```
 
 ---
 
@@ -557,20 +524,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Create stage instance
 
 ```php
-public static array createStageInstance()
+public static array createStageInstance(int $channelId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::createStageInstance();
-```
 
 ---
 
@@ -579,20 +545,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get stage instance
 
 ```php
-public static array getStageInstance()
+public static array getStageInstance(int $channelId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getStageInstance();
-```
 
 ---
 
@@ -601,20 +565,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Modify stage instance
 
 ```php
-public static array modifyStageInstance()
+public static array modifyStageInstance(int $channelId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::modifyStageInstance();
-```
 
 ---
 
@@ -623,20 +586,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Delete stage instance
 
 ```php
-public static array deleteStageInstance()
+public static array deleteStageInstance(int $channelId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::deleteStageInstance();
-```
 
 ---
 
@@ -645,20 +606,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get sticker
 
 ```php
-public static array getSticker()
+public static array getSticker(int $stickerId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `stickerId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getSticker();
-```
 
 ---
 
@@ -674,14 +633,6 @@ public static array listNitroStickerPacks()
 
 Returns `array`
 
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::listNitroStickerPacks();
-```
-
 ---
 
 ## createDm
@@ -689,20 +640,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Create dm
 
 ```php
-public static array createDm()
+public static array createDm(array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::createDm();
-```
 
 ---
 
@@ -711,20 +660,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Create group dm
 
 ```php
-public static array createGroupDm()
+public static array createGroupDm(array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::createGroupDm();
-```
 
 ---
 
@@ -739,14 +686,6 @@ public static array listVoiceRegions()
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::listVoiceRegions();
-```
 
 ---
 

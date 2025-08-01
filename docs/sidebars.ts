@@ -33,6 +33,20 @@ const sidebars: SidebarsConfig = {
       label: 'Usage',
       items: [
         'usage/authentication',
+        'usage/making-requests',
+        'usage/error-handling',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'API Reference',
+      items: [
+        'api',
+        'api/application-commands',
+        'api/channels',
+        'api/guilds',
+        'api/users',
+        'api/webhooks',
       ],
     },
   ],

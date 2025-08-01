@@ -70,7 +70,6 @@ const config: Config = {
           position: 'left',
           label: 'Documentation',
         },
-        {to: '/api', label: 'API Reference', position: 'left'},
         {
           href: 'https://github.com/kyzegs/laracord',
           label: 'GitHub',

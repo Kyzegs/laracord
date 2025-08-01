@@ -7,20 +7,21 @@ This section contains all methods related to Users.
 Delete user reaction
 
 ```php
-public static array deleteUserReaction()
+public static array deleteUserReaction(int $channelId, int $messageId, string $emoji, int $userId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `channelId` | `int` | Yes | - | - |
+| `messageId` | `int` | Yes | - | - |
+| `emoji` | `string` | Yes | - | - |
+| `userId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::deleteUserReaction();
-```
 
 ---
 
@@ -29,20 +30,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Modify current user voice state
 
 ```php
-public static array modifyCurrentUserVoiceState()
+public static array modifyCurrentUserVoiceState(int $guildId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::modifyCurrentUserVoiceState();
-```
 
 ---
 
@@ -51,26 +51,26 @@ use Kyzegs\Laracord\Facades\Laracord;
 Modify user voice state
 
 ```php
-public static array modifyUserVoiceState()
+public static array modifyUserVoiceState(int $guildId, int $userId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `userId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
 
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::modifyUserVoiceState();
-```
-
 ---
 
 ## getCurrentUser
 
-Get the current user information.
+Get current user
 
 ```php
 public static array getCurrentUser()
@@ -80,14 +80,6 @@ public static array getCurrentUser()
 
 Returns `array`
 
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getCurrentUser();
-```
-
 ---
 
 ## getUser
@@ -95,20 +87,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get user
 
 ```php
-public static array getUser()
+public static array getUser(int $userId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `userId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getUser();
-```
 
 ---
 
@@ -117,20 +107,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Modify current user
 
 ```php
-public static array modifyCurrentUser()
+public static array modifyCurrentUser(array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::modifyCurrentUser();
-```
 
 ---
 
@@ -146,14 +134,6 @@ public static array getUserConnections()
 
 Returns `array`
 
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getUserConnections();
-```
-
 ---
 
 ## getUserApplicationRoleConnections
@@ -161,20 +141,18 @@ use Kyzegs\Laracord\Facades\Laracord;
 Get user application role connections
 
 ```php
-public static array getUserApplicationRoleConnections()
+public static array getUserApplicationRoleConnections(int $guildId)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::getUserApplicationRoleConnections();
-```
 
 ---
 
@@ -183,20 +161,19 @@ use Kyzegs\Laracord\Facades\Laracord;
 Update user application role connections
 
 ```php
-public static array updateUserApplicationRoleConnections()
+public static array updateUserApplicationRoleConnections(int $guildId, array $data)
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `guildId` | `int` | Yes | - | - |
+| `data` | `array` | Yes | - | - |
 
 ### Returns
 
 Returns `array`
-
-### Example
-
-```php
-use Kyzegs\Laracord\Facades\Laracord;
-
- = Laracord::updateUserApplicationRoleConnections();
-```
 
 ---
 

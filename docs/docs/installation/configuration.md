@@ -227,4 +227,4 @@ dd($user);
 
 1. [Learn about authentication](../usage/authentication.md)
 2. [Start making API calls](../usage/making-requests.md)
-3. [Explore the API reference](../../api.md) 
+3. [Explore the API reference](../api.md) 
