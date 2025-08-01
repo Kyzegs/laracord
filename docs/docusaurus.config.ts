@@ -15,7 +15,7 @@ const config: Config = {
   },
 
   // Set the production url of your site here
-  url: 'https://laracord.com',
+  url: 'https://c226c7bec00b.ngrok-free.app',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
@@ -53,7 +53,7 @@ const config: Config = {
       } satisfies Preset.Options,
     ],
   ],
-
+  themes: ['docusaurus-theme-search-typesense'],
   themeConfig: {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
@@ -89,7 +89,7 @@ const config: Config = {
             },
             {
               label: 'API Reference',
-              to: '/api',
+              to: '/docs/api',
             },
           ],
         },
@@ -114,7 +114,37 @@ const config: Config = {
       darkTheme: prismThemes.dracula,
       additionalLanguages: ['php'],
     },
+    typesense: {
+        // Replace this with the name of your index/collection.
+        // It should match the "index_name" entry in the scraper's "config.json" file.
+        typesenseCollectionName: 'laracord',
+
+        typesenseServerConfig: {
+          nodes: [
+            {
+              host: 'host.docker.internal',
+              port: 8108,
+              protocol: 'http',
+            },
+          ],
+          apiKey: 'xyz',
+        },
+
+        // Optional: Typesense search parameters: https://typesense.org/docs/0.24.0/api/search.html#search-parameters
+        typesenseSearchParameters: {},
+
+        // Optional
+        contextualSearch: true,
+      },
   } satisfies Preset.ThemeConfig,
+//   plugins: [
+//     [
+//       '@docusaurus/plugin-sitemap',
+//       {
+//         // plugin options
+//       },
+//     ],
+//   ],
 };
 
 export default config;

@@ -210,4 +210,4 @@ Enable debug logging to troubleshoot authentication issues:
 
 1. [Learn about making API requests](./making-requests.md)
 2. [Understand error handling](./error-handling.md)
-3. [Explore the API reference](../../api.md) 
+3. [Explore the API reference](../api.md) 

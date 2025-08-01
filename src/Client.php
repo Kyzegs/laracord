@@ -54,6 +54,12 @@ class Client
         throw new HttpException($statusCode ?? 0, $contents ?? '');
     }
 
+    /**
+     * Retrieve all global application commands for an application.
+     *
+     * @param int $applicationId The ID of the application to retrieve commands for.
+     * @param array $query Optional query parameters.
+     */
     public function getGlobalApplicationCommands(int $applicationId, array $query = []): array
     {
         return $this->request(new Route('GET', '/applications/{application_id}/commands', ['application_id' => $applicationId]), query: $query);
