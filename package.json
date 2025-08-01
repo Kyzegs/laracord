@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "docusaurus-theme-search-typesense": "^0.25.0-0"
+  }
+}

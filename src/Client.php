@@ -54,6 +54,12 @@ class Client
         throw new HttpException($statusCode ?? 0, $contents ?? '');
     }
 
+    /**
+     * Retrieve all global application commands for an application.
+     *
+     * @param  int  $applicationId  The ID of the application to retrieve commands for.
+     * @param  array  $query  Optional query parameters.
+     */
     public function getGlobalApplicationCommands(int $applicationId, array $query = []): array
     {
         return $this->request(new Route('GET', '/applications/{application_id}/commands', ['application_id' => $applicationId]), query: $query);
@@ -839,7 +845,7 @@ class Client
         return $this->request(new Route('PATCH', '/webhooks/{webhook_id}', ['webhook_id' => $webhookId]), $data);
     }
 
-    public function modifyWebhookWIthToken(int $webhookId, string $webhookToken, array $data): array
+    public function modifyWebhookWithToken(int $webhookId, string $webhookToken, array $data): array
     {
         return $this->request(new Route('PATCH', '/webhooks/{webhook_id}/{webhook_token}', ['webhook_id' => $webhookId, 'webhook_token' => $webhookToken]), $data);
     }
@@ -864,6 +870,9 @@ class Client
         return $this->request(new Route('POST', '/webhooks/{webhook_id}/{webhook_token}/slack', ['webhook_id' => $webhookId, 'webhook_token' => $webhookToken]), $data);
     }
 
+    /**
+     * Execute GitHub compatible webhook.
+     */
     public function executeGitHubCompatibleWebhook(int $webhookId, string $webhookToken, array $data): array
     {
         return $this->request(new Route('POST', '/webhooks/{webhook_id}/{webhook_token}/github', ['webhook_id' => $webhookId, 'webhook_token' => $webhookToken]), $data);
