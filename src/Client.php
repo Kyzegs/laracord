@@ -57,8 +57,8 @@ class Client
     /**
      * Retrieve all global application commands for an application.
      *
-     * @param int $applicationId The ID of the application to retrieve commands for.
-     * @param array $query Optional query parameters.
+     * @param  int  $applicationId  The ID of the application to retrieve commands for.
+     * @param  array  $query  Optional query parameters.
      */
     public function getGlobalApplicationCommands(int $applicationId, array $query = []): array
     {

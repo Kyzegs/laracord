@@ -1,19 +1,24 @@
 <?php
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
 
 use PHPStan\PhpDocParser\Lexer\Lexer;
+use PHPStan\PhpDocParser\Parser\ConstExprParser;
 use PHPStan\PhpDocParser\Parser\PhpDocParser;
 use PHPStan\PhpDocParser\Parser\TypeParser;
-use PHPStan\PhpDocParser\Parser\ConstExprParser;
 
 class ApiDocGenerator
 {
     private string $facadePath;
+
     private string $clientPath;
+
     private string $outputDir;
+
     private array $methods = [];
+
     private array $clientDocstrings = [];
+
     private PhpDocParser $phpDocParser;
 
     public function __construct(string $facadePath, string $clientPath, string $outputDir)
@@ -23,8 +28,8 @@ class ApiDocGenerator
         $this->outputDir = $outputDir;
 
         // Initialize PHPStan's PhpDocParser
-        $lexer = new Lexer();
-        $constExprParser = new ConstExprParser();
+        $lexer = new Lexer;
+        $constExprParser = new ConstExprParser;
         $typeParser = new TypeParser($constExprParser);
         $this->phpDocParser = new PhpDocParser($typeParser, $constExprParser);
     }
@@ -57,7 +62,7 @@ class ApiDocGenerator
     {
         try {
             // Tokenize the docstring using PHPStan's lexer
-            $lexer = new Lexer();
+            $lexer = new Lexer;
             $tokens = $lexer->tokenize($docstringBlock);
             $tokenIterator = new \PHPStan\PhpDocParser\Parser\TokenIterator($tokens);
 
@@ -72,8 +77,8 @@ class ApiDocGenerator
                 foreach ($phpDocNode->children as $child) {
                     if ($child instanceof \PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode) {
                         $text = trim($child->text);
-                        if (!empty($text) && !str_starts_with($text, '@')) {
-                            $description .= $text . ' ';
+                        if (! empty($text) && ! str_starts_with($text, '@')) {
+                            $description .= $text.' ';
                         }
                     }
                 }
@@ -91,7 +96,7 @@ class ApiDocGenerator
 
                             $paramDescriptions[$paramName] = [
                                 'type' => $paramType,
-                                'description' => $paramDescription
+                                'description' => $paramDescription,
                             ];
                         }
                     }
@@ -100,7 +105,7 @@ class ApiDocGenerator
 
             return [
                 'description' => trim($description),
-                'params' => $paramDescriptions
+                'params' => $paramDescriptions,
             ];
         } catch (\Exception $e) {
             // Fallback to simple parsing if PHPStan parser fails
@@ -132,17 +137,17 @@ class ApiDocGenerator
                 $paramDescription = trim($matches[3]);
                 $paramDescriptions[$paramName] = [
                     'type' => $paramType,
-                    'description' => $paramDescription
+                    'description' => $paramDescription,
                 ];
             } else {
                 // This is part of the main description
-                $description .= $line . ' ';
+                $description .= $line.' ';
             }
         }
 
         return [
             'description' => trim($description),
-            'params' => $paramDescriptions
+            'params' => $paramDescriptions,
         ];
     }
 
@@ -164,7 +169,7 @@ class ApiDocGenerator
                 'parameters' => $parameters,
                 'category' => $this->categorizeMethod($methodName),
                 'description' => $this->getDescription($methodName),
-                'example' => $this->generateExample($methodName, $parameters)
+                'example' => $this->generateExample($methodName, $parameters),
             ];
         }
     }
@@ -174,6 +179,7 @@ class ApiDocGenerator
         // First try to get the docstring from Client.php
         if (isset($this->clientDocstrings[$methodName])) {
             $parsed = $this->clientDocstrings[$methodName];
+
             return $parsed['description'];
         }
 
@@ -193,8 +199,8 @@ class ApiDocGenerator
                 return $parsed['params'][$paramName]['description'];
             }
             // Try with $ prefix
-            if (isset($parsed['params']['$' . $paramName])) {
-                return $parsed['params']['$' . $paramName]['description'];
+            if (isset($parsed['params']['$'.$paramName])) {
+                return $parsed['params']['$'.$paramName]['description'];
             }
         }
 
@@ -221,7 +227,7 @@ class ApiDocGenerator
                         'type' => $matches[1],
                         'name' => $matches[2],
                         'default' => trim($matches[3]),
-                        'required' => false
+                        'required' => false,
                     ];
                 }
             } else {
@@ -232,7 +238,7 @@ class ApiDocGenerator
                         'type' => $matches[1],
                         'name' => $matches[2],
                         'default' => null,
-                        'required' => true
+                        'required' => true,
                     ];
                 }
             }
@@ -258,6 +264,7 @@ class ApiDocGenerator
         if (strpos($methodName, 'Webhook') !== false) {
             return 'webhooks';
         }
+
         return 'general';
     }
 
@@ -272,12 +279,12 @@ class ApiDocGenerator
 
         $paramList = [];
         foreach ($parameters as $param) {
-            $paramList[] = '$' . $param['name'];
+            $paramList[] = '$'.$param['name'];
         }
 
         $example .= implode(', ', $paramList);
         $example .= ");\n";
-        $example .= "```";
+        $example .= '```';
 
         return $example;
     }
@@ -290,13 +297,13 @@ class ApiDocGenerator
             'guilds' => 'Guilds',
             'users' => 'Users',
             'webhooks' => 'Webhooks',
-            'general' => 'General'
+            'general' => 'General',
         ];
 
         foreach ($categories as $category => $title) {
-            $categoryMethods = array_filter($this->methods, fn($m) => $m['category'] === $category);
+            $categoryMethods = array_filter($this->methods, fn ($m) => $m['category'] === $category);
 
-            if (!empty($categoryMethods)) {
+            if (! empty($categoryMethods)) {
                 $this->generateCategoryPage($category, $title, $categoryMethods);
             }
         }
@@ -311,7 +318,7 @@ class ApiDocGenerator
             $content .= $this->generateMethodDocumentation($method);
         }
 
-        $outputPath = $this->outputDir . "/docs/api/{$category}.md";
+        $outputPath = $this->outputDir."/docs/api/{$category}.md";
         $this->ensureDirectoryExists(dirname($outputPath));
         file_put_contents($outputPath, $content);
     }
@@ -328,7 +335,7 @@ class ApiDocGenerator
         $params = [];
         foreach ($method['parameters'] as $param) {
             $paramStr = "{$param['type']} \${$param['name']}";
-            if (!$param['required']) {
+            if (! $param['required']) {
                 $paramStr .= " = {$param['default']}";
             }
             $params[] = $paramStr;
@@ -340,7 +347,7 @@ class ApiDocGenerator
         $content .= $signature;
 
         // Parameters table
-        if (!empty($method['parameters'])) {
+        if (! empty($method['parameters'])) {
             $content .= "### Parameters\n\n";
             $content .= "| Parameter | Type | Required | Default | Description |\n";
             $content .= "|-----------|------|----------|---------|-------------|\n";
@@ -386,13 +393,13 @@ class ApiDocGenerator
             'channels' => 'Channels & Messages',
             'guilds' => 'Guilds',
             'users' => 'Users',
-            'webhooks' => 'Webhooks'
+            'webhooks' => 'Webhooks',
         ];
 
         foreach ($categories as $category => $title) {
-            $categoryMethods = array_filter($this->methods, fn($m) => $m['category'] === $category);
-            if (!empty($categoryMethods)) {
-                $content .= "- [{$title}](./api/{$category}.md) (" . count($categoryMethods) . " methods)\n";
+            $categoryMethods = array_filter($this->methods, fn ($m) => $m['category'] === $category);
+            if (! empty($categoryMethods)) {
+                $content .= "- [{$title}](./api/{$category}.md) (".count($categoryMethods)." methods)\n";
             }
         }
 
@@ -402,14 +409,14 @@ class ApiDocGenerator
             $content .= "- [`{$method['name']}`](./api/{$method['category']}.md#{$method['name']}) - {$method['description']}\n";
         }
 
-        $outputPath = $this->outputDir . "/docs/api.md";
+        $outputPath = $this->outputDir.'/docs/api.md';
         $this->ensureDirectoryExists(dirname($outputPath));
         file_put_contents($outputPath, $content);
     }
 
     private function ensureDirectoryExists(string $path): void
     {
-        if (!is_dir($path)) {
+        if (! is_dir($path)) {
             mkdir($path, 0755, true);
         }
     }
@@ -417,8 +424,8 @@ class ApiDocGenerator
 
 // Usage
 $generator = new ApiDocGenerator(
-    __DIR__ . '/../src/Facades/Laracord.php',
-    __DIR__ . '/../src/Client.php',
+    __DIR__.'/../src/Facades/Laracord.php',
+    __DIR__.'/../src/Client.php',
     __DIR__
 );
 
