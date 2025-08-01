@@ -1,10 +1,10 @@
 {
     "index_name": "laracord",
     "start_urls": [
-        "https://c226c7bec00b.ngrok-free.app/"
+        "https://laracord.com/"
     ],
     "sitemap_urls": [
-        "https://c226c7bec00b.ngrok-free.app/sitemap.xml"
+        "https://laracord.com/sitemap.xml"
     ],
     "sitemap_alternate_links": true,
     "stop_urls": [

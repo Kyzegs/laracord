@@ -15,7 +15,7 @@ const config: Config = {
   },
 
   // Set the production url of your site here
-  url: 'https://c226c7bec00b.ngrok-free.app',
+  url: process.env.SITE_URL!,
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
@@ -117,17 +117,17 @@ const config: Config = {
     typesense: {
         // Replace this with the name of your index/collection.
         // It should match the "index_name" entry in the scraper's "config.json" file.
-        typesenseCollectionName: 'laracord',
+        typesenseCollectionName: process.env.TYPESENSE_COLLECTION_NAME!,
 
         typesenseServerConfig: {
           nodes: [
             {
-              host: 'host.docker.internal',
-              port: 8108,
-              protocol: 'http',
+              host: process.env.TYPESENSE_HOST!,
+              port: parseInt(process.env.TYPESENSE_PORT!),
+              protocol: process.env.TYPESENSE_PROTOCOL!,
             },
           ],
-          apiKey: 'xyz',
+          apiKey: process.env.TYPESENSE_API_KEY!,
         },
 
         // Optional: Typesense search parameters: https://typesense.org/docs/0.24.0/api/search.html#search-parameters
@@ -137,14 +137,6 @@ const config: Config = {
         contextualSearch: true,
       },
   } satisfies Preset.ThemeConfig,
-//   plugins: [
-//     [
-//       '@docusaurus/plugin-sitemap',
-//       {
-//         // plugin options
-//       },
-//     ],
-//   ],
 };
 
 export default config;
