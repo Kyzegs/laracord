@@ -188,7 +188,7 @@ $message = Laracord::createMessage(123456789, [
 - [`deleteWebhookWithToken`](./api/webhooks.md#deleteWebhookWithToken) - Delete webhook with token
 - [`executeWebhook`](./api/webhooks.md#executeWebhook) - Execute webhook
 - [`executeSlackCompatibleWebhook`](./api/webhooks.md#executeSlackCompatibleWebhook) - Execute slack compatible webhook
-- [`executeGitHubCompatibleWebhook`](./api/webhooks.md#executeGitHubCompatibleWebhook) - Execute git hub compatible webhook
+- [`executeGitHubCompatibleWebhook`](./api/webhooks.md#executeGitHubCompatibleWebhook) - Execute GitHub compatible webhook.
 - [`getWebhookMessage`](./api/channels.md#getWebhookMessage) - Get webhook message
 - [`editWebhookMessage`](./api/channels.md#editWebhookMessage) - Edit webhook message
 - [`deleteWebhookMessage`](./api/channels.md#deleteWebhookMessage) - Delete webhook message

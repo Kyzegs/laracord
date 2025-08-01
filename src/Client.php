@@ -870,6 +870,9 @@ class Client
         return $this->request(new Route('POST', '/webhooks/{webhook_id}/{webhook_token}/slack', ['webhook_id' => $webhookId, 'webhook_token' => $webhookToken]), $data);
     }
 
+    /**
+     * Execute GitHub compatible webhook.
+     */
     public function executeGitHubCompatibleWebhook(int $webhookId, string $webhookToken, array $data): array
     {
         return $this->request(new Route('POST', '/webhooks/{webhook_id}/{webhook_token}/github', ['webhook_id' => $webhookId, 'webhook_token' => $webhookToken]), $data);

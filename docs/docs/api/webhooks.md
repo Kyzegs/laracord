@@ -194,7 +194,7 @@ Returns `array`
 
 ## executeGitHubCompatibleWebhook
 
-Execute git hub compatible webhook
+Execute GitHub compatible webhook.
 
 ```php
 public static array executeGitHubCompatibleWebhook(int $webhookId, string $webhookToken, array $data)
