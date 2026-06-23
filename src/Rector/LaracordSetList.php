@@ -20,5 +20,5 @@ final class LaracordSetList
     /**
      * Upgrades a code base from Laracord 0.x to 1.0.
      */
-    public const UPGRADE_0_TO_1 = __DIR__.'/../../config/rector/laracord-0-to-1.php';
+    public const string UPGRADE_0_TO_1 = __DIR__.'/../../config/rector/laracord-0-to-1.php';
 }

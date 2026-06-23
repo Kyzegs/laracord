@@ -31,6 +31,7 @@ class ServiceProvider extends BaseServiceProvider
             ));
         });
         $this->app->afterResolving(ChannelManager::class, function (ChannelManager $channelManager): void {
+            // @phpstan-ignore property.notFound ($this is the service provider here, not the ChannelManager)
             $channelManager->extend('discord', fn () => $this->app->make(DiscordChannel::class));
         });
     }
@@ -38,6 +39,7 @@ class ServiceProvider extends BaseServiceProvider
     /**
      * Register any application services.
      */
+    #[\Override]
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__.'/../config/laracord.php', 'laracord');

@@ -9,7 +9,7 @@ use Kyzegs\Laracord\Enums\HttpMethod;
 
 final class EndpointCatalog
 {
-    public const AUDITED_AT = '2026-06-23';
+    public const string AUDITED_AT = '2026-06-23';
 
     /**
      * Endpoint names are relative to their resource: the resource noun is dropped, so

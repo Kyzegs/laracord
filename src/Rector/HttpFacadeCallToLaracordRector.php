@@ -50,28 +50,28 @@ final class HttpFacadeCallToLaracordRector extends AbstractRector
     /**
      * Old low-level `Http` facade FQCN (removed in 1.x).
      */
-    private const OLD_HTTP_FACADE = 'Kyzegs\\Laracord\\Client\\Http';
+    private const string OLD_HTTP_FACADE = 'Kyzegs\\Laracord\\Client\\Http';
 
     /**
      * Old `Routes` constants holder (removed in 1.x).
      */
-    private const OLD_ROUTES = 'Kyzegs\\Laracord\\Constants\\Routes';
+    private const string OLD_ROUTES = 'Kyzegs\\Laracord\\Constants\\Routes';
 
     /**
      * The `Laracord` facade FQCN. The class name is unchanged between 0.x (flat
      * endpoint methods) and 1.x (auth-context entry points).
      */
-    private const FACADE = Laracord::class;
+    private const string FACADE = Laracord::class;
 
     /**
      * Old verbs that carried a URL + body/query and are now endpoint methods.
      */
-    private const HTTP_VERBS = ['get', 'post', 'put', 'patch', 'delete'];
+    private const array HTTP_VERBS = ['get', 'post', 'put', 'patch', 'delete'];
 
     /**
      * 1.x facade methods that must never be treated as 0.x endpoint calls.
      */
-    private const FACADE_ENTRY_POINTS = ['bot', 'bearer', 'withoutAuthentication'];
+    private const array FACADE_ENTRY_POINTS = ['bot', 'bearer', 'withoutAuthentication'];
 
     /**
      * The complete 0.x endpoint surface as legacyName => [httpMethod, path].
@@ -82,7 +82,7 @@ final class HttpFacadeCallToLaracordRector extends AbstractRector
      *
      * @var array<string, array{0: string, 1: string}>
      */
-    private const LEGACY_ENDPOINTS = [
+    private const array LEGACY_ENDPOINTS = [
         'addGuildMember' => ['PUT', '/guilds/{guild_id}/members/{user_id}'],
         'addGuildMemberRole' => ['PUT', '/guilds/{guild_id}/members/{user_id}/roles/{role_id}'],
         'addThreadMember' => ['PUT', '/channels/{channel_id}/thread-members/{user_id}'],
