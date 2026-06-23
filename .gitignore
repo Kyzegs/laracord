@@ -2,5 +2,6 @@
 /.fleet
 /.idea
 /.phpunit.cache
+/.phpstan.cache
 /.vscode
 /vendor

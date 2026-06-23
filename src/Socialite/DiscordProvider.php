@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kyzegs\Laracord\Socialite;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Laravel\Socialite\Two\AbstractProvider;
 
 class DiscordProvider extends AbstractProvider implements ProviderInterface
@@ -12,7 +12,7 @@ class DiscordProvider extends AbstractProvider implements ProviderInterface
     /**
      * The cached user instance.
      *
-     * @var \Kyzegs\Laracord\Socialite\User|null
+     * @var User|null
      */
     protected $user;
 
@@ -24,30 +24,13 @@ class DiscordProvider extends AbstractProvider implements ProviderInterface
     protected $scopeSeparator = ' ';
 
     /**
-     * Create a new provider instance.
-     *
-     * @param  string  $clientId
-     * @param  string  $clientSecret
-     * @param  string  $redirectUrl
-     * @param  array  $guzzle
-     * @return void
-     */
-    public function __construct(Request $request, $clientId, $clientSecret, $redirectUrl, $guzzle = [])
-    {
-        parent::__construct($request, $clientId, $clientSecret, $redirectUrl, $guzzle);
-
-        $this->setScopes(config('laracord.scopes'));
-    }
-
-    /**
      * Get the authentication URL for the provider.
      *
      * @param  string  $state
-     * @return strin
      */
     protected function getAuthUrl($state): string
     {
-        return $this->buildAuthUrlFromBase('https://discord.com/api/oauth2/authorize', $state);
+        return $this->buildAuthUrlFromBase('https://discord.com/oauth2/authorize', $state);
     }
 
     /**
@@ -55,7 +38,7 @@ class DiscordProvider extends AbstractProvider implements ProviderInterface
      */
     protected function getTokenUrl(): string
     {
-        return 'https://discord.com/api/oauth2/token';
+        return 'https://discord.com/api/v10/oauth2/token';
     }
 
     /**
@@ -63,30 +46,57 @@ class DiscordProvider extends AbstractProvider implements ProviderInterface
      *
      * @param  string  $token
      */
+    /** @return array<string, mixed> */
     protected function getUserByToken(mixed $token): array
     {
-        $response = $this->getHttpClient()->get('https://discord.com/api/users/@me', [
+        $response = $this->getHttpClient()->get('https://discord.com/api/v10/users/@me', [
             'headers' => [
                 'Authorization' => 'Bearer '.$token,
             ],
         ]);
 
-        return json_decode($response->getBody(), true);
+        return json_decode((string) $response->getBody(), true, 512, JSON_THROW_ON_ERROR);
     }
 
     /**
      * Map the raw user array to a Socialite User instance.
      */
+    /** @param array<string, mixed> $user */
     protected function mapUserToObject(array $user): User
     {
+        $id = (string) $user['id'];
+        $discriminator = (string) ($user['discriminator'] ?? '0');
+        $defaultAvatar = $discriminator === '0' ? (((int) $id >> 22) % 6) : ((int) $discriminator % 5);
+
         return (new User)->setRaw($user)->map([
             'id' => $user['id'],
-            'nickname' => sprintf('%s#%d', $user['username'], $user['discriminator']),
-            'name' => $user['username'],
+            'nickname' => $user['username'],
+            'name' => $user['global_name'] ?? $user['username'],
             'email' => $user['email'] ?? null,
-            'avatar' => $user['avatar']
-                ? sprintf('https://cdn.discordapp.com/avatars/%d/%s.png', $user['id'], $user['avatar'])
-                : sprintf('https://cdn.discordapp.com/embed/avatars/%d.png', $user['discriminator']),
+            'avatar' => isset($user['avatar'])
+                ? sprintf('https://cdn.discordapp.com/avatars/%s/%s.png', $id, $user['avatar'])
+                : sprintf('https://cdn.discordapp.com/embed/avatars/%d.png', $defaultAvatar),
         ]);
+    }
+
+    /** @return Collection<int, PartialGuild> */
+    public function guildsFromToken(string $token): Collection
+    {
+        $response = $this->getHttpClient()->get('https://discord.com/api/v10/users/@me/guilds', [
+            'headers' => ['Authorization' => 'Bearer '.$token],
+        ]);
+
+        /** @var list<array<string, mixed>> $guilds */
+        $guilds = json_decode((string) $response->getBody(), true, 512, JSON_THROW_ON_ERROR);
+
+        return collect($guilds)
+            ->map(static fn (array $guild): PartialGuild => new PartialGuild(
+                (string) $guild['id'],
+                (string) $guild['name'],
+                $guild['icon'] ?? null,
+                (bool) ($guild['owner'] ?? false),
+                (int) ($guild['permissions'] ?? 0),
+                array_values($guild['features'] ?? []),
+            ));
     }
 }

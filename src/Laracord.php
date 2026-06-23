@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace Kyzegs\Laracord;
 
+use Kyzegs\Laracord\ValueObjects\OAuthAccessToken;
+
 class Laracord
 {
-    public static function client(): Client
+    public static function bot(): DiscordClient
     {
-        return self::factory()->make();
+        return resolve(LaracordManager::class)->bot();
     }
 
-    public static function factory(): Factory
+    public static function bearer(string|OAuthAccessToken $token): DiscordClient
     {
-        return new Factory;
+        return resolve(LaracordManager::class)->bearer($token);
     }
 }

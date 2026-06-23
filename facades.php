@@ -4,9 +4,11 @@ require __DIR__.'/vendor/autoload.php';
 
 use Illuminate\Cache\Repository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Conditionable;
+use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode;
 use PHPStan\PhpDocParser\Ast\Type\ArrayTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\CallableTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\ConditionalTypeNode;
@@ -15,6 +17,7 @@ use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\IntersectionTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\NullableTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\ThisTypeNode;
+use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 use PHPStan\PhpDocParser\Ast\Type\UnionTypeNode;
 use PHPStan\PhpDocParser\Lexer\Lexer;
 use PHPStan\PhpDocParser\Parser\ConstExprParser;
@@ -120,8 +123,8 @@ exit(0);
 /**
  * Resolve the facades from the given directory.
  *
- * @param  \Symfony\Component\Finder\Finder  $finder
- * @return \Illuminate\Support\Collection<\ReflectionClass>
+ * @param  Finder  $finder
+ * @return Collection<ReflectionClass>
  */
 function resolveFacades($finder)
 {
@@ -134,7 +137,7 @@ function resolveFacades($finder)
 /**
  * Resolve the classes referenced in the @param  \ReflectionClass  $class.
  *
- * @return \Illuminate\Support\Collection<class-string>
+ * @return Collection<class-string>
  *
  * @see docblocks.
  */
@@ -147,8 +150,8 @@ function resolveDocSees($class)
 /**
  * Resolve the classes referenced methods in the @methods docblocks.
  *
- * @param  \ReflectionClass  $class
- * @return \Illuminate\Support\Collection<string>
+ * @param  ReflectionClass  $class
+ * @return Collection<string>
  */
 function resolveDocMethods($class)
 {
@@ -160,8 +163,8 @@ function resolveDocMethods($class)
 /**
  * Resolve the parameters type from the @param docblocks.
  *
- * @param  \ReflectionMethodDecorator  $method
- * @param  \ReflectionParameter  $parameter
+ * @param  ReflectionMethodDecorator  $method
+ * @param  ReflectionParameter  $parameter
  * @return string|null
  */
 function resolveDocParamType($method, $parameter)
@@ -209,7 +212,7 @@ function resolveReturnDocType($method)
  * Parse the given docblock.
  *
  * @param  string  $docblock
- * @return \PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode
+ * @return PhpDocNode
  */
 function parseDocblock($docblock)
 {
@@ -221,8 +224,8 @@ function parseDocblock($docblock)
 /**
  * Resolve the types from the docblock.
  *
- * @param  \ReflectionMethodDecorator  $method
- * @param  \PHPStan\PhpDocParser\Ast\Type\TypeNode  $typeNode
+ * @param  ReflectionMethodDecorator  $method
+ * @param  TypeNode  $typeNode
  * @return string
  */
 function resolveDocblockTypes($method, $typeNode)
@@ -316,8 +319,8 @@ function resolveDocblockTypes($method, $typeNode)
 /**
  * Handle conditional types.
  *
- * @param  \ReflectionMethodDecorator  $method
- * @param  \PHPStan\PhpDocParser\Ast\Type\ConditionalTypeNode  $typeNode
+ * @param  ReflectionMethodDecorator  $method
+ * @param  ConditionalTypeNode  $typeNode
  * @return string
  */
 function handleConditionalType($method, $typeNode)
@@ -336,8 +339,8 @@ function handleConditionalType($method, $typeNode)
 /**
  * Handle unknown identifier types.
  *
- * @param  \ReflectionMethodDecorator  $method
- * @param  \PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode  $typeNode
+ * @param  ReflectionMethodDecorator  $method
+ * @param  IdentifierTypeNode  $typeNode
  * @return string
  */
 function handleUnknownIdentifierType($method, $typeNode)
@@ -437,7 +440,7 @@ function isKnownOptionalDependency($type)
 /**
  * Resolve the declared type.
  *
- * @param  \ReflectionType|null  $type
+ * @param  ReflectionType|null  $type
  * @return string|null
  */
 function resolveType($type)
@@ -472,7 +475,7 @@ function resolveType($type)
  *
  * @param  string  $docblock
  * @param  string  $tag
- * @return \Illuminate\Support\Collection<string>
+ * @return Collection<string>
  */
 function resolveDocTags($docblock, $tag)
 {
@@ -491,8 +494,8 @@ function resolveDocTags($docblock, $tag)
 /**
  * Recursivly resolve docblock mixins.
  *
- * @param  \ReflectionClass  $class
- * @return \Illuminate\Support\Collection<\ReflectionClass>
+ * @param  ReflectionClass  $class
+ * @return Collection<ReflectionClass>
  */
 function resolveDocMixins($class)
 {
@@ -504,8 +507,8 @@ function resolveDocMixins($class)
 /**
  * Resolve the classes referenced methods in the @methods docblocks.
  *
- * @param  \ReflectionMethodDecorator  $method
- * @return \Illuminate\Support\Collection<int, string>
+ * @param  ReflectionMethodDecorator  $method
+ * @return Collection<int, string>
  */
 function resolveDocParameters($method)
 {
@@ -516,7 +519,7 @@ function resolveDocParameters($method)
 /**
  * Determine if the method is magic.
  *
- * @param  \ReflectionMethod|string  $method
+ * @param  ReflectionMethod|string  $method
  * @return bool
  */
 function isMagic($method)
@@ -543,7 +546,7 @@ function isInternal($method)
 /**
  * Determine if the method is deprecated.
  *
- * @param  \ReflectionMethod|string  $method
+ * @param  ReflectionMethod|string  $method
  * @return bool
  */
 function isDeprecated($method)
@@ -558,7 +561,7 @@ function isDeprecated($method)
 /**
  * Determine if the method is for a builtin contract.
  *
- * @param  \ReflectionMethodDecorator|string  $method
+ * @param  ReflectionMethodDecorator|string  $method
  * @return bool
  */
 function fulfillsBuiltinInterface($method)
@@ -577,7 +580,7 @@ function fulfillsBuiltinInterface($method)
 /**
  * Resolve the methods name.
  *
- * @param  \ReflectionMethod|string  $method
+ * @param  ReflectionMethod|string  $method
  * @return string
  */
 function resolveName($method)
@@ -590,8 +593,8 @@ function resolveName($method)
 /**
  * Resolve the classes methods.
  *
- * @param  \ReflectionClass  $class
- * @return \Illuminate\Support\Collection<\ReflectionMethodDecorator|string>
+ * @param  ReflectionClass  $class
+ * @return Collection<ReflectionMethodDecorator|string>
  */
 function resolveMethods($class)
 {
@@ -603,8 +606,8 @@ function resolveMethods($class)
 /**
  * Determine if the given method conflicts with a Facade method.
  *
- * @param  \ReflectionClass  $facade
- * @param  \ReflectionMethod|string  $method
+ * @param  ReflectionClass  $facade
+ * @param  ReflectionMethod|string  $method
  * @return bool
  */
 function conflictsWithFacade($facade, $method)
@@ -617,7 +620,7 @@ function conflictsWithFacade($facade, $method)
 /**
  * Normalise the method details into a easier format to work with.
  *
- * @param  \ReflectionMethodDecorator|string  $method
+ * @param  ReflectionMethodDecorator|string  $method
  * @return array|string
  */
 function normaliseDetails($method)
@@ -641,8 +644,8 @@ function normaliseDetails($method)
 /**
  * Resolve the parameters for the method.
  *
- * @param  \ReflectionMethodDecorator  $method
- * @return \Illuminate\Support\Collection<int, \ReflectionParameter|\DynamicParameter>
+ * @param  ReflectionMethodDecorator  $method
+ * @return Collection<int, ReflectionParameter|DynamicParameter>
  */
 function resolveParameters($method)
 {
@@ -656,8 +659,8 @@ function resolveParameters($method)
 /**
  * Resolve the classes imports.
  *
- * @param  \ReflectionClass  $class
- * @return \Illuminate\Support\Collection<string, class-string>
+ * @param  ReflectionClass  $class
+ * @return Collection<string, class-string>
  */
 function resolveClassImports($class)
 {
@@ -697,12 +700,12 @@ function resolveDefaultValue($parameter)
 }
 
 /**
- * @mixin \ReflectionMethod
+ * @mixin ReflectionMethod
  */
 class ReflectionMethodDecorator
 {
     /**
-     * @param  \ReflectionMethod  $method
+     * @param  ReflectionMethod  $method
      * @param  class-string  $sourceClass
      */
     public function __construct(private $method, private $sourceClass)
@@ -721,7 +724,7 @@ class ReflectionMethodDecorator
     }
 
     /**
-     * @return \ReflectionMethod
+     * @return ReflectionMethod
      */
     public function toBase()
     {
@@ -729,7 +732,7 @@ class ReflectionMethodDecorator
     }
 
     /**
-     * @return \ReflectionClass
+     * @return ReflectionClass
      */
     public function sourceClass()
     {

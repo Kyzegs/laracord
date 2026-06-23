@@ -4,19 +4,21 @@ declare(strict_types=1);
 
 namespace Kyzegs\Laracord\Socialite;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
 interface ProviderInterface
 {
     /**
      * Redirect the user to the authentication page for the provider.
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function redirect();
 
     /**
      * Get the User instance for the authenticated user.
      *
-     * @return \Kyzegs\Laracord\Socialite\User
+     * @return User
      */
     public function user();
 }
