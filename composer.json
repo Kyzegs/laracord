@@ -40,9 +40,9 @@
         "laravel/pint": "^1.24",
         "larastan/larastan": "^3.0",
         "orchestra/testbench": "^10.0|^11.0",
-        "pestphp/pest": "^3.8",
-        "pestphp/pest-plugin-laravel": "^3.2",
-        "phpunit/phpunit": "^11.5",
+        "pestphp/pest": "^4.4",
+        "pestphp/pest-plugin-laravel": "^4.1",
+        "phpunit/phpunit": "^12.5",
         "phpstan/phpdoc-parser": "^1.16",
         "rector/rector": "^2.1",
         "driftingly/rector-laravel": "^2.0"
