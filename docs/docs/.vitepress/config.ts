@@ -10,7 +10,7 @@ export default defineConfig({
     publicDir: 'static',
   },
   sitemap: {
-    hostname: process.env.SITE_URL ?? 'https://laracord.dev',
+    hostname: process.env.SITE_URL ?? 'https://docs.laracord.kyzegs.com',
   },
   head: [
     ['link', { rel: 'icon', type: 'image/x-icon', href: '/img/favicon.ico' }],
