@@ -1,6 +1,7 @@
 {
     "name": "kyzegs/laracord",
     "description": "Discord API wrapper",
+    "license": "MIT",
     "keywords": [
         "discord"
     ],
@@ -22,25 +23,37 @@
         }
     },
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "ext-json": "*",
-        "illuminate/cache": "^11.0",
-        "illuminate/collections": "^11.0",
-        "illuminate/support": "^11.0",
+        "ext-sodium": "*",
+        "guzzlehttp/guzzle": "^7.10",
+        "illuminate/cache": "^12.0|^13.0",
+        "illuminate/collections": "^12.0|^13.0",
+        "illuminate/config": "^12.0|^13.0",
+        "illuminate/http": "^12.0|^13.0",
+        "illuminate/notifications": "^12.0|^13.0",
+        "illuminate/support": "^12.0|^13.0",
+        "kyzegs/guzzle-rate-limit-middleware": "^1.1",
         "laravel/socialite": "^5.23"
     },
     "require-dev": {
         "laravel/pint": "^1.24",
-        "orchestra/testbench": "^9.14",
-        "pestphp/pest": "^3.8",
-        "pestphp/pest-plugin-laravel": "^3.2",
-        "phpunit/phpunit": "^11.5",
+        "larastan/larastan": "^3.0",
+        "orchestra/testbench": "^10.0|^11.0",
+        "pestphp/pest": "^4.4",
+        "pestphp/pest-plugin-laravel": "^4.1",
+        "phpunit/phpunit": "^12.5",
         "phpstan/phpdoc-parser": "^1.16",
         "rector/rector": "^2.1",
         "driftingly/rector-laravel": "^2.0"
     },
     "scripts": {
-        "test": "vendor/bin/phpunit"
+        "test": "vendor/bin/pest",
+        "test:coverage": "vendor/bin/pest --coverage --min=85",
+        "analyse": "vendor/bin/phpstan analyse --memory-limit=1G",
+        "format": "vendor/bin/pint",
+        "format:test": "vendor/bin/pint --test",
+        "refactor:test": "vendor/bin/rector process --dry-run --no-progress-bar"
     },
     "extra": {
         "laravel": {
@@ -53,6 +66,15 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
+        },
+        "platform": {
+            "php": "8.3"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/Kyzegs/guzzle-rate-limit-middleware"
+        }
+    ]
 }

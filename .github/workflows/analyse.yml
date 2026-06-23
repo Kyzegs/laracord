@@ -1,0 +1,22 @@
+name: Static analysis
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: json, mbstring, sodium
+          coverage: none
+      - run: composer install --prefer-dist --no-interaction --no-progress
+      - run: composer analyse
+      - run: composer format:test
+      - run: composer refactor:test
+      - run: php docs/generate-api-docs.php
+      - run: git diff --exit-code

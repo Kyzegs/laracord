@@ -8,11 +8,9 @@ use Kyzegs\Laracord\Constants\Permissions;
 
 class PartialGuild
 {
-    /**
-     * @return void
-     */
+    /** @param list<string> $features */
     public function __construct(
-        public int $id,
+        public string $id,
         public string $name,
         public ?string $icon,
         public bool $owner,
