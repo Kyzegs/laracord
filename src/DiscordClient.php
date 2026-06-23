@@ -74,12 +74,12 @@ final readonly class DiscordClient
     public function send(DiscordRequest $discordRequest): DiscordResponse
     {
         $header = $this->authentication->header();
-        if ($discordRequest->authentication === AuthenticationRequirement::Required && $header === null) {
+        if ($discordRequest->authentication === AuthenticationRequirement::REQUIRED && $header === null) {
             throw new MissingAuthenticationException('Discord endpoint requires bot or bearer authentication.');
         }
 
         $options = [RequestOptions::HTTP_ERRORS => false];
-        if ($discordRequest->authentication !== AuthenticationRequirement::None && $header !== null) {
+        if ($discordRequest->authentication !== AuthenticationRequirement::NONE && $header !== null) {
             $options[RequestOptions::HEADERS]['Authorization'] = $header;
         }
 

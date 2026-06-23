@@ -7,7 +7,7 @@ use Kyzegs\Laracord\Http\DiscordRequest;
 use Kyzegs\Laracord\ValueObjects\Snowflake;
 
 it('resolves and encodes route parameters', function (): void {
-    $request = new DiscordRequest(HttpMethod::Get, '/channels/{channel_id}/reactions/{emoji}', [
+    $request = new DiscordRequest(HttpMethod::GET, '/channels/{channel_id}/reactions/{emoji}', [
         'channel_id' => new Snowflake('123'),
         'emoji' => 'party:456',
     ]);
@@ -16,6 +16,6 @@ it('resolves and encodes route parameters', function (): void {
 });
 
 it('rejects unresolved route parameters', function (): void {
-    expect(fn (): string => (new DiscordRequest(HttpMethod::Get, '/channels/{channel_id}'))->resolvedPath())
+    expect(fn (): string => (new DiscordRequest(HttpMethod::GET, '/channels/{channel_id}'))->resolvedPath())
         ->toThrow(InvalidArgumentException::class);
 });

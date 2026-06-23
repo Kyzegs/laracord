@@ -1,3 +1,5 @@
+![Laracord banner](banner.svg)
+
 # Laracord
 
 Laravel-native Discord HTTP platform client for PHP 8.2+ and Laravel 12–13.

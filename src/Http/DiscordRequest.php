@@ -27,7 +27,7 @@ final readonly class DiscordRequest
         public array|Arrayable|JsonSerializable|null $body = null,
         public array $files = [],
         public ?AuditLogReason $reason = null,
-        public AuthenticationRequirement $authentication = AuthenticationRequirement::Required,
+        public AuthenticationRequirement $authentication = AuthenticationRequirement::REQUIRED,
         public bool $form = false,
     ) {
         if (! str_starts_with($path, '/')) {

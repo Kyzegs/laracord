@@ -25,7 +25,7 @@ it('sends bot auth and discord query encoding', function (): void {
 
     $discordClient = resolve(ClientFactory::class)->make(Authentication::bot('secret'), $handlerStack);
 
-    $discordResponse = $discordClient->send(new DiscordRequest(HttpMethod::Get, '/channels/{channel_id}', ['channel_id' => '123'], [
+    $discordResponse = $discordClient->send(new DiscordRequest(HttpMethod::GET, '/channels/{channel_id}', ['channel_id' => '123'], [
         'id' => ['1', '2'],
         'enabled' => true,
     ]));
@@ -40,7 +40,7 @@ it('supports empty unauthenticated responses', function (): void {
     $handlerStack = HandlerStack::create(new MockHandler([new Response(204)]));
     $discordClient = resolve(ClientFactory::class)->make(Authentication::none(), $handlerStack);
 
-    $discordResponse = $discordClient->send(new DiscordRequest(HttpMethod::Delete, '/webhooks/1/token', authentication: AuthenticationRequirement::None));
+    $discordResponse = $discordClient->send(new DiscordRequest(HttpMethod::DELETE, '/webhooks/1/token', authentication: AuthenticationRequirement::NONE));
 
     expect($discordResponse->isNoContent())->toBeTrue();
 });
@@ -49,6 +49,6 @@ it('throws typed discord exceptions', function (): void {
     $handlerStack = HandlerStack::create(new MockHandler([new Response(404, [], '{"message":"Unknown Channel"}')]));
     $discordClient = resolve(ClientFactory::class)->make(Authentication::bot('secret'), $handlerStack);
 
-    expect(fn () => $discordClient->send(new DiscordRequest(HttpMethod::Get, '/channels/404')))
+    expect(fn () => $discordClient->send(new DiscordRequest(HttpMethod::GET, '/channels/404')))
         ->toThrow(DiscordNotFoundException::class, 'Unknown Channel');
 });

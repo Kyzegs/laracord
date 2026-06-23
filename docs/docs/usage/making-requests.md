@@ -167,7 +167,7 @@ use Kyzegs\Laracord\Enums\HttpMethod;
 use Kyzegs\Laracord\Http\DiscordRequest;
 
 $response = $discord->send(new DiscordRequest(
-    method: HttpMethod::Get,
+    method: HttpMethod::GET,
     path: '/new-resource/{resource_id}',
     parameters: ['resource_id' => $resourceId],
 ));

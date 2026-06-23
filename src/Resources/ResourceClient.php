@@ -35,7 +35,7 @@ final readonly class ResourceClient
             $body,
             $files,
             $auditLogReason,
-            $definition['auth'] ?? AuthenticationRequirement::Required,
+            $definition['auth'] ?? AuthenticationRequirement::REQUIRED,
             $definition['form'] ?? false,
         ));
     }

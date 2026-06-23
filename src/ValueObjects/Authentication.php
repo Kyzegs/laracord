@@ -12,17 +12,17 @@ final readonly class Authentication
 
     public static function bot(string $token): self
     {
-        return new self(AuthenticationType::Bot, self::validate($token));
+        return new self(AuthenticationType::BOT, self::validate($token));
     }
 
     public static function bearer(string|OAuthAccessToken $token): self
     {
-        return new self(AuthenticationType::Bearer, self::validate($token instanceof OAuthAccessToken ? $token->accessToken : $token));
+        return new self(AuthenticationType::BEARER, self::validate($token instanceof OAuthAccessToken ? $token->accessToken : $token));
     }
 
     public static function none(): self
     {
-        return new self(AuthenticationType::None, null);
+        return new self(AuthenticationType::NONE, null);
     }
 
     public function header(): ?string

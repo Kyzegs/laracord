@@ -8,43 +8,46 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 
 | Endpoint | Method | Path |
 |---|---:|---|
-| `getCurrentApplication` | `GET` | `/applications/@me` |
 | `getCurrent` | `GET` | `/applications/@me` |
 | `editCurrent` | `PATCH` | `/applications/@me` |
 | `getActivityInstance` | `GET` | `/applications/{application_id}/activity-instances/{instance_id}` |
 
-## Audit Logs
+## Commands
 
 | Endpoint | Method | Path |
 |---|---:|---|
-| `getGuildAuditLog` | `GET` | `/guilds/{guild_id}/audit-logs` |
-
-## Auto Moderation
-
-| Endpoint | Method | Path |
-|---|---:|---|
-| `listAutoModerationRulesForGuild` | `GET` | `/guilds/{guild_id}/auto-moderation/rules` |
-| `getAutoModerationRule` | `GET` | `/guilds/{guild_id}/auto-moderation/rules/{auto_moderation_rule_id}` |
-| `createAutoModerationRule` | `POST` | `/guilds/{guild_id}/auto-moderation/rules` |
-| `modifyAutoModerationRule` | `PATCH` | `/guilds/{guild_id}/auto-moderation/rules/{auto_moderation_rule_id}` |
-| `deleteAutoModerationRule` | `DELETE` | `/guilds/{guild_id}/auto-moderation/rules/{auto_moderation_rule_id}` |
+| `listGlobalCommands` | `GET` | `/applications/{application_id}/commands` |
+| `createGlobalCommand` | `POST` | `/applications/{application_id}/commands` |
+| `getGlobalCommand` | `GET` | `/applications/{application_id}/commands/{command_id}` |
+| `editGlobalCommand` | `PATCH` | `/applications/{application_id}/commands/{command_id}` |
+| `deleteGlobalCommand` | `DELETE` | `/applications/{application_id}/commands/{command_id}` |
+| `bulkOverwriteGlobalCommands` | `PUT` | `/applications/{application_id}/commands` |
+| `listGuildCommands` | `GET` | `/applications/{application_id}/guilds/{guild_id}/commands` |
+| `createGuildCommand` | `POST` | `/applications/{application_id}/guilds/{guild_id}/commands` |
+| `getGuildCommand` | `GET` | `/applications/{application_id}/guilds/{guild_id}/commands/{command_id}` |
+| `editGuildCommand` | `PATCH` | `/applications/{application_id}/guilds/{guild_id}/commands/{command_id}` |
+| `deleteGuildCommand` | `DELETE` | `/applications/{application_id}/guilds/{guild_id}/commands/{command_id}` |
+| `bulkOverwriteGuildCommands` | `PUT` | `/applications/{application_id}/guilds/{guild_id}/commands` |
+| `listGuildPermissions` | `GET` | `/applications/{application_id}/guilds/{guild_id}/commands/permissions` |
+| `getPermissions` | `GET` | `/applications/{application_id}/guilds/{guild_id}/commands/{command_id}/permissions` |
+| `editPermissions` | `PUT` | `/applications/{application_id}/guilds/{guild_id}/commands/{command_id}/permissions` |
+| `batchEditPermissions` | `PUT` | `/applications/{application_id}/guilds/{guild_id}/commands/permissions` |
 
 ## Channels
 
 | Endpoint | Method | Path |
 |---|---:|---|
-| `getChannel` | `GET` | `/channels/{channel_id}` |
-| `modifyChannel` | `PATCH` | `/channels/{channel_id}` |
-| `deleteChannel` | `DELETE` | `/channels/{channel_id}` |
-| `editChannelPermissions` | `PUT` | `/channels/{channel_id}/permissions/{overwrite_id}` |
-| `deleteChannelPermission` | `DELETE` | `/channels/{channel_id}/permissions/{overwrite_id}` |
-| `followAnnouncementChannel` | `POST` | `/channels/{channel_id}/followers` |
-| `triggerTypingIndicator` | `POST` | `/channels/{channel_id}/typing` |
-| `getPinnedMessages` | `GET` | `/channels/{channel_id}/pins` |
+| `get` | `GET` | `/channels/{channel_id}` |
+| `edit` | `PATCH` | `/channels/{channel_id}` |
+| `delete` | `DELETE` | `/channels/{channel_id}` |
+| `editPermissions` | `PUT` | `/channels/{channel_id}/permissions/{overwrite_id}` |
+| `deletePermission` | `DELETE` | `/channels/{channel_id}/permissions/{overwrite_id}` |
+| `followAnnouncement` | `POST` | `/channels/{channel_id}/followers` |
+| `triggerTyping` | `POST` | `/channels/{channel_id}/typing` |
+| `listPinnedMessages` | `GET` | `/channels/{channel_id}/pins` |
 | `pinMessage` | `PUT` | `/channels/{channel_id}/pins/{message_id}` |
 | `unpinMessage` | `DELETE` | `/channels/{channel_id}/pins/{message_id}` |
-| `startThreadWithoutMessage` | `POST` | `/channels/{channel_id}/threads` |
-| `startThreadInForumChannel` | `POST` | `/channels/{channel_id}/threads` |
+| `startThread` | `POST` | `/channels/{channel_id}/threads` |
 | `joinThread` | `PUT` | `/channels/{channel_id}/thread-members/@me` |
 | `addThreadMember` | `PUT` | `/channels/{channel_id}/thread-members/{user_id}` |
 | `leaveThread` | `DELETE` | `/channels/{channel_id}/thread-members/@me` |
@@ -54,35 +57,71 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 | `listPublicArchivedThreads` | `GET` | `/channels/{channel_id}/threads/archived/public` |
 | `listPrivateArchivedThreads` | `GET` | `/channels/{channel_id}/threads/archived/private` |
 | `listJoinedPrivateArchivedThreads` | `GET` | `/channels/{channel_id}/users/@me/threads/archived/private` |
-| `get` | `GET` | `/channels/{channel_id}` |
-| `create` | `POST` | `/channels/{channel_id}` |
-| `edit` | `PATCH` | `/channels/{channel_id}` |
-| `delete` | `DELETE` | `/channels/{channel_id}` |
 
-## Commands
+## Messages
 
 | Endpoint | Method | Path |
 |---|---:|---|
-| `getGlobalApplicationCommands` | `GET` | `/applications/{application_id}/commands` |
-| `createGlobalApplicationCommand` | `POST` | `/applications/{application_id}/commands` |
-| `getGlobalApplicationCommand` | `GET` | `/applications/{application_id}/commands/{command_id}` |
-| `editGlobalApplicationCommand` | `PATCH` | `/applications/{application_id}/commands/{command_id}` |
-| `deleteGlobalApplicationCommand` | `DELETE` | `/applications/{application_id}/commands/{command_id}` |
-| `bulkOverwriteGlobalApplicationCommands` | `PUT` | `/applications/{application_id}/commands` |
-| `getGuildApplicationCommands` | `GET` | `/applications/{application_id}/guilds/{guild_id}/commands` |
-| `createGuildApplicationCommand` | `POST` | `/applications/{application_id}/guilds/{guild_id}/commands` |
-| `getGuildApplicationCommand` | `GET` | `/applications/{application_id}/guilds/{guild_id}/commands/{command_id}` |
-| `editGuildApplicationCommand` | `PATCH` | `/applications/{application_id}/guilds/{guild_id}/commands/{command_id}` |
-| `deleteGuildApplicationCommand` | `DELETE` | `/applications/{application_id}/guilds/{guild_id}/commands/{command_id}` |
-| `bulkOverwriteGuildApplicationCommands` | `PUT` | `/applications/{application_id}/guilds/{guild_id}/commands` |
-| `getGuildApplicationCommandPermissions` | `GET` | `/applications/{application_id}/guilds/{guild_id}/commands/permissions` |
-| `getApplicationCommandPermissions` | `GET` | `/applications/{application_id}/guilds/{guild_id}/commands/{command_id}/permissions` |
-| `editApplicationCommandPermissions` | `PUT` | `/applications/{application_id}/guilds/{guild_id}/commands/{command_id}/permissions` |
-| `batchEditApplicationCommandPermissions` | `PUT` | `/applications/{application_id}/guilds/{guild_id}/commands/permissions` |
-| `listGlobal` | `GET` | `/applications/{application_id}/commands` |
-| `createGlobal` | `POST` | `/applications/{application_id}/commands` |
-| `listGuild` | `GET` | `/applications/{application_id}/guilds/{guild_id}/commands` |
-| `createGuild` | `POST` | `/applications/{application_id}/guilds/{guild_id}/commands` |
+| `list` | `GET` | `/channels/{channel_id}/messages` |
+| `get` | `GET` | `/channels/{channel_id}/messages/{message_id}` |
+| `create` | `POST` | `/channels/{channel_id}/messages` |
+| `edit` | `PATCH` | `/channels/{channel_id}/messages/{message_id}` |
+| `delete` | `DELETE` | `/channels/{channel_id}/messages/{message_id}` |
+| `crosspost` | `POST` | `/channels/{channel_id}/messages/{message_id}/crosspost` |
+| `createReaction` | `PUT` | `/channels/{channel_id}/messages/{message_id}/reactions/{emoji}/@me` |
+| `deleteOwnReaction` | `DELETE` | `/channels/{channel_id}/messages/{message_id}/reactions/{emoji}/@me` |
+| `deleteUserReaction` | `DELETE` | `/channels/{channel_id}/messages/{message_id}/reactions/{emoji}/{user_id}` |
+| `listReactions` | `GET` | `/channels/{channel_id}/messages/{message_id}/reactions/{emoji}` |
+| `deleteAllReactions` | `DELETE` | `/channels/{channel_id}/messages/{message_id}/reactions` |
+| `deleteAllReactionsForEmoji` | `DELETE` | `/channels/{channel_id}/messages/{message_id}/reactions/{emoji}` |
+| `bulkDelete` | `POST` | `/channels/{channel_id}/messages/bulk-delete` |
+| `startThread` | `POST` | `/channels/{channel_id}/messages/{message_id}/threads` |
+
+## Guilds
+
+| Endpoint | Method | Path |
+|---|---:|---|
+| `create` | `POST` | `/guilds` |
+| `get` | `GET` | `/guilds/{guild_id}` |
+| `getPreview` | `GET` | `/guilds/{guild_id}/preview` |
+| `edit` | `PATCH` | `/guilds/{guild_id}` |
+| `delete` | `DELETE` | `/guilds/{guild_id}` |
+| `listChannels` | `GET` | `/guilds/{guild_id}/channels` |
+| `createChannel` | `POST` | `/guilds/{guild_id}/channels` |
+| `modifyChannelPositions` | `PATCH` | `/guilds/{guild_id}/channels` |
+| `listActiveThreads` | `GET` | `/guilds/{guild_id}/threads/active` |
+| `getMember` | `GET` | `/guilds/{guild_id}/members/{user_id}` |
+| `listMembers` | `GET` | `/guilds/{guild_id}/members` |
+| `searchMembers` | `GET` | `/guilds/{guild_id}/members/search` |
+| `addMember` | `PUT` | `/guilds/{guild_id}/members/{user_id}` |
+| `modifyMember` | `PATCH` | `/guilds/{guild_id}/members/{user_id}` |
+| `modifyCurrentMember` | `PATCH` | `/guilds/{guild_id}/members/@me` |
+| `addMemberRole` | `PUT` | `/guilds/{guild_id}/members/{user_id}/roles/{role_id}` |
+| `removeMemberRole` | `DELETE` | `/guilds/{guild_id}/members/{user_id}/roles/{role_id}` |
+| `removeMember` | `DELETE` | `/guilds/{guild_id}/members/{user_id}` |
+| `listBans` | `GET` | `/guilds/{guild_id}/bans` |
+| `getBan` | `GET` | `/guilds/{guild_id}/bans/{user_id}` |
+| `createBan` | `PUT` | `/guilds/{guild_id}/bans/{user_id}` |
+| `removeBan` | `DELETE` | `/guilds/{guild_id}/bans/{user_id}` |
+| `listRoles` | `GET` | `/guilds/{guild_id}/roles` |
+| `createRole` | `POST` | `/guilds/{guild_id}/roles` |
+| `modifyRolePositions` | `PATCH` | `/guilds/{guild_id}/roles` |
+| `modifyRole` | `PATCH` | `/guilds/{guild_id}/roles/{role_id}` |
+| `modifyMfaLevel` | `POST` | `/guilds/{guild_id}/mfa` |
+| `deleteRole` | `DELETE` | `/guilds/{guild_id}/roles/{role_id}` |
+| `getPruneCount` | `GET` | `/guilds/{guild_id}/prune` |
+| `beginPrune` | `POST` | `/guilds/{guild_id}/prune` |
+| `listIntegrations` | `GET` | `/guilds/{guild_id}/integrations` |
+| `deleteIntegration` | `DELETE` | `/guilds/{guild_id}/integrations/{integration_id}` |
+| `getWidgetSettings` | `GET` | `/guilds/{guild_id}/widget` |
+| `modifyWidget` | `PATCH` | `/guilds/{guild_id}/widget` |
+| `getWidget` | `GET` | `/guilds/{guild_id}/widget.json` |
+| `getVanityUrl` | `GET` | `/guilds/{guild_id}/vanity-url` |
+| `getWidgetImage` | `GET` | `/guilds/{guild_id}/widget.png` |
+| `getWelcomeScreen` | `GET` | `/guilds/{guild_id}/welcome-screen` |
+| `modifyWelcomeScreen` | `PATCH` | `/guilds/{guild_id}/welcome-screen` |
+| `getOnboarding` | `GET` | `/guilds/{guild_id}/onboarding` |
+| `modifyOnboarding` | `PATCH` | `/guilds/{guild_id}/onboarding` |
 
 ## Emojis
 
@@ -93,142 +132,65 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 | `createGuildEmoji` | `POST` | `/guilds/{guild_id}/emojis` |
 | `modifyGuildEmoji` | `PATCH` | `/guilds/{guild_id}/emojis/{emoji_id}` |
 | `deleteGuildEmoji` | `DELETE` | `/guilds/{guild_id}/emojis/{emoji_id}` |
-| `get` | `GET` | `/guilds/{guild_id}/emojis/{emoji_id}` |
-| `create` | `POST` | `/guilds/{guild_id}/emojis/{emoji_id}` |
-| `edit` | `PATCH` | `/guilds/{guild_id}/emojis/{emoji_id}` |
-| `delete` | `DELETE` | `/guilds/{guild_id}/emojis/{emoji_id}` |
-| `listApplication` | `GET` | `/applications/{application_id}/emojis` |
-| `getApplication` | `GET` | `/applications/{application_id}/emojis/{emoji_id}` |
-| `createApplication` | `POST` | `/applications/{application_id}/emojis` |
-| `editApplication` | `PATCH` | `/applications/{application_id}/emojis/{emoji_id}` |
-| `deleteApplication` | `DELETE` | `/applications/{application_id}/emojis/{emoji_id}` |
-
-## Guilds
-
-| Endpoint | Method | Path |
-|---|---:|---|
-| `createGuild` | `POST` | `/guilds` |
-| `getGuild` | `GET` | `/guilds/{guild_id}` |
-| `getGuildPreview` | `GET` | `/guilds/{guild_id}/preview` |
-| `modifyGuild` | `PATCH` | `/guilds/{guild_id}` |
-| `deleteGuild` | `DELETE` | `/guilds/{guild_id}` |
-| `getGuildChannels` | `GET` | `/guilds/{guild_id}/channels` |
-| `createGuildChannel` | `POST` | `/guilds/{guild_id}/channels` |
-| `modifyGuildChannelPositions` | `PATCH` | `/guilds/{guild_id}/channels` |
-| `listActiveGuildThreads` | `GET` | `/guilds/{guild_id}/threads/active` |
-| `getGuildMember` | `GET` | `/guilds/{guild_id}/members/{user_id}` |
-| `listGuildMembers` | `GET` | `/guilds/{guild_id}/members` |
-| `searchGuildMembers` | `GET` | `/guilds/{guild_id}/members/search` |
-| `addGuildMember` | `PUT` | `/guilds/{guild_id}/members/{user_id}` |
-| `modifyGuildMember` | `PATCH` | `/guilds/{guild_id}/members/{user_id}` |
-| `modifyCurrentMember` | `PATCH` | `/guilds/{guild_id}/members/@me` |
-| `addGuildMemberRole` | `PUT` | `/guilds/{guild_id}/members/{user_id}/roles/{role_id}` |
-| `removeGuildMemberRole` | `DELETE` | `/guilds/{guild_id}/members/{user_id}/roles/{role_id}` |
-| `removeGuildMember` | `DELETE` | `/guilds/{guild_id}/members/{user_id}` |
-| `getGuildBans` | `GET` | `/guilds/{guild_id}/bans` |
-| `getGuildBan` | `GET` | `/guilds/{guild_id}/bans/{user_id}` |
-| `createGuildBan` | `PUT` | `/guilds/{guild_id}/bans/{user_id}` |
-| `removeGuildBan` | `DELETE` | `/guilds/{guild_id}/bans/{user_id}` |
-| `getGuildRoles` | `GET` | `/guilds/{guild_id}/roles` |
-| `createGuildRole` | `POST` | `/guilds/{guild_id}/roles` |
-| `modifyGuildRolePositions` | `PATCH` | `/guilds/{guild_id}/roles` |
-| `modifyGuildRole` | `PATCH` | `/guilds/{guild_id}/roles/{role_id}` |
-| `modifyGuildMfaLevel` | `POST` | `/guilds/{guild_id}/mfa` |
-| `deleteGuildRole` | `DELETE` | `/guilds/{guild_id}/roles/{role_id}` |
-| `getGuildPruneCount` | `GET` | `/guilds/{guild_id}/prune` |
-| `beginGuildPrune` | `POST` | `/guilds/{guild_id}/prune` |
-| `getGuildIntegrations` | `GET` | `/guilds/{guild_id}/integrations` |
-| `deleteGuildIntegrations` | `DELETE` | `/guilds/{guild_id}/integrations/{integration_id}` |
-| `getGuildWidgetSettings` | `GET` | `/guilds/{guild_id}/widget` |
-| `modifyGuildWidget` | `PATCH` | `/guilds/{guild_id}/widget` |
-| `getGuildWidget` | `GET` | `/guilds/{guild_id}/widget.json` |
-| `getGuildVanityUrl` | `GET` | `/guilds/{guild_id}/vanity-url` |
-| `getGuildWidgetImage` | `GET` | `/guilds/{guild_id}/widget.png` |
-| `getGuildWelcomeScreen` | `GET` | `/guilds/{guild_id}/welcome-screen` |
-| `modifyGuildWelcomeScreen` | `PATCH` | `/guilds/{guild_id}/welcome-screen` |
-| `getGuildOnboarding` | `GET` | `/guilds/{guild_id}/onboarding` |
-| `modifyGuildOnboarding` | `PATCH` | `/guilds/{guild_id}/onboarding` |
-| `get` | `GET` | `/guilds/{guild_id}` |
-| `create` | `POST` | `/guilds/{guild_id}` |
-| `edit` | `PATCH` | `/guilds/{guild_id}` |
-| `delete` | `DELETE` | `/guilds/{guild_id}` |
-| `listMembers` | `GET` | `/guilds/{guild_id}/members` |
-| `listChannels` | `GET` | `/guilds/{guild_id}/channels` |
+| `listApplicationEmojis` | `GET` | `/applications/{application_id}/emojis` |
+| `getApplicationEmoji` | `GET` | `/applications/{application_id}/emojis/{emoji_id}` |
+| `createApplicationEmoji` | `POST` | `/applications/{application_id}/emojis` |
+| `modifyApplicationEmoji` | `PATCH` | `/applications/{application_id}/emojis/{emoji_id}` |
+| `deleteApplicationEmoji` | `DELETE` | `/applications/{application_id}/emojis/{emoji_id}` |
 
 ## Invites
 
 | Endpoint | Method | Path |
 |---|---:|---|
-| `getChannelInvites` | `GET` | `/channels/{channel_id}/invites` |
+| `listChannelInvites` | `GET` | `/channels/{channel_id}/invites` |
 | `createChannelInvite` | `POST` | `/channels/{channel_id}/invites` |
-| `getGuildInvites` | `GET` | `/guilds/{guild_id}/invites` |
-| `getInvite` | `GET` | `/invites/{invite_code}` |
-| `deleteInvite` | `DELETE` | `/invites/{invite_code}` |
+| `listGuildInvites` | `GET` | `/guilds/{guild_id}/invites` |
+| `get` | `GET` | `/invites/{invite_code}` |
+| `delete` | `DELETE` | `/invites/{invite_code}` |
 
-## Messages
-
-| Endpoint | Method | Path |
-|---|---:|---|
-| `getChannelMessages` | `GET` | `/channels/{channel_id}/messages` |
-| `getChannelMessage` | `GET` | `/channels/{channel_id}/messages/{message_id}` |
-| `createMessage` | `POST` | `/channels/{channel_id}/messages` |
-| `crosspostMessage` | `POST` | `/channels/{channel_id}/messages/{message_id}/crosspost` |
-| `createReaction` | `PUT` | `/channels/{channel_id}/messages/{message_id}/reactions/{emoji}/@me` |
-| `deleteOwnReaction` | `DELETE` | `/channels/{channel_id}/messages/{message_id}/reactions/{emoji}/@me` |
-| `deleteUserReaction` | `DELETE` | `/channels/{channel_id}/messages/{message_id}/reactions/{emoji}/{user_id}` |
-| `getReactions` | `GET` | `/channels/{channel_id}/messages/{message_id}/reactions/{emoji}` |
-| `deleteAllReactions` | `DELETE` | `/channels/{channel_id}/messages/{message_id}/reactions` |
-| `deleteAllReactionsForEmoji` | `DELETE` | `/channels/{channel_id}/messages/{message_id}/reactions/{emoji}` |
-| `editMessage` | `PATCH` | `/channels/{channel_id}/messages/{message_id}` |
-| `deleteMessage` | `DELETE` | `/channels/{channel_id}/messages/{message_id}` |
-| `bulkDeleteMessages` | `POST` | `/channels/{channel_id}/messages/bulk-delete` |
-| `startThreadFromMessage` | `POST` | `/channels/{channel_id}/messages/{message_id}/threads` |
-| `getWebhookMessage` | `GET` | `/webhooks/{webhook_id}/{webhook_token}/messages/{message_id}` |
-| `editWebhookMessage` | `PATCH` | `/webhooks/{webhook_id}/{webhook_token}/messages/{message_id}` |
-| `deleteWebhookMessage` | `DELETE` | `/webhooks/{webhook_id}/{webhook_token}/messages/{message_id}` |
-| `list` | `GET` | `/channels/{channel_id}/messages` |
-| `get` | `GET` | `/channels/{channel_id}/messages/{message_id}` |
-| `create` | `POST` | `/channels/{channel_id}/messages` |
-| `edit` | `PATCH` | `/channels/{channel_id}/messages/{message_id}` |
-| `delete` | `DELETE` | `/channels/{channel_id}/messages/{message_id}` |
-
-## Role Connections
+## Audit Logs
 
 | Endpoint | Method | Path |
 |---|---:|---|
-| `getApplicationRoleConnectionMetadataRecords` | `GET` | `/applications/{application_id}/role-connections/metadata` |
-| `updateApplicationRoleConnectionMetadataRecords` | `PUT` | `/applications/{application_id}/role-connections/metadata` |
-| `getUserApplicationRoleConnections` | `GET` | `/users/@me/connections/{guild_id}` |
-| `updateUserApplicationRoleConnections` | `PATCH` | `/users/@me/connections/{guild_id}` |
+| `get` | `GET` | `/guilds/{guild_id}/audit-logs` |
+
+## Auto Moderation
+
+| Endpoint | Method | Path |
+|---|---:|---|
+| `listRules` | `GET` | `/guilds/{guild_id}/auto-moderation/rules` |
+| `getRule` | `GET` | `/guilds/{guild_id}/auto-moderation/rules/{auto_moderation_rule_id}` |
+| `createRule` | `POST` | `/guilds/{guild_id}/auto-moderation/rules` |
+| `editRule` | `PATCH` | `/guilds/{guild_id}/auto-moderation/rules/{auto_moderation_rule_id}` |
+| `deleteRule` | `DELETE` | `/guilds/{guild_id}/auto-moderation/rules/{auto_moderation_rule_id}` |
 
 ## Scheduled Events
 
 | Endpoint | Method | Path |
 |---|---:|---|
-| `listScheduledEventsForGuild` | `GET` | `/guilds/{guild_id}/events` |
-| `createGuildScheduledEvent` | `POST` | `/guilds/{guild_id}/events` |
-| `getGuildScheduledEvent` | `GET` | `/guilds/{guild_id}/events/{guild_scheduled_event_id}` |
-| `modifyGuildScheduledEvent` | `PATCH` | `/guilds/{guild_id}/events/{guild_scheduled_event_id}` |
-| `deleteGuildScheduledEvent` | `DELETE` | `/guilds/{guild_id}/events/{guild_scheduled_event_id}` |
-| `getGuildScheduledEventUsers` | `GET` | `/guilds/{guild_id}/events/{guild_scheduled_event_id}/users` |
+| `list` | `GET` | `/guilds/{guild_id}/events` |
+| `create` | `POST` | `/guilds/{guild_id}/events` |
+| `get` | `GET` | `/guilds/{guild_id}/events/{guild_scheduled_event_id}` |
+| `edit` | `PATCH` | `/guilds/{guild_id}/events/{guild_scheduled_event_id}` |
+| `delete` | `DELETE` | `/guilds/{guild_id}/events/{guild_scheduled_event_id}` |
+| `listUsers` | `GET` | `/guilds/{guild_id}/events/{guild_scheduled_event_id}/users` |
 
 ## Stages
 
 | Endpoint | Method | Path |
 |---|---:|---|
-| `createStageInstance` | `POST` | `/stage-instances` |
-| `getStageInstance` | `GET` | `/stage-instances/{channel_id}` |
-| `modifyStageInstance` | `PATCH` | `/stage-instances/{channel_id}` |
-| `deleteStageInstance` | `DELETE` | `/stage-instances/{channel_id}` |
+| `create` | `POST` | `/stage-instances` |
+| `get` | `GET` | `/stage-instances/{channel_id}` |
+| `edit` | `PATCH` | `/stage-instances/{channel_id}` |
+| `delete` | `DELETE` | `/stage-instances/{channel_id}` |
 
 ## Stickers
 
 | Endpoint | Method | Path |
 |---|---:|---|
-| `getSticker` | `GET` | `/stickers/{sticker_id}` |
-| `listNitroStickerPacks` | `GET` | `/sticker-packs` |
+| `get` | `GET` | `/stickers/{sticker_id}` |
+| `listPacks` | `GET` | `/sticker-packs` |
 | `listGuildStickers` | `GET` | `/guilds/{guild_id}/stickers` |
-| `getGuildStickers` | `GET` | `/guilds/{guild_id}/stickers` |
 | `getGuildSticker` | `GET` | `/guilds/{guild_id}/stickers/{sticker_id}` |
 | `createGuildSticker` | `POST` | `/guilds/{guild_id}/stickers` |
 | `modifyGuildSticker` | `PATCH` | `/guilds/{guild_id}/stickers/{sticker_id}` |
@@ -240,52 +202,59 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 |---|---:|---|
 | `getGuildTemplate` | `GET` | `/guilds/templates/{template_code}` |
 | `createGuildFromTemplate` | `POST` | `/guilds/templates/{template_code}` |
-| `getGuildTemplates` | `GET` | `/guilds/{guild_id}/templates` |
+| `listGuildTemplates` | `GET` | `/guilds/{guild_id}/templates` |
 | `createGuildTemplate` | `POST` | `/guilds/{guild_id}/templates` |
 | `syncGuildTemplate` | `PUT` | `/guilds/{guild_id}/templates/{template_code}` |
 | `modifyGuildTemplate` | `PATCH` | `/guilds/{guild_id}/templates/{template_code}` |
 | `deleteGuildTemplate` | `DELETE` | `/guilds/{guild_id}/templates/{template_code}` |
 
+## Role Connections
+
+| Endpoint | Method | Path |
+|---|---:|---|
+| `getMetadata` | `GET` | `/applications/{application_id}/role-connections/metadata` |
+| `updateMetadata` | `PUT` | `/applications/{application_id}/role-connections/metadata` |
+| `getUserConnection` | `GET` | `/users/@me/connections/{guild_id}` |
+| `updateUserConnection` | `PATCH` | `/users/@me/connections/{guild_id}` |
+
 ## Users
 
 | Endpoint | Method | Path |
 |---|---:|---|
-| `getCurrentUser` | `GET` | `/users/@me` |
-| `getUser` | `GET` | `/users/{user_id}` |
-| `modifyCurrentUser` | `PATCH` | `/users/@me` |
-| `getCurrentUserGuilds` | `GET` | `/users/@me/guilds` |
-| `getCurrentUserGuildMember` | `GET` | `/users/@me/guilds/{guild_id}/member` |
+| `getCurrent` | `GET` | `/users/@me` |
+| `get` | `GET` | `/users/{user_id}` |
+| `modifyCurrent` | `PATCH` | `/users/@me` |
+| `listGuilds` | `GET` | `/users/@me/guilds` |
+| `getGuildMember` | `GET` | `/users/@me/guilds/{guild_id}/member` |
 | `leaveGuild` | `DELETE` | `/users/@me/guilds/{guild_id}` |
 | `createDm` | `POST` | `/users/@me/channels` |
-| `createGroupDm` | `POST` | `/users/@me/channels` |
-| `getUserConnections` | `GET` | `/users/@me/connections` |
+| `listConnections` | `GET` | `/users/@me/connections` |
 
 ## Voice
 
 | Endpoint | Method | Path |
 |---|---:|---|
-| `getGuildVoiceRegions` | `GET` | `/guilds/{guild_id}/regions` |
-| `modifyCurrentUserVoiceState` | `PATCH` | `/guilds/{guild_id}/voice-states/@me` |
-| `modifyUserVoiceState` | `PATCH` | `/guilds/{guild_id}/voice-states/{user_id}` |
-| `listVoiceRegions` | `GET` | `/voice/regions` |
+| `listGuildRegions` | `GET` | `/guilds/{guild_id}/regions` |
+| `modifyCurrentState` | `PATCH` | `/guilds/{guild_id}/voice-states/@me` |
+| `modifyState` | `PATCH` | `/guilds/{guild_id}/voice-states/{user_id}` |
+| `listRegions` | `GET` | `/voice/regions` |
 
 ## Webhooks
 
 | Endpoint | Method | Path |
 |---|---:|---|
-| `createWebhook` | `POST` | `/channels/{channel_id}/webhooks` |
-| `getChannelWebhooks` | `GET` | `/channels/{channel_id}/webhooks` |
-| `getGuildWebhooks` | `GET` | `/guilds/{guild_id}/webhooks` |
-| `getWebhook` | `GET` | `/webhooks/{webhook_id}` |
-| `getWebhookWithToken` | `GET` | `/webhooks/{webhook_id}/{webhook_token}` |
-| `modifyWebhook` | `PATCH` | `/webhooks/{webhook_id}` |
-| `modifyWebhookWithToken` | `PATCH` | `/webhooks/{webhook_id}/{webhook_token}` |
-| `deleteWebhook` | `DELETE` | `/webhooks/{webhook_id}` |
-| `deleteWebhookWithToken` | `DELETE` | `/webhooks/{webhook_id}/{webhook_token}` |
-| `executeWebhook` | `POST` | `/webhooks/{webhook_id}/{webhook_token}` |
-| `executeSlackCompatibleWebhook` | `POST` | `/webhooks/{webhook_id}/{webhook_token}/slack` |
-| `executeGitHubCompatibleWebhook` | `POST` | `/webhooks/{webhook_id}/{webhook_token}/github` |
+| `create` | `POST` | `/channels/{channel_id}/webhooks` |
+| `listChannelWebhooks` | `GET` | `/channels/{channel_id}/webhooks` |
+| `listGuildWebhooks` | `GET` | `/guilds/{guild_id}/webhooks` |
+| `get` | `GET` | `/webhooks/{webhook_id}` |
+| `getWithToken` | `GET` | `/webhooks/{webhook_id}/{webhook_token}` |
+| `edit` | `PATCH` | `/webhooks/{webhook_id}` |
+| `editWithToken` | `PATCH` | `/webhooks/{webhook_id}/{webhook_token}` |
+| `delete` | `DELETE` | `/webhooks/{webhook_id}` |
+| `deleteWithToken` | `DELETE` | `/webhooks/{webhook_id}/{webhook_token}` |
 | `execute` | `POST` | `/webhooks/{webhook_id}/{webhook_token}` |
+| `executeSlack` | `POST` | `/webhooks/{webhook_id}/{webhook_token}/slack` |
+| `executeGitHub` | `POST` | `/webhooks/{webhook_id}/{webhook_token}/github` |
 | `getMessage` | `GET` | `/webhooks/{webhook_id}/{webhook_token}/messages/{message_id}` |
 | `editMessage` | `PATCH` | `/webhooks/{webhook_id}/{webhook_token}/messages/{message_id}` |
 | `deleteMessage` | `DELETE` | `/webhooks/{webhook_id}/{webhook_token}/messages/{message_id}` |
@@ -304,7 +273,7 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 
 | Endpoint | Method | Path |
 |---|---:|---|
-| `voters` | `GET` | `/channels/{channel_id}/polls/{message_id}/answers/{answer_id}` |
+| `listVoters` | `GET` | `/channels/{channel_id}/polls/{message_id}/answers/{answer_id}` |
 | `end` | `POST` | `/channels/{channel_id}/polls/{message_id}/expire` |
 
 ## Skus
@@ -325,12 +294,12 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 | Endpoint | Method | Path |
 |---|---:|---|
 | `send` | `POST` | `/channels/{channel_id}/send-soundboard-sound` |
-| `defaults` | `GET` | `/soundboard-default-sounds` |
-| `listGuild` | `GET` | `/guilds/{guild_id}/soundboard-sounds` |
-| `getGuild` | `GET` | `/guilds/{guild_id}/soundboard-sounds/{sound_id}` |
-| `createGuild` | `POST` | `/guilds/{guild_id}/soundboard-sounds` |
-| `editGuild` | `PATCH` | `/guilds/{guild_id}/soundboard-sounds/{sound_id}` |
-| `deleteGuild` | `DELETE` | `/guilds/{guild_id}/soundboard-sounds/{sound_id}` |
+| `listDefault` | `GET` | `/soundboard-default-sounds` |
+| `listGuildSounds` | `GET` | `/guilds/{guild_id}/soundboard-sounds` |
+| `getGuildSound` | `GET` | `/guilds/{guild_id}/soundboard-sounds/{sound_id}` |
+| `createGuildSound` | `POST` | `/guilds/{guild_id}/soundboard-sounds` |
+| `modifyGuildSound` | `PATCH` | `/guilds/{guild_id}/soundboard-sounds/{sound_id}` |
+| `deleteGuildSound` | `DELETE` | `/guilds/{guild_id}/soundboard-sounds/{sound_id}` |
 
 ## Oauth2
 
@@ -338,7 +307,7 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 |---|---:|---|
 | `token` | `POST` | `/oauth2/token` |
 | `revoke` | `POST` | `/oauth2/token/revoke` |
-| `currentAuthorization` | `GET` | `/oauth2/@me` |
+| `getCurrentAuthorization` | `GET` | `/oauth2/@me` |
 
 ## Interactions
 
@@ -355,9 +324,9 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 | `get` | `GET` | `/lobbies/{lobby_id}` |
 | `edit` | `PATCH` | `/lobbies/{lobby_id}` |
 | `delete` | `DELETE` | `/lobbies/{lobby_id}` |
-| `putMember` | `PUT` | `/lobbies/{lobby_id}/members/{user_id}` |
+| `addMember` | `PUT` | `/lobbies/{lobby_id}/members/{user_id}` |
 | `bulkMembers` | `POST` | `/lobbies/{lobby_id}/members/bulk` |
-| `deleteMember` | `DELETE` | `/lobbies/{lobby_id}/members/{user_id}` |
+| `removeMember` | `DELETE` | `/lobbies/{lobby_id}/members/{user_id}` |
 | `leave` | `DELETE` | `/lobbies/{lobby_id}/members/@me` |
 | `linkChannel` | `PATCH` | `/lobbies/{lobby_id}/channel-linking` |
 | `sendMessage` | `POST` | `/lobbies/{lobby_id}/messages` |
@@ -365,3 +334,4 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 | `moderateMessage` | `PATCH` | `/lobbies/{lobby_id}/messages/{message_id}/moderation` |
 | `inviteSelf` | `POST` | `/lobbies/{lobby_id}/members/@me/invites` |
 | `inviteUser` | `POST` | `/lobbies/{lobby_id}/members/{user_id}/invites` |
+

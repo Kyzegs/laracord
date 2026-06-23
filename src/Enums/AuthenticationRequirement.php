@@ -6,7 +6,7 @@ namespace Kyzegs\Laracord\Enums;
 
 enum AuthenticationRequirement
 {
-    case Required;
-    case Optional;
-    case None;
+    case REQUIRED;
+    case OPTIONAL;
+    case NONE;
 }

@@ -6,7 +6,7 @@ namespace Kyzegs\Laracord\Enums;
 
 enum AuthenticationType: string
 {
-    case Bot = 'Bot';
-    case Bearer = 'Bearer';
-    case None = '';
+    case BOT = 'Bot';
+    case BEARER = 'Bearer';
+    case NONE = '';
 }
