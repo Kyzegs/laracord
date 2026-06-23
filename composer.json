@@ -23,7 +23,7 @@
         }
     },
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "ext-json": "*",
         "ext-sodium": "*",
         "guzzlehttp/guzzle": "^7.10",
@@ -66,6 +66,9 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
+        },
+        "platform": {
+            "php": "8.3"
         }
     },
     "repositories": [
