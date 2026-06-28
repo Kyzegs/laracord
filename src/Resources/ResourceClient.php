@@ -40,16 +40,33 @@ final readonly class ResourceClient
         ));
     }
 
-    /** @param array<int, mixed> $arguments */
+    /** @param array<int|string, mixed> $arguments */
     public function __call(string $endpoint, array $arguments): DiscordResponse
     {
+        /** @var array<string, string|int|\Stringable> $parameters */
+        $parameters = $this->argument($arguments, 'parameters', 0, []);
+        /** @var array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body */
+        $body = $this->argument($arguments, 'body', 1, null);
+        /** @var array<string, mixed> $query */
+        $query = $this->argument($arguments, 'query', 2, []);
+        /** @var list<array<string, mixed>> $files */
+        $files = $this->argument($arguments, 'files', 3, []);
+        /** @var AuditLogReason|null $auditLogReason */
+        $auditLogReason = $this->argument($arguments, 'auditLogReason', 4, null);
+
         return $this->call(
             $endpoint,
-            $arguments[0] ?? [],
-            $arguments[1] ?? null,
-            $arguments[2] ?? [],
-            $arguments[3] ?? [],
-            $arguments[4] ?? null,
+            $parameters,
+            $body,
+            $query,
+            $files,
+            $auditLogReason,
         );
+    }
+
+    /** @param array<int|string, mixed> $arguments */
+    private function argument(array $arguments, string $name, int $position, mixed $default): mixed
+    {
+        return array_key_exists($name, $arguments) ? $arguments[$name] : ($arguments[$position] ?? $default);
     }
 }
