@@ -45,7 +45,7 @@ it('forwards named resource query arguments to call', function (): void {
 
     $discordClient = resolve(ClientFactory::class)->make(Authentication::bot('secret'), $handlerStack);
 
-    $discordClient->guilds()->get(['guild_id' => '123'], query: ['with_counts' => true]);
+    $discordClient->resource('guilds')->get(['guild_id' => '123'], query: ['with_counts' => true]);
 
     expect($history[0]['request']->getUri()->getPath())->toBe('/api/v10/guilds/123')
         ->and($history[0]['request']->getUri()->getQuery())->toBe('with_counts=true');
@@ -60,7 +60,7 @@ it('forwards positional resource query arguments to call', function (): void {
 
     $discordClient = resolve(ClientFactory::class)->make(Authentication::bot('secret'), $handlerStack);
 
-    $discordClient->guilds()->get(['guild_id' => '123'], null, ['with_counts' => true]);
+    $discordClient->resource('guilds')->get(['guild_id' => '123'], null, ['with_counts' => true]);
 
     expect($history[0]['request']->getUri()->getPath())->toBe('/api/v10/guilds/123')
         ->and($history[0]['request']->getUri()->getQuery())->toBe('with_counts=true');
