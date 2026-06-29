@@ -43,6 +43,8 @@ export default defineConfig({
           { text: 'Rate Limits', link: '/usage/rate-limits' },
           { text: 'Notifications', link: '/usage/notifications' },
           { text: 'Interactions', link: '/usage/interactions' },
+          { text: 'Components', link: '/usage/components' },
+          { text: 'Testing', link: '/usage/testing' },
           { text: 'Migration from 0.x', link: '/usage/migration-v1' },
         ],
       },

@@ -6,7 +6,7 @@ namespace Kyzegs\Laracord\Resources;
 
 use Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;
-use Kyzegs\Laracord\DiscordClient;
+use Kyzegs\Laracord\Contracts\Client;
 use Kyzegs\Laracord\Endpoints\EndpointCatalog;
 use Kyzegs\Laracord\Enums\AuthenticationRequirement;
 use Kyzegs\Laracord\Http\DiscordRequest;
@@ -15,7 +15,7 @@ use Kyzegs\Laracord\ValueObjects\AuditLogReason;
 
 readonly class ResourceClient
 {
-    public function __construct(private DiscordClient $discordClient, private string $resource) {}
+    public function __construct(private Client $discordClient, private string $resource) {}
 
     /**
      * @param  array<string, string|int|\Stringable>  $parameters
@@ -37,6 +37,8 @@ readonly class ResourceClient
             $auditLogReason,
             $definition['auth'] ?? AuthenticationRequirement::REQUIRED,
             $definition['form'] ?? false,
+            $this->resource,
+            $endpoint,
         ));
     }
 

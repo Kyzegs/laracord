@@ -55,10 +55,13 @@ final class DiscordMessage implements Arrayable, JsonSerializable
         return $this;
     }
 
-    /** @param list<array<string, mixed>> $components */
+    /** @param list<Arrayable<string, mixed>|array<string, mixed>> $components */
     public function components(array $components): self
     {
-        $this->data['components'] = $components;
+        $this->data['components'] = array_map(
+            static fn (array|Arrayable $component): array => $component instanceof Arrayable ? $component->toArray() : $component,
+            $components,
+        );
 
         return $this;
     }

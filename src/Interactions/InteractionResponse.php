@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Kyzegs\Laracord\Interactions;
 
 use Illuminate\Http\JsonResponse;
+use Kyzegs\Laracord\Components\Modal;
 use Kyzegs\Laracord\Payloads\DiscordMessage;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -39,9 +40,13 @@ final class InteractionResponse
     }
 
     /** @param list<array<string, mixed>> $components */
-    public static function modal(string $customId, string $title, array $components): JsonResponse
+    public static function modal(Modal|string $modal, string $title = '', array $components = []): JsonResponse
     {
-        return new JsonResponse(['type' => 9, 'data' => ['custom_id' => $customId, 'title' => $title, 'components' => $components]]);
+        $data = $modal instanceof Modal
+            ? $modal->toArray()
+            : ['custom_id' => $modal, 'title' => $title, 'components' => $components];
+
+        return new JsonResponse(['type' => 9, 'data' => $data]);
     }
 
     public static function webhookPong(): Response
