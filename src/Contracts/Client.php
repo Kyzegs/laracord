@@ -6,8 +6,10 @@ namespace Kyzegs\Laracord\Contracts;
 
 use Kyzegs\Laracord\Http\DiscordRequest;
 use Kyzegs\Laracord\Http\DiscordResponse;
+use Kyzegs\Laracord\Pool\Pool;
 use Kyzegs\Laracord\Resources\ResourceClient;
 use Kyzegs\Laracord\ValueObjects\OAuthAccessToken;
+use Throwable;
 
 /**
  * A Discord HTTP client bound to a single authentication context.
@@ -26,4 +28,10 @@ interface Client
     public function resource(string $name): ResourceClient;
 
     public function send(DiscordRequest $discordRequest): DiscordResponse;
+
+    /**
+     * @param  callable(Pool): array<array-key, DiscordRequest>  $callback
+     * @return array<array-key, DiscordResponse|Throwable>
+     */
+    public function pool(callable $callback): array;
 }

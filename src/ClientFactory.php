@@ -8,6 +8,7 @@ use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\HandlerStack;
 use Illuminate\Contracts\Cache\Repository as CacheRepository;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
+use Illuminate\Contracts\Events\Dispatcher;
 use Kyzegs\GuzzleRateLimitMiddleware\Config\GlobalLimit;
 use Kyzegs\GuzzleRateLimitMiddleware\Config\InvalidRequestLimit;
 use Kyzegs\GuzzleRateLimitMiddleware\Config\Options;
@@ -23,6 +24,7 @@ final readonly class ClientFactory
         private ConfigRepository $configRepository,
         private CacheRepository $cacheRepository,
         private LoggerInterface $logger,
+        private Dispatcher $events,
     ) {}
 
     public function make(Authentication $authentication, ?HandlerStack $handlerStack = null): DiscordClient
@@ -56,6 +58,6 @@ final readonly class ClientFactory
             'headers' => ['User-Agent' => (string) $this->configRepository->get('laracord.user_agent', 'DiscordBot (https://github.com/Kyzegs/laracord, 1.0.0)')],
         ]);
 
-        return new DiscordClient($this, $client, $authentication, $this->configRepository);
+        return new DiscordClient($this, $client, $authentication, $this->configRepository, $this->events);
     }
 }

@@ -38,6 +38,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Application Commands
+    |--------------------------------------------------------------------------
+    |
+    | Slash/application command definitions pushed to Discord by the
+    | `laracord:commands:sync` Artisan command. Each entry is a command object
+    | as documented by Discord (name, description, options, ...).
+    |
+    */
+
+    'commands' => [],
+
+    /*
+    |--------------------------------------------------------------------------
     | Rate Limiting
     |--------------------------------------------------------------------------
     |

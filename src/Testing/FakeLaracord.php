@@ -52,7 +52,7 @@ final class FakeLaracord implements Factory
     /**
      * Build a canned response for use as a stub value.
      *
-     * @param  array<string, mixed>|string  $body
+     * @param  array<array-key, mixed>|string  $body
      * @param  array<string, string>  $headers
      */
     public static function response(array|string $body = '', int $status = 200, array $headers = []): DiscordResponse

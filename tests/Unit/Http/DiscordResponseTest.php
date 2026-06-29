@@ -18,3 +18,12 @@ it('handles json, empty bodies and rate headers', function (): void {
     $empty = new DiscordResponse(new Response(204), '');
     expect($empty->json())->toBeNull()->and($empty->isNoContent())->toBeTrue();
 });
+
+it('wraps json in a collection and fluent', function (): void {
+    $list = new DiscordResponse(new Response(200), '[{"id":"1"},{"id":"2"}]');
+    expect($list->collect()->pluck('id')->all())->toBe(['1', '2']);
+
+    $object = new DiscordResponse(new Response(200), '{"id":"9","name":"general"}');
+    expect($object->fluent()->get('name'))->toBe('general')
+        ->and($object->collect()->get('id'))->toBe('9');
+});
