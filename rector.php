@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use Rector\CodingStyle\Rector\PostInc\PostIncDecToPreIncDecRector;
 use Rector\Config\RectorConfig;
+use Rector\Naming\Rector\Class_\RenamePropertyToMatchTypeRector;
+use Rector\Naming\Rector\ClassMethod\RenameParamToMatchTypeRector;
 use RectorLaravel\Set\LaravelSetList;
 
 return RectorConfig::configure()
@@ -32,4 +34,11 @@ return RectorConfig::configure()
     )
     ->withSkip([
         PostIncDecToPreIncDecRector::class,
+        // Discord enforces a `$style` parameter name on components.
+        RenameParamToMatchTypeRector::class => [
+            __DIR__.'/src/Components',
+        ],
+        RenamePropertyToMatchTypeRector::class => [
+            __DIR__.'/src/Components',
+        ],
     ]);
