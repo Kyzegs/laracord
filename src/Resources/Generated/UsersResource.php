@@ -4,17 +4,21 @@ declare(strict_types=1);
 
 namespace Kyzegs\Laracord\Resources\Generated;
 
+use Illuminate\Contracts\Support\Arrayable;
+use JsonSerializable;
+use Kyzegs\Laracord\Http\DiscordResponse;
 use Kyzegs\Laracord\Resources\ResourceClient;
+use Kyzegs\Laracord\ValueObjects\AuditLogReason;
 
 /**
- * @method \Kyzegs\Laracord\Http\DiscordResponse getCurrent(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|\Illuminate\Contracts\Support\Arrayable<string, mixed>|\JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], \Kyzegs\Laracord\ValueObjects\AuditLogReason|null $auditLogReason = null)
- * @method \Kyzegs\Laracord\Http\DiscordResponse get(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|\Illuminate\Contracts\Support\Arrayable<string, mixed>|\JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], \Kyzegs\Laracord\ValueObjects\AuditLogReason|null $auditLogReason = null)
- * @method \Kyzegs\Laracord\Http\DiscordResponse modifyCurrent(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|\Illuminate\Contracts\Support\Arrayable<string, mixed>|\JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], \Kyzegs\Laracord\ValueObjects\AuditLogReason|null $auditLogReason = null)
- * @method \Kyzegs\Laracord\Http\DiscordResponse listGuilds(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|\Illuminate\Contracts\Support\Arrayable<string, mixed>|\JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], \Kyzegs\Laracord\ValueObjects\AuditLogReason|null $auditLogReason = null)
- * @method \Kyzegs\Laracord\Http\DiscordResponse getGuildMember(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|\Illuminate\Contracts\Support\Arrayable<string, mixed>|\JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], \Kyzegs\Laracord\ValueObjects\AuditLogReason|null $auditLogReason = null)
- * @method \Kyzegs\Laracord\Http\DiscordResponse leaveGuild(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|\Illuminate\Contracts\Support\Arrayable<string, mixed>|\JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], \Kyzegs\Laracord\ValueObjects\AuditLogReason|null $auditLogReason = null)
- * @method \Kyzegs\Laracord\Http\DiscordResponse createDm(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|\Illuminate\Contracts\Support\Arrayable<string, mixed>|\JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], \Kyzegs\Laracord\ValueObjects\AuditLogReason|null $auditLogReason = null)
- * @method \Kyzegs\Laracord\Http\DiscordResponse listConnections(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|\Illuminate\Contracts\Support\Arrayable<string, mixed>|\JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], \Kyzegs\Laracord\ValueObjects\AuditLogReason|null $auditLogReason = null)
+ * @method DiscordResponse getCurrent(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], ?AuditLogReason $auditLogReason = null)
+ * @method DiscordResponse get(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], ?AuditLogReason $auditLogReason = null)
+ * @method DiscordResponse modifyCurrent(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], ?AuditLogReason $auditLogReason = null)
+ * @method DiscordResponse listGuilds(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], ?AuditLogReason $auditLogReason = null)
+ * @method DiscordResponse getGuildMember(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], ?AuditLogReason $auditLogReason = null)
+ * @method DiscordResponse leaveGuild(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], ?AuditLogReason $auditLogReason = null)
+ * @method DiscordResponse createDm(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], ?AuditLogReason $auditLogReason = null)
+ * @method DiscordResponse listConnections(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], ?AuditLogReason $auditLogReason = null)
  *
  * @internal Generated by bin/resources.php. Do not edit by hand.
  */

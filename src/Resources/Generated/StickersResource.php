@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace Kyzegs\Laracord\Resources\Generated;
 
+use Illuminate\Contracts\Support\Arrayable;
+use JsonSerializable;
+use Kyzegs\Laracord\Http\DiscordResponse;
 use Kyzegs\Laracord\Resources\ResourceClient;
+use Kyzegs\Laracord\ValueObjects\AuditLogReason;
 
 /**
- * @method \Kyzegs\Laracord\Http\DiscordResponse get(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|\Illuminate\Contracts\Support\Arrayable<string, mixed>|\JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], \Kyzegs\Laracord\ValueObjects\AuditLogReason|null $auditLogReason = null)
- * @method \Kyzegs\Laracord\Http\DiscordResponse listPacks(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|\Illuminate\Contracts\Support\Arrayable<string, mixed>|\JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], \Kyzegs\Laracord\ValueObjects\AuditLogReason|null $auditLogReason = null)
- * @method \Kyzegs\Laracord\Http\DiscordResponse listGuildStickers(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|\Illuminate\Contracts\Support\Arrayable<string, mixed>|\JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], \Kyzegs\Laracord\ValueObjects\AuditLogReason|null $auditLogReason = null)
- * @method \Kyzegs\Laracord\Http\DiscordResponse getGuildSticker(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|\Illuminate\Contracts\Support\Arrayable<string, mixed>|\JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], \Kyzegs\Laracord\ValueObjects\AuditLogReason|null $auditLogReason = null)
- * @method \Kyzegs\Laracord\Http\DiscordResponse createGuildSticker(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|\Illuminate\Contracts\Support\Arrayable<string, mixed>|\JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], \Kyzegs\Laracord\ValueObjects\AuditLogReason|null $auditLogReason = null)
- * @method \Kyzegs\Laracord\Http\DiscordResponse modifyGuildSticker(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|\Illuminate\Contracts\Support\Arrayable<string, mixed>|\JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], \Kyzegs\Laracord\ValueObjects\AuditLogReason|null $auditLogReason = null)
- * @method \Kyzegs\Laracord\Http\DiscordResponse deleteGuildSticker(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|\Illuminate\Contracts\Support\Arrayable<string, mixed>|\JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], \Kyzegs\Laracord\ValueObjects\AuditLogReason|null $auditLogReason = null)
+ * @method DiscordResponse get(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], ?AuditLogReason $auditLogReason = null)
+ * @method DiscordResponse listPacks(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], ?AuditLogReason $auditLogReason = null)
+ * @method DiscordResponse listGuildStickers(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], ?AuditLogReason $auditLogReason = null)
+ * @method DiscordResponse getGuildSticker(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], ?AuditLogReason $auditLogReason = null)
+ * @method DiscordResponse createGuildSticker(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], ?AuditLogReason $auditLogReason = null)
+ * @method DiscordResponse modifyGuildSticker(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], ?AuditLogReason $auditLogReason = null)
+ * @method DiscordResponse deleteGuildSticker(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], ?AuditLogReason $auditLogReason = null)
  *
  * @internal Generated by bin/resources.php. Do not edit by hand.
  */

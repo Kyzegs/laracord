@@ -35,10 +35,10 @@ $generatedDir = $root.'/src/Resources/Generated';
 // Mirror the ResourceClient::call() signature minus the leading $endpoint argument.
 $signature = implode(', ', [
     'array<string, string|int|\Stringable> $parameters = []',
-    'array<string, mixed>|\Illuminate\Contracts\Support\Arrayable<string, mixed>|\JsonSerializable|null $body = null',
+    'array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null',
     'array<string, mixed> $query = []',
     'list<array<string, mixed>> $files = []',
-    '\Kyzegs\Laracord\ValueObjects\AuditLogReason|null $auditLogReason = null',
+    '?AuditLogReason $auditLogReason = null',
 ]);
 
 /** @var array<string, string> $expected map of absolute path => file contents */
@@ -52,7 +52,7 @@ foreach (EndpointCatalog::all() as $resource => $endpoints) {
 
     $methods = [];
     foreach (array_keys($endpoints) as $endpoint) {
-        $methods[] = " * @method \Kyzegs\Laracord\Http\DiscordResponse {$endpoint}({$signature})";
+        $methods[] = " * @method DiscordResponse {$endpoint}({$signature})";
     }
 
     $methodBlock = implode(PHP_EOL, $methods);
@@ -64,7 +64,11 @@ foreach (EndpointCatalog::all() as $resource => $endpoints) {
 
         namespace Kyzegs\Laracord\Resources\Generated;
 
+        use Illuminate\Contracts\Support\Arrayable;
+        use JsonSerializable;
+        use Kyzegs\Laracord\Http\DiscordResponse;
         use Kyzegs\Laracord\Resources\ResourceClient;
+        use Kyzegs\Laracord\ValueObjects\AuditLogReason;
 
         /**
         {$methodBlock}

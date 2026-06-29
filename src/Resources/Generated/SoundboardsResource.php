@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace Kyzegs\Laracord\Resources\Generated;
 
+use Illuminate\Contracts\Support\Arrayable;
+use JsonSerializable;
+use Kyzegs\Laracord\Http\DiscordResponse;
 use Kyzegs\Laracord\Resources\ResourceClient;
+use Kyzegs\Laracord\ValueObjects\AuditLogReason;
 
 /**
- * @method \Kyzegs\Laracord\Http\DiscordResponse send(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|\Illuminate\Contracts\Support\Arrayable<string, mixed>|\JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], \Kyzegs\Laracord\ValueObjects\AuditLogReason|null $auditLogReason = null)
- * @method \Kyzegs\Laracord\Http\DiscordResponse listDefault(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|\Illuminate\Contracts\Support\Arrayable<string, mixed>|\JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], \Kyzegs\Laracord\ValueObjects\AuditLogReason|null $auditLogReason = null)
- * @method \Kyzegs\Laracord\Http\DiscordResponse listGuildSounds(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|\Illuminate\Contracts\Support\Arrayable<string, mixed>|\JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], \Kyzegs\Laracord\ValueObjects\AuditLogReason|null $auditLogReason = null)
- * @method \Kyzegs\Laracord\Http\DiscordResponse getGuildSound(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|\Illuminate\Contracts\Support\Arrayable<string, mixed>|\JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], \Kyzegs\Laracord\ValueObjects\AuditLogReason|null $auditLogReason = null)
- * @method \Kyzegs\Laracord\Http\DiscordResponse createGuildSound(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|\Illuminate\Contracts\Support\Arrayable<string, mixed>|\JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], \Kyzegs\Laracord\ValueObjects\AuditLogReason|null $auditLogReason = null)
- * @method \Kyzegs\Laracord\Http\DiscordResponse modifyGuildSound(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|\Illuminate\Contracts\Support\Arrayable<string, mixed>|\JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], \Kyzegs\Laracord\ValueObjects\AuditLogReason|null $auditLogReason = null)
- * @method \Kyzegs\Laracord\Http\DiscordResponse deleteGuildSound(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|\Illuminate\Contracts\Support\Arrayable<string, mixed>|\JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], \Kyzegs\Laracord\ValueObjects\AuditLogReason|null $auditLogReason = null)
+ * @method DiscordResponse send(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], ?AuditLogReason $auditLogReason = null)
+ * @method DiscordResponse listDefault(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], ?AuditLogReason $auditLogReason = null)
+ * @method DiscordResponse listGuildSounds(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], ?AuditLogReason $auditLogReason = null)
+ * @method DiscordResponse getGuildSound(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], ?AuditLogReason $auditLogReason = null)
+ * @method DiscordResponse createGuildSound(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], ?AuditLogReason $auditLogReason = null)
+ * @method DiscordResponse modifyGuildSound(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], ?AuditLogReason $auditLogReason = null)
+ * @method DiscordResponse deleteGuildSound(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], ?AuditLogReason $auditLogReason = null)
  *
  * @internal Generated by bin/resources.php. Do not edit by hand.
  */

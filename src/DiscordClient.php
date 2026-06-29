@@ -88,7 +88,7 @@ final readonly class DiscordClient
 
     public function resource(string $name): ResourceClient
     {
-        $class = __NAMESPACE__.'\\Resources\\Generated\\'.Str::studly($name).'Resource';
+        $class = sprintf('%s\\Resources\\Generated\\%sResource', __NAMESPACE__, Str::studly($name));
 
         if (class_exists($class) && is_subclass_of($class, ResourceClient::class)) {
             return new $class($this, $name);
