@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 use Kyzegs\GuzzleRateLimitMiddleware\Exception\InvalidRequestLimitExceededException;
 use Kyzegs\GuzzleRateLimitMiddleware\Exception\RateLimitDelayExceededException;
 use Kyzegs\GuzzleRateLimitMiddleware\Exception\RateLimitExceededException;
+use Kyzegs\Laracord\Contracts\Client;
 use Kyzegs\Laracord\Endpoints\EndpointCatalog;
 use Kyzegs\Laracord\Enums\AuthenticationRequirement;
 use Kyzegs\Laracord\Exceptions\DiscordAuthenticationException;
@@ -62,7 +63,7 @@ use Psr\Http\Message\StreamInterface;
  * @method \Kyzegs\Laracord\Resources\Generated\VoiceResource voice()
  * @method \Kyzegs\Laracord\Resources\Generated\WebhooksResource webhooks()
  */
-final readonly class DiscordClient
+final readonly class DiscordClient implements Client
 {
     public function __construct(
         private ClientFactory $clientFactory,

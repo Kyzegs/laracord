@@ -5,12 +5,18 @@ declare(strict_types=1);
 namespace Kyzegs\Laracord;
 
 use Illuminate\Contracts\Config\Repository;
+use Kyzegs\Laracord\Contracts\Factory;
+use Kyzegs\Laracord\Interactions\InteractionRouter;
 use Kyzegs\Laracord\ValueObjects\Authentication;
 use Kyzegs\Laracord\ValueObjects\OAuthAccessToken;
 
-final readonly class LaracordManager
+final readonly class LaracordManager implements Factory
 {
-    public function __construct(private ClientFactory $clientFactory, private Repository $repository) {}
+    public function __construct(
+        private ClientFactory $clientFactory,
+        private Repository $repository,
+        private InteractionRouter $interactionRouter,
+    ) {}
 
     public function bot(): DiscordClient
     {
@@ -27,5 +33,10 @@ final readonly class LaracordManager
     public function withoutAuthentication(): DiscordClient
     {
         return $this->clientFactory->make(Authentication::none());
+    }
+
+    public function interactions(): InteractionRouter
+    {
+        return $this->interactionRouter;
     }
 }

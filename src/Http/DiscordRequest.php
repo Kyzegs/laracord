@@ -29,6 +29,8 @@ final readonly class DiscordRequest
         public ?AuditLogReason $reason = null,
         public AuthenticationRequirement $authentication = AuthenticationRequirement::REQUIRED,
         public bool $form = false,
+        public ?string $resource = null,
+        public ?string $endpoint = null,
     ) {
         if (! str_starts_with($path, '/')) {
             throw new \InvalidArgumentException('Discord request path must start with /.');

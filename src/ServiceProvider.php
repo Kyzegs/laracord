@@ -8,6 +8,7 @@ use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Notifications\ChannelManager;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use Kyzegs\Laracord\Interactions\InteractionRouter;
 use Kyzegs\Laracord\Notifications\DiscordChannel;
 use Kyzegs\Laracord\Socialite\DiscordProvider;
 use Laravel\Socialite\Contracts\Factory as SocialiteFactory;
@@ -45,6 +46,7 @@ class ServiceProvider extends BaseServiceProvider
         $this->mergeConfigFrom(__DIR__.'/../config/laracord.php', 'laracord');
 
         $this->app->singleton(ClientFactory::class);
+        $this->app->singleton(InteractionRouter::class);
         $this->app->singleton(LaracordManager::class);
         $this->app->alias(LaracordManager::class, 'laracord');
     }
