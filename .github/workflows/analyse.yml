@@ -18,5 +18,6 @@ jobs:
       - run: composer analyse
       - run: composer format:test
       - run: composer refactor:test
+      - run: composer ide-helpers:test
       - run: php docs/generate-api-docs.php
       - run: git diff --exit-code

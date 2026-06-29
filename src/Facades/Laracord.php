@@ -9,7 +9,7 @@ use Kyzegs\Laracord\LaracordManager;
 
 /**
  * @method static \Kyzegs\Laracord\DiscordClient bot()
- * @method static \Kyzegs\Laracord\DiscordClient bearer(string|\Kyzegs\Laracord\ValueObjects\OAuthAccessToken $token)
+ * @method static \Kyzegs\Laracord\DiscordClient bearer(\Kyzegs\Laracord\ValueObjects\OAuthAccessToken|string $token)
  * @method static \Kyzegs\Laracord\DiscordClient withoutAuthentication()
  *
  * @see LaracordManager
