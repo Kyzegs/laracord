@@ -13,7 +13,7 @@ use Kyzegs\Laracord\Http\DiscordRequest;
 use Kyzegs\Laracord\Http\DiscordResponse;
 use Kyzegs\Laracord\ValueObjects\AuditLogReason;
 
-final readonly class ResourceClient
+readonly class ResourceClient
 {
     public function __construct(private DiscordClient $discordClient, private string $resource) {}
 
