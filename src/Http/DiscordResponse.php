@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Kyzegs\Laracord\Http;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Fluent;
 use JsonException;
 use Psr\Http\Message\ResponseInterface;
 
@@ -47,6 +49,34 @@ final readonly class DiscordResponse
         $decoded = json_decode($this->body, true, 512, JSON_THROW_ON_ERROR);
 
         return $key === null ? $decoded : Arr::get($decoded, $key, $default);
+    }
+
+    /**
+     * Wrap the decoded JSON (or a sub-key) in a Collection.
+     *
+     * @return Collection<array-key, mixed>
+     *
+     * @throws JsonException
+     */
+    public function collect(?string $key = null): Collection
+    {
+        $value = $this->json($key);
+
+        return new Collection(is_array($value) ? $value : []);
+    }
+
+    /**
+     * Wrap the decoded JSON body in a Fluent for ergonomic attribute access.
+     *
+     * @return Fluent<string, mixed>
+     *
+     * @throws JsonException
+     */
+    public function fluent(): Fluent
+    {
+        $value = $this->json();
+
+        return new Fluent(is_array($value) ? $value : []);
     }
 
     /** @return array{limit:?int,remaining:?int,reset_after:?float,bucket:?string,scope:?string} */

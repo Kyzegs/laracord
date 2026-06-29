@@ -8,6 +8,9 @@ use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Notifications\ChannelManager;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use Kyzegs\Laracord\Console\ClearCommandsCommand;
+use Kyzegs\Laracord\Console\ListCommandsCommand;
+use Kyzegs\Laracord\Console\SyncCommandsCommand;
 use Kyzegs\Laracord\Interactions\InteractionRouter;
 use Kyzegs\Laracord\Notifications\DiscordChannel;
 use Kyzegs\Laracord\Socialite\DiscordProvider;
@@ -23,6 +26,7 @@ class ServiceProvider extends BaseServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([__DIR__.'/../config/laracord.php' => config_path('laracord.php')], 'laracord-config');
+            $this->commands([SyncCommandsCommand::class, ListCommandsCommand::class, ClearCommandsCommand::class]);
         }
 
         $this->app->afterResolving(SocialiteFactory::class, function (SocialiteManager $socialiteManager): void {

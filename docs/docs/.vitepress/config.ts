@@ -44,6 +44,8 @@ export default defineConfig({
           { text: 'Notifications', link: '/usage/notifications' },
           { text: 'Interactions', link: '/usage/interactions' },
           { text: 'Components', link: '/usage/components' },
+          { text: 'Commands', link: '/usage/commands' },
+          { text: 'Events', link: '/usage/events' },
           { text: 'Testing', link: '/usage/testing' },
           { text: 'Migration from 0.x', link: '/usage/migration-v1' },
         ],

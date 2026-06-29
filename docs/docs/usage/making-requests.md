@@ -133,6 +133,55 @@ if ($response->isNoContent()) {
 }
 ```
 
+### Collections and fluent access
+
+`collect()` wraps the decoded JSON (or a sub-key) in a `Collection`, and `fluent()` wraps an object body in a `Fluent`:
+
+```php
+$ids = $discord->guilds()->listMembers(['guild_id' => $guildId])
+    ->collect()
+    ->pluck('user.id');
+
+$name = $discord->guilds()->get(['guild_id' => $guildId])
+    ->fluent()
+    ->get('name');
+```
+
+## Pagination
+
+`paginate()` lazily walks a cursor-paginated endpoint, advancing by the id of the last item on each page until a short page is returned. It returns a `LazyCollection`, so only one page is held in memory at a time:
+
+```php
+$discord->guilds()
+    ->paginate('listMembers', ['guild_id' => $guildId], perPage: 1000)
+    ->each(function (array $member): void {
+        // ...
+    });
+```
+
+Defaults suit ascending-id collections (guild members, bans). For reverse-chronological history pass the matching cursor, and for nested payloads pass the items key:
+
+```php
+$discord->messages()->paginate('list', ['channel_id' => $channelId], cursor: 'before');
+
+$discord->auditLogs()->paginate('get', ['guild_id' => $guildId], itemsKey: 'audit_log_entries');
+```
+
+## Concurrent requests
+
+`pool()` dispatches several requests at once and returns the results keyed exactly as you built them. Each value is a `DiscordResponse`, or the `Throwable` that request failed with. Pooled requests skip the server-error retry loop.
+
+```php
+use Kyzegs\Laracord\Pool\Pool;
+
+$results = Laracord::bot()->pool(fn (Pool $pool) => [
+    'general' => $pool->request('channels', 'get', ['channel_id' => '1']),
+    'random' => $pool->request('channels', 'get', ['channel_id' => '2']),
+]);
+
+$results['general']->json('name');
+```
+
 ## Multipart file uploads
 
 Pass Guzzle-compatible multipart file definitions as the fourth dynamic-method argument:

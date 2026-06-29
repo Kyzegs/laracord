@@ -9,8 +9,10 @@ use Kyzegs\Laracord\Contracts\Client;
 use Kyzegs\Laracord\Endpoints\EndpointCatalog;
 use Kyzegs\Laracord\Http\DiscordRequest;
 use Kyzegs\Laracord\Http\DiscordResponse;
+use Kyzegs\Laracord\Pool\Pool;
 use Kyzegs\Laracord\Resources\ResourceClient;
 use Kyzegs\Laracord\ValueObjects\OAuthAccessToken;
+use Throwable;
 
 /**
  * Stand-in for DiscordClient used by FakeLaracord. Records every request and
@@ -59,5 +61,23 @@ final readonly class FakeDiscordClient implements Client
     public function send(DiscordRequest $discordRequest): DiscordResponse
     {
         return $this->fake->handle($discordRequest);
+    }
+
+    /**
+     * @param  callable(Pool): array<array-key, DiscordRequest>  $callback
+     * @return array<array-key, DiscordResponse|Throwable>
+     */
+    public function pool(callable $callback): array
+    {
+        $results = [];
+        foreach ($callback(new Pool) as $key => $discordRequest) {
+            try {
+                $results[$key] = $this->fake->handle($discordRequest);
+            } catch (Throwable $exception) {
+                $results[$key] = $exception;
+            }
+        }
+
+        return $results;
     }
 }

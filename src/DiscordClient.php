@@ -6,8 +6,10 @@ namespace Kyzegs\Laracord;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Promise\Utils;
 use GuzzleHttp\RequestOptions;
 use Illuminate\Contracts\Config\Repository;
+use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Sleep;
 use Illuminate\Support\Str;
 use Kyzegs\GuzzleRateLimitMiddleware\Exception\InvalidRequestLimitExceededException;
@@ -16,6 +18,9 @@ use Kyzegs\GuzzleRateLimitMiddleware\Exception\RateLimitExceededException;
 use Kyzegs\Laracord\Contracts\Client;
 use Kyzegs\Laracord\Endpoints\EndpointCatalog;
 use Kyzegs\Laracord\Enums\AuthenticationRequirement;
+use Kyzegs\Laracord\Events\RequestFailed;
+use Kyzegs\Laracord\Events\RequestSending;
+use Kyzegs\Laracord\Events\ResponseReceived;
 use Kyzegs\Laracord\Exceptions\DiscordAuthenticationException;
 use Kyzegs\Laracord\Exceptions\DiscordForbiddenException;
 use Kyzegs\Laracord\Exceptions\DiscordHttpException;
@@ -27,6 +32,7 @@ use Kyzegs\Laracord\Exceptions\DiscordTransportException;
 use Kyzegs\Laracord\Exceptions\MissingAuthenticationException;
 use Kyzegs\Laracord\Http\DiscordRequest;
 use Kyzegs\Laracord\Http\DiscordResponse;
+use Kyzegs\Laracord\Pool\Pool;
 use Kyzegs\Laracord\Resources\ResourceClient;
 use Kyzegs\Laracord\ValueObjects\AuditLogReason;
 use Kyzegs\Laracord\ValueObjects\Authentication;
@@ -70,6 +76,7 @@ final readonly class DiscordClient implements Client
         private ClientInterface $client,
         private Authentication $authentication,
         private Repository $repository,
+        private Dispatcher $events,
     ) {}
 
     public function asBot(?string $token = null): self
@@ -109,6 +116,98 @@ final readonly class DiscordClient implements Client
     }
 
     public function send(DiscordRequest $discordRequest): DiscordResponse
+    {
+        [$method, $path, $options] = $this->prepare($discordRequest);
+
+        $this->events->dispatch(new RequestSending($discordRequest));
+
+        $attempts = max(1, (int) $this->repository->get('laracord.http.server_retries', 5));
+        $response = null;
+        for ($attempt = 0; $attempt < $attempts; $attempt++) {
+            try {
+                $response = $this->client->request($method, $path, $options);
+            } catch (\Throwable $exception) {
+                if ($exception instanceof ConnectException && $attempt < $attempts - 1) {
+                    Sleep::usleep((1 + $attempt * 2) * 1_000_000);
+                    $this->rewindMultipart($options[RequestOptions::MULTIPART] ?? []);
+
+                    continue;
+                }
+
+                throw $this->fail($discordRequest, $this->classify($exception));
+            }
+
+            if (! in_array($response->getStatusCode(), [500, 502, 504, 524], true) || $attempt === $attempts - 1) {
+                break;
+            }
+
+            Sleep::usleep((1 + $attempt * 2) * 1_000_000);
+            $this->rewindMultipart($options[RequestOptions::MULTIPART] ?? []);
+        }
+
+        if (! $response instanceof ResponseInterface) {
+            throw $this->fail($discordRequest, new DiscordTransportException('Discord request completed without a response.'));
+        }
+
+        try {
+            $discordResponse = $this->makeResponse($discordRequest, $response);
+        } catch (\Throwable $throwable) {
+            throw $this->fail($discordRequest, $throwable);
+        }
+
+        $this->events->dispatch(new ResponseReceived($discordRequest, $discordResponse));
+
+        return $discordResponse;
+    }
+
+    /**
+     * Send multiple requests concurrently. The callback receives a Pool to build
+     * requests; the returned array's keys are preserved, and each value becomes a
+     * DiscordResponse or the Throwable the request failed with. Pooled requests
+     * bypass the server-error retry loop.
+     *
+     * @param  callable(Pool): array<array-key, DiscordRequest>  $callback
+     * @return array<array-key, DiscordResponse|\Throwable>
+     */
+    public function pool(callable $callback): array
+    {
+        $requests = $callback(new Pool);
+
+        $promises = [];
+        foreach ($requests as $key => $discordRequest) {
+            [$method, $path, $options] = $this->prepare($discordRequest);
+            $this->events->dispatch(new RequestSending($discordRequest));
+            $promises[$key] = $this->client->requestAsync($method, $path, $options);
+        }
+
+        $results = [];
+        foreach (Utils::settle($promises)->wait() as $key => $settled) {
+            $discordRequest = $requests[$key];
+
+            if ($settled['state'] === 'fulfilled') {
+                try {
+                    $discordResponse = $this->makeResponse($discordRequest, $settled['value']);
+                    $this->events->dispatch(new ResponseReceived($discordRequest, $discordResponse));
+                    $results[$key] = $discordResponse;
+                } catch (\Throwable $exception) {
+                    $results[$key] = $this->fail($discordRequest, $exception);
+                }
+
+                continue;
+            }
+
+            $results[$key] = $this->fail($discordRequest, $this->classify($settled['reason']));
+        }
+
+        return $results;
+    }
+
+    /**
+     * Build the Guzzle method, path, and options for a request.
+     *
+     * @return array{0: string, 1: string, 2: array<string, mixed>}
+     */
+    private function prepare(DiscordRequest $discordRequest): array
     {
         $header = $this->authentication->header();
         if ($discordRequest->authentication === AuthenticationRequirement::REQUIRED && $header === null) {
@@ -153,50 +252,24 @@ final readonly class DiscordClient implements Client
             $options[$discordRequest->form ? RequestOptions::FORM_PARAMS : RequestOptions::JSON] = $body;
         }
 
-        $attempts = max(1, (int) $this->repository->get('laracord.http.server_retries', 5));
-        $response = null;
-        for ($attempt = 0; $attempt < $attempts; $attempt++) {
-            try {
-                $response = $this->client->request($discordRequest->method->value, $path, $options);
-            } catch (\Throwable $exception) {
-                if ($exception instanceof InvalidRequestLimitExceededException) {
-                    throw new DiscordInvalidRequestLimitException($exception->retryAfter, previous: $exception);
-                }
+        return [$discordRequest->method->value, $path, $options];
+    }
 
-                if ($exception instanceof RateLimitDelayExceededException) {
-                    throw new DiscordRateLimitException($exception->retryAfter, previous: $exception);
-                }
+    /** Map a low-level transport exception to its Discord equivalent. */
+    private function classify(\Throwable $exception): \Throwable
+    {
+        return match (true) {
+            $exception instanceof InvalidRequestLimitExceededException => new DiscordInvalidRequestLimitException($exception->retryAfter, previous: $exception),
+            $exception instanceof RateLimitDelayExceededException => new DiscordRateLimitException($exception->retryAfter, previous: $exception),
+            $exception instanceof RateLimitExceededException => new DiscordRateLimitException($exception->getRetryAfter(), $exception->isGlobal(), $exception),
+            $exception instanceof ConnectException => new DiscordTransportException($exception->getMessage(), $exception->getCode(), previous: $exception),
+            default => $exception,
+        };
+    }
 
-                if ($exception instanceof RateLimitExceededException) {
-                    throw new DiscordRateLimitException($exception->getRetryAfter(), $exception->isGlobal(), $exception);
-                }
-
-                if (! $exception instanceof ConnectException) {
-                    throw $exception;
-                }
-
-                if ($attempt === $attempts - 1) {
-                    throw new DiscordTransportException($exception->getMessage(), $exception->getCode(), previous: $exception);
-                }
-
-                Sleep::usleep((1 + $attempt * 2) * 1_000_000);
-                $this->rewindMultipart($options[RequestOptions::MULTIPART] ?? []);
-
-                continue;
-            }
-
-            if (! in_array($response->getStatusCode(), [500, 502, 504, 524], true) || $attempt === $attempts - 1) {
-                break;
-            }
-
-            Sleep::usleep((1 + $attempt * 2) * 1_000_000);
-            $this->rewindMultipart($options[RequestOptions::MULTIPART] ?? []);
-        }
-
-        if (! $response instanceof ResponseInterface) {
-            throw new DiscordTransportException('Discord request completed without a response.');
-        }
-
+    /** Turn a received response into a DiscordResponse, throwing for non-2xx statuses. */
+    private function makeResponse(DiscordRequest $discordRequest, ResponseInterface $response): DiscordResponse
+    {
         $contents = (string) $response->getBody();
         $discordResponse = new DiscordResponse($response, $contents);
         if ($response->getStatusCode() >= 200 && $response->getStatusCode() < 300) {
@@ -210,6 +283,14 @@ final readonly class DiscordClient implements Client
             500, 502, 504, 524 => new DiscordServerException($discordResponse, $discordRequest),
             default => new DiscordHttpException($discordResponse, $discordRequest),
         };
+    }
+
+    /** Dispatch the failure event and return the exception so callers can throw or collect it. */
+    private function fail(DiscordRequest $discordRequest, \Throwable $exception): \Throwable
+    {
+        $this->events->dispatch(new RequestFailed($discordRequest, $exception));
+
+        return $exception;
     }
 
     /** @param array<string, mixed> $query */
