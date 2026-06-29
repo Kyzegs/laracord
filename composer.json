@@ -70,11 +70,5 @@
         "platform": {
             "php": "8.3"
         }
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/Kyzegs/guzzle-rate-limit-middleware"
-        }
-    ]
+    }
 }

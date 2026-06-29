@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a095d9b820b007939a541b32d7255095",
+    "content-hash": "26bc3ee237fd5f994bb794279a7e809d",
     "packages": [
         {
             "name": "brick/math",
@@ -1156,19 +1156,7 @@
                     "Kyzegs\\GuzzleRateLimitMiddleware\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Kyzegs\\GuzzleRateLimitMiddleware\\Tests\\": "tests/"
-                }
-            },
-            "scripts": {
-                "test": [
-                    "phpunit"
-                ],
-                "analyse": [
-                    "phpstan analyse --memory-limit=512M"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1180,15 +1168,15 @@
             ],
             "description": "A configurable Guzzle middleware for rate limiting HTTP requests based on response headers",
             "keywords": [
+                "Guzzle",
                 "api",
-                "guzzle",
                 "http",
                 "middleware",
                 "rate-limit"
             ],
             "support": {
-                "source": "https://github.com/Kyzegs/guzzle-rate-limit-middleware/tree/v1.1.0",
-                "issues": "https://github.com/Kyzegs/guzzle-rate-limit-middleware/issues"
+                "issues": "https://github.com/Kyzegs/guzzle-rate-limit-middleware/issues",
+                "source": "https://github.com/Kyzegs/guzzle-rate-limit-middleware/tree/v1.1.0"
             },
             "time": "2026-06-23T12:23:00+00:00"
         },
