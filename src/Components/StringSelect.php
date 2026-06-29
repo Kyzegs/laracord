@@ -11,13 +11,13 @@ final class StringSelect extends SelectMenu
     /** @var list<SelectOption> */
     private array $options = [];
 
-    public function option(SelectOption $option): self
+    public function option(SelectOption $selectOption): self
     {
         if (count($this->options) >= 25) {
             throw new \InvalidArgumentException('A string select supports at most 25 options.');
         }
 
-        $this->options[] = $option;
+        $this->options[] = $selectOption;
 
         return $this;
     }
@@ -37,12 +37,13 @@ final class StringSelect extends SelectMenu
     }
 
     /** @return array<string, mixed> */
+    #[\Override]
     protected function extra(): array
     {
         if ($this->options === []) {
             throw new \InvalidArgumentException('A string select requires at least one option.');
         }
 
-        return ['options' => array_map(static fn (SelectOption $option): array => $option->toArray(), $this->options)];
+        return ['options' => array_map(static fn (SelectOption $selectOption): array => $selectOption->toArray(), $this->options)];
     }
 }

@@ -13,7 +13,7 @@ final class Button implements Component
     use HasEmoji;
 
     private function __construct(
-        private readonly ButtonStyle $style,
+        private readonly ButtonStyle $buttonStyle,
         private ?string $label = null,
         private ?string $customId = null,
         private ?string $url = null,
@@ -78,7 +78,7 @@ final class Button implements Component
 
         return array_filter([
             'type' => ComponentType::BUTTON->value,
-            'style' => $this->style->value,
+            'style' => $this->buttonStyle->value,
             'label' => $this->label,
             'emoji' => $this->emoji,
             'custom_id' => $this->customId,

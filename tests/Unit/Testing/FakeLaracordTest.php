@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Kyzegs\Laracord\Exceptions\DiscordRateLimitException;
 use Kyzegs\Laracord\Facades\Laracord;
 use Kyzegs\Laracord\Http\DiscordRequest;
+use Kyzegs\Laracord\Http\DiscordResponse;
 use Kyzegs\Laracord\Payloads\DiscordMessage;
 use Kyzegs\Laracord\Tests\TestCase;
 
@@ -19,10 +20,10 @@ it('records requests and asserts what was sent', function (): void {
     );
 
     $fake->assertSent('messages', 'create');
-    $fake->assertSent('messages', 'create', function (DiscordRequest $request): bool {
-        $body = $request->bodyArray();
+    $fake->assertSent('messages', 'create', function (DiscordRequest $discordRequest): bool {
+        $body = $discordRequest->bodyArray();
 
-        return $request->parameters['channel_id'] === '123' && ($body['content'] ?? null) === 'Hello';
+        return $discordRequest->parameters['channel_id'] === '123' && ($body['content'] ?? null) === 'Hello';
     });
     $fake->assertNotSent('messages', 'delete');
     $fake->assertSentCount(1);
@@ -33,10 +34,10 @@ it('returns a stubbed response keyed by resource.endpoint', function (): void {
         'messages.create' => Laracord::response(['id' => '999', 'content' => 'hi']),
     ]);
 
-    $response = Laracord::bot()->messages()->create(['channel_id' => '1'], (new DiscordMessage)->content('hi'));
+    $discordResponse = Laracord::bot()->messages()->create(['channel_id' => '1'], (new DiscordMessage)->content('hi'));
 
-    expect($response->status())->toBe(200)
-        ->and($response->json('id'))->toBe('999');
+    expect($discordResponse->status())->toBe(200)
+        ->and($discordResponse->json('id'))->toBe('999');
 });
 
 it('matches wildcard stubs', function (): void {
@@ -78,7 +79,7 @@ it('asserts nothing was sent', function (): void {
 
 it('resolves stubs from a closure receiving the request', function (): void {
     Laracord::fake([
-        'channels.get' => fn (DiscordRequest $request) => Laracord::response(['id' => $request->parameters['channel_id']]),
+        'channels.get' => fn (DiscordRequest $discordRequest): DiscordResponse => Laracord::response(['id' => $discordRequest->parameters['channel_id']]),
     ]);
 
     expect(Laracord::bot()->channels()->get(['channel_id' => '42'])->json('id'))->toBe('42');

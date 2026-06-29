@@ -99,7 +99,7 @@ final class FakeLaracord implements Factory
         $label = $resource.($endpoint === null ? '' : '.'.$endpoint);
         PHPUnit::assertNotEmpty(
             $this->matching($resource, $endpoint, $callback),
-            "Expected a Discord request matching [{$label}] but none was sent.",
+            sprintf('Expected a Discord request matching [%s] but none was sent.', $label),
         );
     }
 
@@ -114,7 +114,7 @@ final class FakeLaracord implements Factory
         PHPUnit::assertCount(
             0,
             $this->matching($resource, $endpoint, $callback),
-            "Expected no Discord request matching [{$label}] but one was sent.",
+            sprintf('Expected no Discord request matching [%s] but one was sent.', $label),
         );
     }
 
@@ -131,23 +131,27 @@ final class FakeLaracord implements Factory
     /** @return list<DiscordRequest> */
     private function matching(string $resource, ?string $endpoint, ?callable $callback): array
     {
-        return $this->recorded(static function (DiscordRequest $request) use ($resource, $endpoint, $callback): bool {
-            if ($request->resource !== $resource) {
+        return $this->recorded(static function (DiscordRequest $discordRequest) use ($resource, $endpoint, $callback): bool {
+            if ($discordRequest->resource !== $resource) {
                 return false;
             }
 
-            if ($endpoint !== null && $request->endpoint !== $endpoint) {
+            if ($endpoint !== null && $discordRequest->endpoint !== $endpoint) {
                 return false;
             }
 
-            return $callback === null || $callback($request) === true;
+            return $callback === null || $callback($discordRequest) === true;
         });
     }
 
     private function resolveStub(DiscordRequest $discordRequest): DiscordResponse|Throwable|Closure|null
     {
         foreach ($this->candidateKeys($discordRequest) as $key) {
-            if (! isset($this->stubs[$key]) || $this->stubs[$key] === []) {
+            if (! isset($this->stubs[$key])) {
+                continue;
+            }
+
+            if ($this->stubs[$key] === []) {
                 continue;
             }
 

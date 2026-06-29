@@ -31,18 +31,18 @@ final class Modal implements Arrayable, JsonSerializable
         return new self($customId, $title);
     }
 
-    public function text(TextInput $input): self
+    public function text(TextInput $textInput): self
     {
-        return $this->add(new ActionRow($input));
+        return $this->add(new ActionRow($textInput));
     }
 
-    public function add(ActionRow $row): self
+    public function add(ActionRow $actionRow): self
     {
         if (count($this->components) >= 5) {
             throw new \InvalidArgumentException('A modal supports at most 5 action rows.');
         }
 
-        $this->components[] = $row;
+        $this->components[] = $actionRow;
 
         return $this;
     }
@@ -62,7 +62,7 @@ final class Modal implements Arrayable, JsonSerializable
         return [
             'custom_id' => $this->customId,
             'title' => $this->title,
-            'components' => array_map(static fn (ActionRow $row): array => $row->toArray(), $this->components),
+            'components' => array_map(static fn (ActionRow $actionRow): array => $actionRow->toArray(), $this->components),
         ];
     }
 

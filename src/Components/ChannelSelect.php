@@ -24,6 +24,7 @@ final class ChannelSelect extends SelectMenu
     }
 
     /** @return array<string, mixed> */
+    #[\Override]
     protected function extra(): array
     {
         return $this->channelTypes === null ? [] : ['channel_types' => $this->channelTypes];

@@ -22,7 +22,7 @@ final class TextInput implements Component
     private function __construct(
         private readonly string $customId,
         private readonly string $label,
-        private readonly TextInputStyle $style,
+        private readonly TextInputStyle $textInputStyle,
     ) {
         if (mb_strlen($customId) > 100) {
             throw new \InvalidArgumentException('Text input custom_id cannot exceed 100 characters.');
@@ -88,7 +88,7 @@ final class TextInput implements Component
         return array_filter([
             'type' => ComponentType::TEXT_INPUT->value,
             'custom_id' => $this->customId,
-            'style' => $this->style->value,
+            'style' => $this->textInputStyle->value,
             'label' => $this->label,
             'min_length' => $this->minLength,
             'max_length' => $this->maxLength,
