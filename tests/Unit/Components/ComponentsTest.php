@@ -14,13 +14,13 @@ use Kyzegs\Laracord\Interactions\InteractionResponse;
 use Kyzegs\Laracord\Payloads\DiscordMessage;
 
 it('builds a button row', function (): void {
-    $actionRow = ActionRow::make(
+    $row = ActionRow::make(
         Button::primary('vote:yes', 'Yes')->emoji('✅'),
         Button::danger('vote:no', 'No')->disabled(),
         Button::link('https://discord.com', 'Docs'),
     );
 
-    expect($actionRow->toArray())->toBe([
+    expect($row->toArray())->toBe([
         'type' => 1,
         'components' => [
             ['type' => 2, 'style' => 1, 'label' => 'Yes', 'emoji' => ['name' => '✅'], 'custom_id' => 'vote:yes'],
@@ -31,7 +31,7 @@ it('builds a button row', function (): void {
 });
 
 it('builds a string select with options', function (): void {
-    $stringSelect = StringSelect::make('pick')
+    $select = StringSelect::make('pick')
         ->placeholder('Choose one')
         ->minValues(1)
         ->maxValues(2)
@@ -40,7 +40,7 @@ it('builds a string select with options', function (): void {
             SelectOption::make('Blue', 'blue')->emoji('🔵'),
         );
 
-    expect($stringSelect->toArray())->toBe([
+    expect($select->toArray())->toBe([
         'type' => 3,
         'custom_id' => 'pick',
         'placeholder' => 'Choose one',
@@ -75,21 +75,21 @@ it('builds a modal with text inputs', function (): void {
 });
 
 it('accepts component builders on a message', function (): void {
-    $discordMessage = (new DiscordMessage)
+    $message = (new DiscordMessage)
         ->content('Pick')
         ->components([ActionRow::make(Button::secondary('id', 'Tap'))]);
 
-    expect($discordMessage->toArray()['components'])->toBe([
+    expect($message->toArray()['components'])->toBe([
         ['type' => 1, 'components' => [['type' => 2, 'style' => 2, 'label' => 'Tap', 'custom_id' => 'id']]],
     ]);
 });
 
 it('returns a modal interaction response from a builder', function (): void {
-    $jsonResponse = InteractionResponse::modal(
+    $response = InteractionResponse::modal(
         Modal::make('m', 'Title')->text(TextInput::short('field', 'Field')),
     );
 
-    expect($jsonResponse->getData(true))->toBe([
+    expect($response->getData(true))->toBe([
         'type' => 9,
         'data' => [
             'custom_id' => 'm',

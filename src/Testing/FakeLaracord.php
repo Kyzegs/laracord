@@ -63,13 +63,13 @@ final class FakeLaracord implements Factory
         return new DiscordResponse(new Psr7Response($status, $headers, $contents), $contents);
     }
 
-    public function handle(DiscordRequest $discordRequest): DiscordResponse
+    public function handle(DiscordRequest $request): DiscordResponse
     {
-        $this->recorded[] = $discordRequest;
+        $this->recorded[] = $request;
 
-        $stub = $this->resolveStub($discordRequest);
+        $stub = $this->resolveStub($request);
         if ($stub instanceof Closure) {
-            $stub = $stub($discordRequest);
+            $stub = $stub($request);
         }
 
         if ($stub instanceof Throwable) {
@@ -131,22 +131,22 @@ final class FakeLaracord implements Factory
     /** @return list<DiscordRequest> */
     private function matching(string $resource, ?string $endpoint, ?callable $callback): array
     {
-        return $this->recorded(static function (DiscordRequest $discordRequest) use ($resource, $endpoint, $callback): bool {
-            if ($discordRequest->resource !== $resource) {
+        return $this->recorded(static function (DiscordRequest $request) use ($resource, $endpoint, $callback): bool {
+            if ($request->resource !== $resource) {
                 return false;
             }
 
-            if ($endpoint !== null && $discordRequest->endpoint !== $endpoint) {
+            if ($endpoint !== null && $request->endpoint !== $endpoint) {
                 return false;
             }
 
-            return $callback === null || $callback($discordRequest) === true;
+            return $callback === null || $callback($request) === true;
         });
     }
 
-    private function resolveStub(DiscordRequest $discordRequest): DiscordResponse|Throwable|Closure|null
+    private function resolveStub(DiscordRequest $request): DiscordResponse|Throwable|Closure|null
     {
-        foreach ($this->candidateKeys($discordRequest) as $key) {
+        foreach ($this->candidateKeys($request) as $key) {
             if (! isset($this->stubs[$key])) {
                 continue;
             }
@@ -164,10 +164,10 @@ final class FakeLaracord implements Factory
     }
 
     /** @return list<string> */
-    private function candidateKeys(DiscordRequest $discordRequest): array
+    private function candidateKeys(DiscordRequest $request): array
     {
-        $resource = $discordRequest->resource;
-        $endpoint = $discordRequest->endpoint;
+        $resource = $request->resource;
+        $endpoint = $request->endpoint;
 
         if ($resource === null) {
             return ['*'];

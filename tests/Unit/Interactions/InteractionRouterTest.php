@@ -25,11 +25,11 @@ it('auto-answers a ping', function (): void {
 });
 
 it('dispatches an application command by name', function (): void {
-    $interactionRouter = router()->command('ban', fn (Interaction $interaction): JsonResponse => InteractionResponse::message([
+    $router = router()->command('ban', fn (Interaction $interaction): JsonResponse => InteractionResponse::message([
         'content' => 'Banned '.$interaction->option('user'),
     ]));
 
-    $response = $interactionRouter->handle(new Interaction([
+    $response = $router->handle(new Interaction([
         'type' => 2,
         'data' => ['name' => 'ban', 'options' => [['name' => 'user', 'value' => 'Bob']]],
     ]));
@@ -39,47 +39,47 @@ it('dispatches an application command by name', function (): void {
 });
 
 it('matches a wildcard component custom_id and passes captures', function (): void {
-    $interactionRouter = router()->component('vote:*', fn (Interaction $interaction, array $parameters): JsonResponse => InteractionResponse::message([
+    $router = router()->component('vote:*', fn (Interaction $interaction, array $parameters): JsonResponse => InteractionResponse::message([
         'content' => 'voted '.$parameters[0],
     ]));
 
-    $response = $interactionRouter->handle(new Interaction(['type' => 3, 'data' => ['custom_id' => 'vote:42']]));
+    $response = $router->handle(new Interaction(['type' => 3, 'data' => ['custom_id' => 'vote:42']]));
 
     expect(json_decode((string) $response->getContent(), true))
         ->toBe(['type' => 4, 'data' => ['content' => 'voted 42']]);
 });
 
 it('dispatches a modal submit', function (): void {
-    $interactionRouter = router()->modal('feedback', fn (Interaction $interaction): JsonResponse => InteractionResponse::message(['content' => 'thanks']));
+    $router = router()->modal('feedback', fn (Interaction $interaction): JsonResponse => InteractionResponse::message(['content' => 'thanks']));
 
-    $response = $interactionRouter->handle(new Interaction(['type' => 5, 'data' => ['custom_id' => 'feedback']]));
+    $response = $router->handle(new Interaction(['type' => 5, 'data' => ['custom_id' => 'feedback']]));
 
     expect(json_decode((string) $response->getContent(), true))
         ->toBe(['type' => 4, 'data' => ['content' => 'thanks']]);
 });
 
 it('dispatches autocomplete interactions', function (): void {
-    $interactionRouter = router()->autocomplete('search', fn (Interaction $interaction): JsonResponse => InteractionResponse::autocomplete([
+    $router = router()->autocomplete('search', fn (Interaction $interaction): JsonResponse => InteractionResponse::autocomplete([
         ['name' => 'first', 'value' => '1'],
     ]));
 
-    $response = $interactionRouter->handle(new Interaction(['type' => 4, 'data' => ['name' => 'search']]));
+    $response = $router->handle(new Interaction(['type' => 4, 'data' => ['name' => 'search']]));
 
     expect(json_decode((string) $response->getContent(), true))
         ->toBe(['type' => 8, 'data' => ['choices' => [['name' => 'first', 'value' => '1']]]]);
 });
 
 it('resolves invokable class handlers through the container', function (): void {
-    $interactionRouter = router()->command('ping', PingCommand::class);
+    $router = router()->command('ping', PingCommand::class);
 
-    $response = $interactionRouter->handle(new Interaction(['type' => 2, 'data' => ['name' => 'ping']]));
+    $response = $router->handle(new Interaction(['type' => 2, 'data' => ['name' => 'ping']]));
 
     expect(json_decode((string) $response->getContent(), true))
         ->toBe(['type' => 4, 'data' => ['content' => 'pong']]);
 });
 
 it('builds the interaction from a request body', function (): void {
-    $interactionRouter = router()->command('hi', fn (Interaction $interaction): JsonResponse => InteractionResponse::message(['content' => $interaction->id()]));
+    $router = router()->command('hi', fn (Interaction $interaction): JsonResponse => InteractionResponse::message(['content' => $interaction->id()]));
 
     $request = Request::create('/discord', 'POST', server: ['CONTENT_TYPE' => 'application/json'], content: (string) json_encode([
         'id' => 'abc',
@@ -87,7 +87,7 @@ it('builds the interaction from a request body', function (): void {
         'data' => ['name' => 'hi'],
     ]));
 
-    $response = $interactionRouter->handle($request);
+    $response = $router->handle($request);
 
     expect(json_decode((string) $response->getContent(), true))
         ->toBe(['type' => 4, 'data' => ['content' => 'abc']]);

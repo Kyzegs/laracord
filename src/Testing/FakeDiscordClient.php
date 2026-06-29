@@ -18,7 +18,7 @@ use Kyzegs\Laracord\ValueObjects\OAuthAccessToken;
  */
 final readonly class FakeDiscordClient implements Client
 {
-    public function __construct(private FakeLaracord $fakeLaracord) {}
+    public function __construct(private FakeLaracord $fake) {}
 
     public function asBot(?string $token = null): self
     {
@@ -58,6 +58,6 @@ final readonly class FakeDiscordClient implements Client
 
     public function send(DiscordRequest $discordRequest): DiscordResponse
     {
-        return $this->fakeLaracord->handle($discordRequest);
+        return $this->fake->handle($discordRequest);
     }
 }

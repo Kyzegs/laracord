@@ -26,10 +26,10 @@ final class Laracord extends Facade
      */
     public static function fake(array $stubs = []): FakeLaracord
     {
-        $fakeLaracord = new FakeLaracord($stubs);
-        self::swap($fakeLaracord);
+        $fake = new FakeLaracord($stubs);
+        self::swap($fake);
 
-        return $fakeLaracord;
+        return $fake;
     }
 
     /**
