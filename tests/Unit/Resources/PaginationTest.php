@@ -19,6 +19,7 @@ it('lazily paginates following the cursor until a short page', function (): void
         new Response(200, [], (string) json_encode([['id' => '3']])),
     ]));
     $stack->push(Middleware::history($history));
+
     $client = resolve(ClientFactory::class)->make(Authentication::bot('secret'), $stack);
 
     $ids = $client->resource('guilds')

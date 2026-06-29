@@ -12,7 +12,7 @@ final class ClearCommandsCommand extends Command
 {
     use ResolvesApplicationId;
 
-    protected $signature = 'laracord:commands:clear {--guild= : Clear a single guild\'s commands instead of global ones}';
+    protected $signature = "laracord:commands:clear {--guild= : Clear a single guild's commands instead of global ones}";
 
     protected $description = 'Remove all registered Discord application commands';
 

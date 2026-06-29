@@ -151,8 +151,8 @@ final readonly class DiscordClient implements Client
 
         try {
             $discordResponse = $this->makeResponse($discordRequest, $response);
-        } catch (\Throwable $exception) {
-            throw $this->fail($discordRequest, $exception);
+        } catch (\Throwable $throwable) {
+            throw $this->fail($discordRequest, $throwable);
         }
 
         $this->events->dispatch(new ResponseReceived($discordRequest, $discordResponse));

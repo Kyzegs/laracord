@@ -12,7 +12,7 @@ final class ListCommandsCommand extends Command
 {
     use ResolvesApplicationId;
 
-    protected $signature = 'laracord:commands:list {--guild= : List a single guild\'s commands instead of global ones}';
+    protected $signature = "laracord:commands:list {--guild= : List a single guild's commands instead of global ones}";
 
     protected $description = 'List the Discord application commands currently registered';
 

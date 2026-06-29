@@ -52,7 +52,7 @@ it('clears all global commands', function (): void {
 });
 
 it('fails without an application id', function (): void {
-    config()->set('laracord.application_id', null);
+    config()->set('laracord.application_id');
     Laracord::fake();
 
     expect(Artisan::call('laracord:commands:sync'))->toBe(1);
