@@ -36,6 +36,36 @@ it('sends bot auth and discord query encoding', function (): void {
         ->and($history[0]['request']->getUri()->getQuery())->toBe('id=1&id=2&enabled=true');
 });
 
+it('forwards named resource query arguments to call', function (): void {
+    $history = [];
+    $handlerStack = HandlerStack::create(new MockHandler([
+        new Response(200, ['Content-Type' => 'application/json'], '{"ok":true}'),
+    ]));
+    $handlerStack->push(Middleware::history($history));
+
+    $discordClient = resolve(ClientFactory::class)->make(Authentication::bot('secret'), $handlerStack);
+
+    $discordClient->resource('guilds')->call('get', ['guild_id' => '123'], query: ['with_counts' => true]);
+
+    expect($history[0]['request']->getUri()->getPath())->toBe('/api/v10/guilds/123')
+        ->and($history[0]['request']->getUri()->getQuery())->toBe('with_counts=true');
+});
+
+it('forwards positional resource query arguments to call', function (): void {
+    $history = [];
+    $handlerStack = HandlerStack::create(new MockHandler([
+        new Response(200, ['Content-Type' => 'application/json'], '{"ok":true}'),
+    ]));
+    $handlerStack->push(Middleware::history($history));
+
+    $discordClient = resolve(ClientFactory::class)->make(Authentication::bot('secret'), $handlerStack);
+
+    $discordClient->resource('guilds')->call('get', ['guild_id' => '123'], null, ['with_counts' => true]);
+
+    expect($history[0]['request']->getUri()->getPath())->toBe('/api/v10/guilds/123')
+        ->and($history[0]['request']->getUri()->getQuery())->toBe('with_counts=true');
+});
+
 it('supports empty unauthenticated responses', function (): void {
     $handlerStack = HandlerStack::create(new MockHandler([new Response(204)]));
     $discordClient = resolve(ClientFactory::class)->make(Authentication::none(), $handlerStack);
