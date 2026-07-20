@@ -341,3 +341,4 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 | `moderateMessage` | `PATCH` | `/lobbies/{lobby_id}/messages/{message_id}/moderation` |
 | `inviteSelf` | `POST` | `/lobbies/{lobby_id}/members/@me/invites` |
 | `inviteUser` | `POST` | `/lobbies/{lobby_id}/members/{user_id}/invites` |
+
