@@ -39,6 +39,12 @@ final readonly class DiscordResponse
         return $this->body === '';
     }
 
+    /** @return array{status:int,rate_limit:array{limit:?int,remaining:?int,reset_after:?float,bucket:?string,scope:?string}} */
+    public function formatForTelescope(): array
+    {
+        return ['status' => $this->status(), 'rate_limit' => $this->rateLimit()];
+    }
+
     /** @throws JsonException */
     public function json(?string $key = null, mixed $default = null): mixed
     {

@@ -51,6 +51,17 @@ final readonly class DiscordRequest
         return $path;
     }
 
+    /** @return array{method:string,path:string,resource:?string,endpoint:?string} */
+    public function formatForTelescope(): array
+    {
+        return [
+            'method' => $this->method->value,
+            'path' => $this->path,
+            'resource' => $this->resource,
+            'endpoint' => $this->endpoint,
+        ];
+    }
+
     /** @return array<string, mixed>|null */
     public function bodyArray(): ?array
     {

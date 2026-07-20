@@ -83,4 +83,8 @@ return [
         'max_age_seconds' => (int) env('LARACORD_SIGNATURE_MAX_AGE', 300),
     ],
 
+    'observability' => [
+        'telescope' => (bool) env('LARACORD_TELESCOPE', true),
+    ],
+
 ];

@@ -5,17 +5,22 @@ declare(strict_types=1);
 namespace Kyzegs\Laracord;
 
 use Illuminate\Contracts\Config\Repository;
+use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Notifications\ChannelManager;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Kyzegs\Laracord\Console\ClearCommandsCommand;
 use Kyzegs\Laracord\Console\ListCommandsCommand;
 use Kyzegs\Laracord\Console\SyncCommandsCommand;
+use Kyzegs\Laracord\Events\RequestFailed;
+use Kyzegs\Laracord\Events\ResponseReceived;
 use Kyzegs\Laracord\Interactions\InteractionRouter;
 use Kyzegs\Laracord\Notifications\DiscordChannel;
+use Kyzegs\Laracord\Observability\TelescopeRecorder;
 use Kyzegs\Laracord\Socialite\DiscordProvider;
 use Laravel\Socialite\Contracts\Factory as SocialiteFactory;
 use Laravel\Socialite\SocialiteManager;
+use Laravel\Telescope\Telescope;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -39,6 +44,13 @@ class ServiceProvider extends BaseServiceProvider
             // @phpstan-ignore property.notFound ($this is the service provider here, not the ChannelManager)
             $channelManager->extend('discord', fn () => $this->app->make(DiscordChannel::class));
         });
+
+        if (class_exists(Telescope::class) && $this->app->make(Repository::class)->get('laracord.observability.telescope', true)) {
+            $events = $this->app->make(Dispatcher::class);
+            $recorder = $this->app->make(TelescopeRecorder::class);
+            $events->listen(ResponseReceived::class, $recorder->recordResponse(...));
+            $events->listen(RequestFailed::class, $recorder->recordFailure(...));
+        }
     }
 
     /**

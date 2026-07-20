@@ -118,8 +118,10 @@ final readonly class DiscordClient implements Client
     public function send(DiscordRequest $discordRequest): DiscordResponse
     {
         [$method, $path, $options] = $this->prepare($discordRequest);
+        $requestId = (string) Str::uuid();
+        $startedAt = microtime(true);
 
-        $this->events->dispatch(new RequestSending($discordRequest));
+        $this->events->dispatch(new RequestSending($discordRequest, $requestId));
 
         $attempts = max(1, (int) $this->repository->get('laracord.http.server_retries', 5));
         $response = null;
@@ -134,7 +136,7 @@ final readonly class DiscordClient implements Client
                     continue;
                 }
 
-                throw $this->fail($discordRequest, $this->classify($exception));
+                throw $this->fail($discordRequest, $this->classify($exception), $requestId, $startedAt, $attempt + 1);
             }
 
             if (! in_array($response->getStatusCode(), [500, 502, 504, 524], true) || $attempt === $attempts - 1) {
@@ -146,16 +148,16 @@ final readonly class DiscordClient implements Client
         }
 
         if (! $response instanceof ResponseInterface) {
-            throw $this->fail($discordRequest, new DiscordTransportException('Discord request completed without a response.'));
+            throw $this->fail($discordRequest, new DiscordTransportException('Discord request completed without a response.'), $requestId, $startedAt, $attempt + 1);
         }
 
         try {
             $discordResponse = $this->makeResponse($discordRequest, $response);
         } catch (\Throwable $throwable) {
-            throw $this->fail($discordRequest, $throwable);
+            throw $this->fail($discordRequest, $throwable, $requestId, $startedAt, $attempt + 1);
         }
 
-        $this->events->dispatch(new ResponseReceived($discordRequest, $discordResponse));
+        $this->events->dispatch(new ResponseReceived($discordRequest, $discordResponse, $requestId, $this->elapsed($startedAt), $attempt + 1));
 
         return $discordResponse;
     }
@@ -174,9 +176,17 @@ final readonly class DiscordClient implements Client
         $requests = $callback(new Pool);
 
         $promises = [];
+        $completedAt = [];
+        $requestIds = [];
+        $startedAt = [];
         foreach ($requests as $key => $discordRequest) {
             [$method, $path, $options] = $this->prepare($discordRequest);
-            $this->events->dispatch(new RequestSending($discordRequest));
+            $requestIds[$key] = (string) Str::uuid();
+            $startedAt[$key] = microtime(true);
+            $options[RequestOptions::ON_STATS] = static function () use (&$completedAt, $key): void {
+                $completedAt[$key] = microtime(true);
+            };
+            $this->events->dispatch(new RequestSending($discordRequest, $requestIds[$key]));
             $promises[$key] = $this->client->requestAsync($method, $path, $options);
         }
 
@@ -187,16 +197,16 @@ final readonly class DiscordClient implements Client
             if ($settled['state'] === 'fulfilled') {
                 try {
                     $discordResponse = $this->makeResponse($discordRequest, $settled['value']);
-                    $this->events->dispatch(new ResponseReceived($discordRequest, $discordResponse));
+                    $this->events->dispatch(new ResponseReceived($discordRequest, $discordResponse, $requestIds[$key], $this->elapsed($startedAt[$key], $completedAt[$key] ?? null)));
                     $results[$key] = $discordResponse;
                 } catch (\Throwable $exception) {
-                    $results[$key] = $this->fail($discordRequest, $exception);
+                    $results[$key] = $this->fail($discordRequest, $exception, $requestIds[$key], $startedAt[$key], completedAt: $completedAt[$key] ?? null);
                 }
 
                 continue;
             }
 
-            $results[$key] = $this->fail($discordRequest, $this->classify($settled['reason']));
+            $results[$key] = $this->fail($discordRequest, $this->classify($settled['reason']), $requestIds[$key], $startedAt[$key], completedAt: $completedAt[$key] ?? null);
         }
 
         return $results;
@@ -286,11 +296,16 @@ final readonly class DiscordClient implements Client
     }
 
     /** Dispatch the failure event and return the exception so callers can throw or collect it. */
-    private function fail(DiscordRequest $discordRequest, \Throwable $exception): \Throwable
+    private function fail(DiscordRequest $discordRequest, \Throwable $exception, string $requestId, float $startedAt, int $attempts = 1, ?float $completedAt = null): \Throwable
     {
-        $this->events->dispatch(new RequestFailed($discordRequest, $exception));
+        $this->events->dispatch(new RequestFailed($discordRequest, $exception, $requestId, $this->elapsed($startedAt, $completedAt), $attempts));
 
         return $exception;
+    }
+
+    private function elapsed(float $startedAt, ?float $completedAt = null): float
+    {
+        return (($completedAt ?? microtime(true)) - $startedAt) * 1000;
     }
 
     /** @param array<string, mixed> $query */

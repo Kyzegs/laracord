@@ -38,6 +38,7 @@
     },
     "require-dev": {
         "laravel/pint": "^1.24",
+        "laravel/telescope": "^5.0",
         "larastan/larastan": "^3.0",
         "orchestra/testbench": "^10.0|^11.0",
         "pestphp/pest": "^4.4",
@@ -46,6 +47,9 @@
         "phpstan/phpdoc-parser": "^1.16",
         "rector/rector": "^2.1",
         "driftingly/rector-laravel": "^2.0"
+    },
+    "suggest": {
+        "laravel/telescope": "Record Discord API calls in Telescope's Client Requests screen."
     },
     "scripts": {
         "test": "vendor/bin/pest",

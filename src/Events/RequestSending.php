@@ -9,5 +9,5 @@ use Kyzegs\Laracord\Http\DiscordRequest;
 /** Dispatched before a Discord request leaves the client. */
 final readonly class RequestSending
 {
-    public function __construct(public DiscordRequest $request) {}
+    public function __construct(public DiscordRequest $request, public string $requestId = '') {}
 }

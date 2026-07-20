@@ -10,5 +10,11 @@ use Throwable;
 /** Dispatched when a Discord request fails with a transport or HTTP error. */
 final readonly class RequestFailed
 {
-    public function __construct(public DiscordRequest $request, public Throwable $exception) {}
+    public function __construct(
+        public DiscordRequest $request,
+        public Throwable $exception,
+        public string $requestId = '',
+        public float $durationMs = 0.0,
+        public int $attempts = 1,
+    ) {}
 }
