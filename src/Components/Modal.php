@@ -75,7 +75,8 @@ final class Modal implements Arrayable, JsonSerializable
         }
 
         $components = array_map(static fn (Component $component): array => $component->toArray(), $this->components);
-        $ids = $customIds = [];
+        $ids = [];
+        $customIds = [];
         $this->validateUniqueIdentifiers($components, $ids, $customIds);
 
         return [

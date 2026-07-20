@@ -131,7 +131,7 @@ final class DiscordMessage implements Arrayable, JsonSerializable
         if ($this->componentsV2) {
             foreach (['content', 'embeds', 'poll', 'sticker_ids'] as $field) {
                 if (array_key_exists($field, $this->data)) {
-                    throw new \InvalidArgumentException("Discord Components V2 messages cannot contain {$field}.");
+                    throw new \InvalidArgumentException(sprintf('Discord Components V2 messages cannot contain %s.', $field));
                 }
             }
 
@@ -151,7 +151,8 @@ final class DiscordMessage implements Arrayable, JsonSerializable
                 throw new \InvalidArgumentException('Discord Components V2 messages support at most 40 total components.');
             }
 
-            $ids = $customIds = [];
+            $ids = [];
+            $customIds = [];
             $this->validateUniqueIdentifiers($components, $ids, $customIds);
         }
 
