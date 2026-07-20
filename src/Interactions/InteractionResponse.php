@@ -27,6 +27,11 @@ final class InteractionResponse
         return new JsonResponse(['type' => 5, 'data' => $ephemeral ? ['flags' => 64] : []]);
     }
 
+    public static function deferUpdate(): JsonResponse
+    {
+        return new JsonResponse(['type' => 6]);
+    }
+
     /** @param array<string, mixed>|DiscordMessage $message */
     public static function update(DiscordMessage|array $message): JsonResponse
     {

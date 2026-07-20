@@ -9,7 +9,7 @@ use Kyzegs\Laracord\Enums\HttpMethod;
 
 final class EndpointCatalog
 {
-    public const string AUDITED_AT = '2026-06-23';
+    public const string AUDITED_AT = '2026-07-20';
 
     /**
      * Endpoint names are relative to their resource: the resource noun is dropped, so
@@ -263,6 +263,13 @@ final class EndpointCatalog
             ],
             'interactions' => [
                 'callback' => ['method' => HttpMethod::POST, 'path' => '/interactions/{interaction_id}/{interaction_token}/callback', 'auth' => AuthenticationRequirement::NONE],
+                'getOriginal' => ['method' => HttpMethod::GET, 'path' => '/webhooks/{application_id}/{interaction_token}/messages/@original', 'auth' => AuthenticationRequirement::NONE],
+                'editOriginal' => ['method' => HttpMethod::PATCH, 'path' => '/webhooks/{application_id}/{interaction_token}/messages/@original', 'auth' => AuthenticationRequirement::NONE],
+                'deleteOriginal' => ['method' => HttpMethod::DELETE, 'path' => '/webhooks/{application_id}/{interaction_token}/messages/@original', 'auth' => AuthenticationRequirement::NONE],
+                'createFollowup' => ['method' => HttpMethod::POST, 'path' => '/webhooks/{application_id}/{interaction_token}', 'auth' => AuthenticationRequirement::NONE],
+                'getFollowup' => ['method' => HttpMethod::GET, 'path' => '/webhooks/{application_id}/{interaction_token}/messages/{message_id}', 'auth' => AuthenticationRequirement::NONE],
+                'editFollowup' => ['method' => HttpMethod::PATCH, 'path' => '/webhooks/{application_id}/{interaction_token}/messages/{message_id}', 'auth' => AuthenticationRequirement::NONE],
+                'deleteFollowup' => ['method' => HttpMethod::DELETE, 'path' => '/webhooks/{application_id}/{interaction_token}/messages/{message_id}', 'auth' => AuthenticationRequirement::NONE],
             ],
             'lobbies' => [
                 'create' => ['method' => HttpMethod::POST, 'path' => '/lobbies'],
