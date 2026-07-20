@@ -6,6 +6,7 @@ namespace Kyzegs\Laracord\Interactions;
 
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Http\Request;
+use Kyzegs\Laracord\Contracts\Factory;
 use Kyzegs\Laracord\Interactions\Enums\InteractionType;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -13,30 +14,31 @@ use Symfony\Component\HttpFoundation\Response;
  * Maps incoming Discord interactions to handlers and dispatches them.
  *
  * Handlers may be closures, invokable class names, `Class@method` strings, or
- * `[Class::class, 'method']` pairs. They receive the resolved Interaction (and,
- * for wildcard custom_id routes, the captured `$parameters`) and must return a
- * Symfony Response — use InteractionResponse to build one.
+ * `[Class::class, 'method']` pairs. They may receive the resolved `$interaction`,
+ * its lifecycle `$context`, and wildcard `$parameters`. Normal handlers must
+ * return a Symfony Response; deferred handlers dispatch work and are acknowledged
+ * automatically.
  */
 final class InteractionRouter
 {
-    /** @var array<string, callable|string|array{0: class-string|object, 1: string}> */
+    /** @var array<string, array{handler: callable|string|array{0: class-string|object, 1: string}, defer: bool, ephemeral: bool}> */
     private array $commands = [];
 
-    /** @var array<string, callable|string|array{0: class-string|object, 1: string}> */
+    /** @var array<string, array{handler: callable|string|array{0: class-string|object, 1: string}, defer: bool, ephemeral: bool}> */
     private array $autocompletes = [];
 
-    /** @var array<string, callable|string|array{0: class-string|object, 1: string}> */
+    /** @var array<string, array{handler: callable|string|array{0: class-string|object, 1: string}, defer: bool, ephemeral: bool}> */
     private array $components = [];
 
-    /** @var array<string, callable|string|array{0: class-string|object, 1: string}> */
+    /** @var array<string, array{handler: callable|string|array{0: class-string|object, 1: string}, defer: bool, ephemeral: bool}> */
     private array $modals = [];
 
     public function __construct(private readonly Container $container) {}
 
     /** @param callable|string|array{0: class-string|object, 1: string} $handler */
-    public function command(string $name, callable|string|array $handler): self
+    public function command(string $name, callable|string|array $handler, bool $defer = false, bool $ephemeral = false): self
     {
-        $this->commands[$name] = $handler;
+        $this->commands[$name] = ['handler' => $handler, 'defer' => $defer, 'ephemeral' => $ephemeral];
 
         return $this;
     }
@@ -44,23 +46,23 @@ final class InteractionRouter
     /** @param callable|string|array{0: class-string|object, 1: string} $handler */
     public function autocomplete(string $name, callable|string|array $handler): self
     {
-        $this->autocompletes[$name] = $handler;
+        $this->autocompletes[$name] = ['handler' => $handler, 'defer' => false, 'ephemeral' => false];
 
         return $this;
     }
 
     /** @param callable|string|array{0: class-string|object, 1: string} $handler */
-    public function component(string $customId, callable|string|array $handler): self
+    public function component(string $customId, callable|string|array $handler, bool $defer = false): self
     {
-        $this->components[$customId] = $handler;
+        $this->components[$customId] = ['handler' => $handler, 'defer' => $defer, 'ephemeral' => false];
 
         return $this;
     }
 
     /** @param callable|string|array{0: class-string|object, 1: string} $handler */
-    public function modal(string $customId, callable|string|array $handler): self
+    public function modal(string $customId, callable|string|array $handler, bool $defer = false, bool $ephemeral = false): self
     {
-        $this->modals[$customId] = $handler;
+        $this->modals[$customId] = ['handler' => $handler, 'defer' => $defer, 'ephemeral' => $ephemeral];
 
         return $this;
     }
@@ -79,7 +81,7 @@ final class InteractionRouter
         };
     }
 
-    /** @param array<string, callable|string|array{0: class-string|object, 1: string}> $handlers */
+    /** @param array<string, array{handler: callable|string|array{0: class-string|object, 1: string}, defer: bool, ephemeral: bool}> $handlers */
     private function dispatchNamed(array $handlers, ?string $name, Interaction $interaction): Response
     {
         if ($name === null || ! isset($handlers[$name])) {
@@ -89,7 +91,7 @@ final class InteractionRouter
         return $this->invoke($handlers[$name], $interaction, []);
     }
 
-    /** @param array<string, callable|string|array{0: class-string|object, 1: string}> $handlers */
+    /** @param array<string, array{handler: callable|string|array{0: class-string|object, 1: string}, defer: bool, ephemeral: bool}> $handlers */
     private function dispatchPattern(array $handlers, ?string $customId, Interaction $interaction): Response
     {
         if ($customId !== null) {
@@ -117,20 +119,33 @@ final class InteractionRouter
     }
 
     /**
-     * @param  callable|string|array{0: class-string|object, 1: string}  $handler
+     * @param  array{handler: callable|string|array{0: class-string|object, 1: string}, defer: bool, ephemeral: bool}  $handler
      * @param  list<string>  $captures
      */
-    private function invoke(callable|string|array $handler, Interaction $interaction, array $captures): Response
+    private function invoke(array $handler, Interaction $interaction, array $captures): Response
     {
-        if (is_string($handler) && ! str_contains($handler, '@') && class_exists($handler)) {
-            $instance = $this->container->make($handler);
+        $callable = $handler['handler'];
+        if (is_string($callable) && ! str_contains($callable, '@') && class_exists($callable)) {
+            $instance = $this->container->make($callable);
             $callable = [$instance, '__invoke'];
-        } else {
-            $callable = $handler;
         }
 
+        /** @var Factory $factory */
+        $factory = $this->container->make('laracord');
+        $context = $interaction->context($factory);
+
         /** @var callable|string $callable */
-        $response = $this->container->call($callable, ['interaction' => $interaction, 'parameters' => $captures]);
+        $response = $this->container->call($callable, [
+            'interaction' => $interaction,
+            'context' => $context,
+            'parameters' => $captures,
+        ]);
+
+        if ($handler['defer']) {
+            return $interaction->type() === InteractionType::MESSAGE_COMPONENT->value
+                ? $context->deferUpdate()
+                : $context->defer($handler['ephemeral']);
+        }
 
         if (! $response instanceof Response) {
             throw new UnhandledInteractionException('Interaction handler must return a '.Response::class.'.');

@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Kyzegs\Laracord\Interactions\Interaction;
+use Kyzegs\Laracord\Interactions\InteractionContext;
 use Kyzegs\Laracord\Interactions\InteractionResponse;
 use Kyzegs\Laracord\Interactions\InteractionRouter;
 use Kyzegs\Laracord\Interactions\UnhandledInteractionException;
@@ -67,6 +68,27 @@ it('dispatches autocomplete interactions', function (): void {
 
     expect(json_decode((string) $response->getContent(), true))
         ->toBe(['type' => 8, 'data' => ['choices' => [['name' => 'first', 'value' => '1']]]]);
+});
+
+it('automatically defers handlers that dispatch queued work', function (): void {
+    $queued = false;
+    $router = router()->command('report', function (InteractionContext $context) use (&$queued): void {
+        $queued = $context->interaction->commandName() === 'report';
+    }, defer: true, ephemeral: true);
+
+    $response = $router->handle(new Interaction(['type' => 2, 'data' => ['name' => 'report']]));
+
+    expect($queued)->toBeTrue()
+        ->and(json_decode((string) $response->getContent(), true))
+        ->toBe(['type' => 5, 'data' => ['flags' => 64]]);
+});
+
+it('uses deferred update responses for queued component handlers', function (): void {
+    $router = router()->component('refresh', static function (): void {}, defer: true);
+
+    $response = $router->handle(new Interaction(['type' => 3, 'data' => ['custom_id' => 'refresh']]));
+
+    expect(json_decode((string) $response->getContent(), true))->toBe(['type' => 6]);
 });
 
 it('resolves invokable class handlers through the container', function (): void {

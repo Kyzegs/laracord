@@ -1,6 +1,6 @@
 # Endpoint Catalog
 
-Audited against Discord HTTP documentation on 2026-06-23.
+Audited against Discord HTTP documentation on 2026-07-20.
 
 Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, $query, $files, $reason)`.
 
@@ -314,6 +314,13 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 | Endpoint | Method | Path |
 |---|---:|---|
 | `callback` | `POST` | `/interactions/{interaction_id}/{interaction_token}/callback` |
+| `getOriginal` | `GET` | `/webhooks/{application_id}/{interaction_token}/messages/@original` |
+| `editOriginal` | `PATCH` | `/webhooks/{application_id}/{interaction_token}/messages/@original` |
+| `deleteOriginal` | `DELETE` | `/webhooks/{application_id}/{interaction_token}/messages/@original` |
+| `createFollowup` | `POST` | `/webhooks/{application_id}/{interaction_token}` |
+| `getFollowup` | `GET` | `/webhooks/{application_id}/{interaction_token}/messages/{message_id}` |
+| `editFollowup` | `PATCH` | `/webhooks/{application_id}/{interaction_token}/messages/{message_id}` |
+| `deleteFollowup` | `DELETE` | `/webhooks/{application_id}/{interaction_token}/messages/{message_id}` |
 
 ## Lobbies
 
