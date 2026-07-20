@@ -10,19 +10,19 @@ use JsonSerializable;
 /** @implements Arrayable<string, mixed> */
 final class Modal implements Arrayable, JsonSerializable
 {
-    /** @var list<ActionRow> */
+    /** @var list<Component> */
     private array $components = [];
 
     private function __construct(
         private readonly string $customId,
         private readonly string $title,
     ) {
-        if (mb_strlen($customId) > 100) {
-            throw new \InvalidArgumentException('Modal custom_id cannot exceed 100 characters.');
+        if ($customId === '' || mb_strlen($customId) > 100) {
+            throw new \InvalidArgumentException('Modal custom_id must contain between 1 and 100 characters.');
         }
 
-        if (mb_strlen($title) > 45) {
-            throw new \InvalidArgumentException('Modal title cannot exceed 45 characters.');
+        if ($title === '' || mb_strlen($title) > 45) {
+            throw new \InvalidArgumentException('Modal title must contain between 1 and 45 characters.');
         }
     }
 
@@ -36,13 +36,23 @@ final class Modal implements Arrayable, JsonSerializable
         return $this->add(new ActionRow($input));
     }
 
-    public function add(ActionRow $row): self
+    public function label(string $label, Component $component, ?string $description = null): self
     {
-        if (count($this->components) >= 5) {
-            throw new \InvalidArgumentException('A modal supports at most 5 action rows.');
+        $field = Label::make($label, $component);
+        if ($description !== null) {
+            $field->description($description);
         }
 
-        $this->components[] = $row;
+        return $this->add($field);
+    }
+
+    public function add(Component $component): self
+    {
+        if (count($this->components) >= 40) {
+            throw new \InvalidArgumentException('A modal supports at most 40 top-level components.');
+        }
+
+        $this->components[] = $component;
 
         return $this;
     }
@@ -59,10 +69,19 @@ final class Modal implements Arrayable, JsonSerializable
             throw new \InvalidArgumentException('A modal requires at least one component.');
         }
 
+        $allowed = [ActionRow::class, Label::class, TextDisplay::class];
+        if (array_filter($this->components, static fn (Component $component): bool => ! in_array($component::class, $allowed, true)) !== []) {
+            throw new \InvalidArgumentException('Modal contains an unsupported top-level component.');
+        }
+
+        $components = array_map(static fn (Component $component): array => $component->toArray(), $this->components);
+        $ids = $customIds = [];
+        $this->validateUniqueIdentifiers($components, $ids, $customIds);
+
         return [
             'custom_id' => $this->customId,
             'title' => $this->title,
-            'components' => array_map(static fn (ActionRow $row): array => $row->toArray(), $this->components),
+            'components' => $components,
         ];
     }
 
@@ -70,5 +89,35 @@ final class Modal implements Arrayable, JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
+    }
+
+    /**
+     * @param  array<array-key, mixed>  $value
+     * @param  array<int, true>  $ids
+     * @param  array<string, true>  $customIds
+     */
+    private function validateUniqueIdentifiers(array $value, array &$ids, array &$customIds): void
+    {
+        if (isset($value['id']) && is_int($value['id']) && $value['id'] !== 0) {
+            if (isset($ids[$value['id']])) {
+                throw new \InvalidArgumentException('Component ids must be unique within a modal.');
+            }
+
+            $ids[$value['id']] = true;
+        }
+
+        if (isset($value['custom_id']) && is_string($value['custom_id'])) {
+            if (isset($customIds[$value['custom_id']])) {
+                throw new \InvalidArgumentException('Component custom_ids must be unique within a modal.');
+            }
+
+            $customIds[$value['custom_id']] = true;
+        }
+
+        foreach ($value as $child) {
+            if (is_array($child)) {
+                $this->validateUniqueIdentifiers($child, $ids, $customIds);
+            }
+        }
     }
 }

@@ -10,11 +10,15 @@ use JsonSerializable;
 /** @implements Arrayable<string, mixed> */
 final class DiscordMessage implements Arrayable, JsonSerializable
 {
+    public const IS_COMPONENTS_V2 = 1 << 15;
+
     /** @var array<string, mixed> */
     private array $data = ['allowed_mentions' => ['parse' => []]];
 
     /** @var list<array<string, mixed>> */
     private array $files = [];
+
+    private bool $componentsV2 = false;
 
     public function content(string $content): self
     {
@@ -50,7 +54,7 @@ final class DiscordMessage implements Arrayable, JsonSerializable
 
     public function flags(int $flags): self
     {
-        $this->data['flags'] = $flags;
+        $this->data['flags'] = $this->componentsV2 ? $flags | self::IS_COMPONENTS_V2 : $flags;
 
         return $this;
     }
@@ -64,6 +68,15 @@ final class DiscordMessage implements Arrayable, JsonSerializable
         );
 
         return $this;
+    }
+
+    /** @param list<Arrayable<string, mixed>|array<string, mixed>> $components */
+    public function componentsV2(array $components): self
+    {
+        $this->componentsV2 = true;
+        $this->data['flags'] = ($this->data['flags'] ?? 0) | self::IS_COMPONENTS_V2;
+
+        return $this->components($components);
     }
 
     /** @param array<string, mixed>|Arrayable<string, mixed> $poll */
@@ -115,12 +128,83 @@ final class DiscordMessage implements Arrayable, JsonSerializable
     /** @return array<string, mixed> */
     public function toArray(): array
     {
+        if ($this->componentsV2) {
+            foreach (['content', 'embeds', 'poll', 'sticker_ids'] as $field) {
+                if (array_key_exists($field, $this->data)) {
+                    throw new \InvalidArgumentException("Discord Components V2 messages cannot contain {$field}.");
+                }
+            }
+
+            $components = $this->data['components'] ?? [];
+            if ($components === []) {
+                throw new \InvalidArgumentException('A Discord Components V2 message requires at least one component.');
+            }
+
+            $topLevelTypes = [1, 9, 10, 12, 13, 14, 17];
+            foreach ($components as $component) {
+                if (! isset($component['type']) || ! in_array($component['type'], $topLevelTypes, true)) {
+                    throw new \InvalidArgumentException('Discord Components V2 message contains an unsupported top-level component.');
+                }
+            }
+
+            if ($this->componentCount($components) > 40) {
+                throw new \InvalidArgumentException('Discord Components V2 messages support at most 40 total components.');
+            }
+
+            $ids = $customIds = [];
+            $this->validateUniqueIdentifiers($components, $ids, $customIds);
+        }
+
         return $this->data;
     }
 
     /** @return array<string, mixed> */
     public function jsonSerialize(): array
     {
-        return $this->data;
+        return $this->toArray();
+    }
+
+    /** @param array<array-key, mixed> $value */
+    private function componentCount(array $value): int
+    {
+        $count = isset($value['type']) && is_int($value['type']) ? 1 : 0;
+
+        foreach ($value as $child) {
+            if (is_array($child)) {
+                $count += $this->componentCount($child);
+            }
+        }
+
+        return $count;
+    }
+
+    /**
+     * @param  array<array-key, mixed>  $value
+     * @param  array<int, true>  $ids
+     * @param  array<string, true>  $customIds
+     */
+    private function validateUniqueIdentifiers(array $value, array &$ids, array &$customIds): void
+    {
+        if (isset($value['id']) && is_int($value['id']) && $value['id'] !== 0) {
+            if (isset($ids[$value['id']])) {
+                throw new \InvalidArgumentException('Component ids must be unique within a message.');
+            }
+
+            $ids[$value['id']] = true;
+        }
+
+        if (isset($value['custom_id']) && is_string($value['custom_id'])) {
+            if (isset($customIds[$value['custom_id']])) {
+                throw new \InvalidArgumentException('Component custom_ids must be unique within a message.');
+            }
+
+            $customIds[$value['custom_id']] = true;
+        }
+
+        foreach ($value as $child) {
+            if (is_array($child)) {
+                $this->validateUniqueIdentifiers($child, $ids, $customIds);
+            }
+        }
     }
 }

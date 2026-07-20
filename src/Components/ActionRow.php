@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Kyzegs\Laracord\Components;
 
+use Kyzegs\Laracord\Components\Concerns\HasId;
 use Kyzegs\Laracord\Components\Enums\ComponentType;
 
 final class ActionRow implements Component
 {
+    use HasId;
+
     /** @var list<Component> */
     private array $components;
 
@@ -40,12 +43,13 @@ final class ActionRow implements Component
             if (count($this->components) > 5) {
                 throw new \InvalidArgumentException('An action row supports at most 5 buttons.');
             }
-        } elseif (count($this->components) > 1) {
-            throw new \InvalidArgumentException('An action row with a select menu or text input may not contain other components.');
+        } elseif (count($this->components) !== 1 || (! $this->components[0] instanceof SelectMenu && ! $this->components[0] instanceof TextInput)) {
+            throw new \InvalidArgumentException('An action row must contain buttons, one select menu, or one text input.');
         }
 
         return [
             'type' => ComponentType::ACTION_ROW->value,
+            ...($this->id === null ? [] : ['id' => $this->id]),
             'components' => array_map(static fn (Component $component): array => $component->toArray(), $this->components),
         ];
     }
