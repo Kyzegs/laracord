@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Kyzegs\Laracord\Enums\AuthenticationRequirement;
 use Kyzegs\Laracord\Facades\Laracord;
 use Kyzegs\Laracord\Http\DiscordRequest;
+use Kyzegs\Laracord\Http\DiscordResponse;
 use Kyzegs\Laracord\Interactions\Interaction;
 use Kyzegs\Laracord\Payloads\DiscordMessage;
 use Kyzegs\Laracord\Tests\TestCase;
@@ -61,7 +62,7 @@ it('rejects lifecycle calls after the interaction token expires', function (): v
         'token' => 'expired-token',
     ]);
 
-    expect(fn () => $interaction->context(Laracord::withoutAuthentication())->getOriginal())
+    expect(fn (): DiscordResponse => $interaction->context(Laracord::withoutAuthentication())->getOriginal())
         ->toThrow(LogicException::class, 'Interaction token expired after 15 minutes.');
 
     $fake->assertNothingSent();
