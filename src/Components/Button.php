@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace Kyzegs\Laracord\Components;
 
 use Kyzegs\Laracord\Components\Concerns\HasEmoji;
+use Kyzegs\Laracord\Components\Concerns\HasId;
 use Kyzegs\Laracord\Components\Enums\ButtonStyle;
 use Kyzegs\Laracord\Components\Enums\ComponentType;
 
 final class Button implements Component
 {
     use HasEmoji;
+    use HasId;
 
     private function __construct(
         private readonly ButtonStyle $style,
@@ -53,8 +55,8 @@ final class Button implements Component
 
     public function label(string $label): self
     {
-        if (mb_strlen($label) > 80) {
-            throw new \InvalidArgumentException('Button label cannot exceed 80 characters.');
+        if ($label === '' || mb_strlen($label) > 80) {
+            throw new \InvalidArgumentException('Button label must contain between 1 and 80 characters.');
         }
 
         $this->label = $label;
@@ -72,12 +74,21 @@ final class Button implements Component
     /** @return array<string, mixed> */
     public function toArray(): array
     {
-        if ($this->customId !== null && mb_strlen($this->customId) > 100) {
-            throw new \InvalidArgumentException('Button custom_id cannot exceed 100 characters.');
+        if ($this->customId !== null && ($this->customId === '' || mb_strlen($this->customId) > 100)) {
+            throw new \InvalidArgumentException('Button custom_id must contain between 1 and 100 characters.');
+        }
+
+        if ($this->url !== null && ($this->url === '' || mb_strlen($this->url) > 512)) {
+            throw new \InvalidArgumentException('Button URL must contain between 1 and 512 characters.');
+        }
+
+        if ($this->skuId === '') {
+            throw new \InvalidArgumentException('Button sku_id cannot be empty.');
         }
 
         return array_filter([
             'type' => ComponentType::BUTTON->value,
+            'id' => $this->id,
             'style' => $this->style->value,
             'label' => $this->label,
             'emoji' => $this->emoji,

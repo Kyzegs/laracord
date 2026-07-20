@@ -22,12 +22,12 @@ final class SelectOption implements Arrayable, JsonSerializable
 
     public static function make(string $label, string $value): self
     {
-        if (mb_strlen($label) > 100) {
-            throw new \InvalidArgumentException('Select option label cannot exceed 100 characters.');
+        if ($label === '' || mb_strlen($label) > 100) {
+            throw new \InvalidArgumentException('Select option label must contain between 1 and 100 characters.');
         }
 
-        if (mb_strlen($value) > 100) {
-            throw new \InvalidArgumentException('Select option value cannot exceed 100 characters.');
+        if ($value === '' || mb_strlen($value) > 100) {
+            throw new \InvalidArgumentException('Select option value must contain between 1 and 100 characters.');
         }
 
         return new self($label, $value);

@@ -11,6 +11,11 @@ final class ChannelSelect extends SelectMenu
     /** @var list<int>|null */
     private ?array $channelTypes = null;
 
+    public function defaultChannel(string $id): self
+    {
+        return $this->addDefaultValue($id, 'channel');
+    }
+
     public function channelTypes(int ...$channelTypes): self
     {
         $this->channelTypes = array_values($channelTypes);
