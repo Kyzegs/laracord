@@ -12,6 +12,7 @@ use Kyzegs\Laracord\ValueObjects\AuditLogReason;
 
 /**
  * @method DiscordResponse list(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], ?AuditLogReason $auditLogReason = null)
+ * @method DiscordResponse listForCurrentUser(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], ?AuditLogReason $auditLogReason = null)
  * @method DiscordResponse get(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], ?AuditLogReason $auditLogReason = null)
  * @method DiscordResponse consume(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], ?AuditLogReason $auditLogReason = null)
  * @method DiscordResponse createTest(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], ?AuditLogReason $auditLogReason = null)

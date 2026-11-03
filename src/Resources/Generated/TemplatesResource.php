@@ -12,7 +12,6 @@ use Kyzegs\Laracord\ValueObjects\AuditLogReason;
 
 /**
  * @method DiscordResponse getGuildTemplate(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], ?AuditLogReason $auditLogReason = null)
- * @method DiscordResponse createGuildFromTemplate(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], ?AuditLogReason $auditLogReason = null)
  * @method DiscordResponse listGuildTemplates(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], ?AuditLogReason $auditLogReason = null)
  * @method DiscordResponse createGuildTemplate(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], ?AuditLogReason $auditLogReason = null)
  * @method DiscordResponse syncGuildTemplate(array<string, string|int|\Stringable> $parameters = [], array<string, mixed>|Arrayable<string, mixed>|JsonSerializable|null $body = null, array<string, mixed> $query = [], list<array<string, mixed>> $files = [], ?AuditLogReason $auditLogReason = null)

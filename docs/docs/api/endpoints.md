@@ -8,8 +8,11 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 
 | Endpoint | Method | Path |
 |---|---:|---|
+| `get` | `GET` | `/applications/{application_id}` |
+| `edit` | `PATCH` | `/applications/{application_id}` |
 | `getCurrent` | `GET` | `/applications/@me` |
 | `editCurrent` | `PATCH` | `/applications/@me` |
+| `uploadAttachment` | `POST` | `/applications/{application_id}/attachment` |
 | `getActivityInstance` | `GET` | `/applications/{application_id}/activity-instances/{instance_id}` |
 
 ## Commands
@@ -31,7 +34,6 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 | `listGuildPermissions` | `GET` | `/applications/{application_id}/guilds/{guild_id}/commands/permissions` |
 | `getPermissions` | `GET` | `/applications/{application_id}/guilds/{guild_id}/commands/{command_id}/permissions` |
 | `editPermissions` | `PUT` | `/applications/{application_id}/guilds/{guild_id}/commands/{command_id}/permissions` |
-| `batchEditPermissions` | `PUT` | `/applications/{application_id}/guilds/{guild_id}/commands/permissions` |
 
 ## Channels
 
@@ -44,9 +46,15 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 | `deletePermission` | `DELETE` | `/channels/{channel_id}/permissions/{overwrite_id}` |
 | `followAnnouncement` | `POST` | `/channels/{channel_id}/followers` |
 | `triggerTyping` | `POST` | `/channels/{channel_id}/typing` |
-| `listPinnedMessages` | `GET` | `/channels/{channel_id}/pins` |
-| `pinMessage` | `PUT` | `/channels/{channel_id}/pins/{message_id}` |
-| `unpinMessage` | `DELETE` | `/channels/{channel_id}/pins/{message_id}` |
+| `getMemberPermissions` | `GET` | `/channels/{channel_id}/permissions/member/{user_id}` |
+| `getRolePermissions` | `GET` | `/channels/{channel_id}/permissions/role/{role_id}` |
+| `addRecipient` | `PUT` | `/channels/{channel_id}/recipients/{user_id}` |
+| `removeRecipient` | `DELETE` | `/channels/{channel_id}/recipients/{user_id}` |
+| `setVoiceStatus` | `PUT` | `/channels/{channel_id}/voice-status` |
+| `listPinnedMessages` | `GET` | `/channels/{channel_id}/messages/pins` |
+| `pinMessage` | `PUT` | `/channels/{channel_id}/messages/pins/{message_id}` |
+| `unpinMessage` | `DELETE` | `/channels/{channel_id}/messages/pins/{message_id}` |
+| `searchThreads` | `GET` | `/channels/{channel_id}/threads/search` |
 | `startThread` | `POST` | `/channels/{channel_id}/threads` |
 | `joinThread` | `PUT` | `/channels/{channel_id}/thread-members/@me` |
 | `addThreadMember` | `PUT` | `/channels/{channel_id}/thread-members/{user_id}` |
@@ -81,11 +89,16 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 
 | Endpoint | Method | Path |
 |---|---:|---|
-| `create` | `POST` | `/guilds` |
 | `get` | `GET` | `/guilds/{guild_id}` |
 | `getPreview` | `GET` | `/guilds/{guild_id}/preview` |
 | `edit` | `PATCH` | `/guilds/{guild_id}` |
-| `delete` | `DELETE` | `/guilds/{guild_id}` |
+| `getMemberPermissions` | `GET` | `/guilds/{guild_id}/permissions/member/{user_id}` |
+| `getRolePermissions` | `GET` | `/guilds/{guild_id}/permissions/role/{role_id}` |
+| `searchMessages` | `GET` | `/guilds/{guild_id}/messages/search` |
+| `listJoinRequests` | `GET` | `/guilds/{guild_id}/requests` |
+| `editJoinRequest` | `PATCH` | `/guilds/{guild_id}/requests/{request_id}` |
+| `getNewMemberWelcome` | `GET` | `/guilds/{guild_id}/new-member-welcome` |
+| `editIncidentActions` | `PUT` | `/guilds/{guild_id}/incident-actions` |
 | `listChannels` | `GET` | `/guilds/{guild_id}/channels` |
 | `createChannel` | `POST` | `/guilds/{guild_id}/channels` |
 | `modifyChannelPositions` | `PATCH` | `/guilds/{guild_id}/channels` |
@@ -103,11 +116,13 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 | `getBan` | `GET` | `/guilds/{guild_id}/bans/{user_id}` |
 | `createBan` | `PUT` | `/guilds/{guild_id}/bans/{user_id}` |
 | `removeBan` | `DELETE` | `/guilds/{guild_id}/bans/{user_id}` |
+| `bulkBan` | `POST` | `/guilds/{guild_id}/bulk-ban` |
 | `listRoles` | `GET` | `/guilds/{guild_id}/roles` |
+| `getRole` | `GET` | `/guilds/{guild_id}/roles/{role_id}` |
+| `getRoleMemberCounts` | `GET` | `/guilds/{guild_id}/roles/member-counts` |
 | `createRole` | `POST` | `/guilds/{guild_id}/roles` |
 | `modifyRolePositions` | `PATCH` | `/guilds/{guild_id}/roles` |
 | `modifyRole` | `PATCH` | `/guilds/{guild_id}/roles/{role_id}` |
-| `modifyMfaLevel` | `POST` | `/guilds/{guild_id}/mfa` |
 | `deleteRole` | `DELETE` | `/guilds/{guild_id}/roles/{role_id}` |
 | `getPruneCount` | `GET` | `/guilds/{guild_id}/prune` |
 | `beginPrune` | `POST` | `/guilds/{guild_id}/prune` |
@@ -121,7 +136,7 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 | `getWelcomeScreen` | `GET` | `/guilds/{guild_id}/welcome-screen` |
 | `modifyWelcomeScreen` | `PATCH` | `/guilds/{guild_id}/welcome-screen` |
 | `getOnboarding` | `GET` | `/guilds/{guild_id}/onboarding` |
-| `modifyOnboarding` | `PATCH` | `/guilds/{guild_id}/onboarding` |
+| `modifyOnboarding` | `PUT` | `/guilds/{guild_id}/onboarding` |
 
 ## Emojis
 
@@ -147,6 +162,13 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 | `listGuildInvites` | `GET` | `/guilds/{guild_id}/invites` |
 | `get` | `GET` | `/invites/{invite_code}` |
 | `delete` | `DELETE` | `/invites/{invite_code}` |
+| `listTargetUsers` | `GET` | `/invites/{invite_code}/target-users` |
+| `editTargetUsers` | `PUT` | `/invites/{invite_code}/target-users` |
+| `getTargetUsersJobStatus` | `GET` | `/invites/{invite_code}/target-users/job-status` |
+| `addTargetUser` | `PUT` | `/invites/{invite_code}/target-users/{user_id}` |
+| `removeTargetUser` | `DELETE` | `/invites/{invite_code}/target-users/{user_id}` |
+| `bulkAddTargetUsers` | `POST` | `/invites/{invite_code}/target-users/bulk-add` |
+| `bulkRemoveTargetUsers` | `POST` | `/invites/{invite_code}/target-users/bulk-delete` |
 
 ## Audit Logs
 
@@ -168,12 +190,17 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 
 | Endpoint | Method | Path |
 |---|---:|---|
-| `list` | `GET` | `/guilds/{guild_id}/events` |
-| `create` | `POST` | `/guilds/{guild_id}/events` |
-| `get` | `GET` | `/guilds/{guild_id}/events/{guild_scheduled_event_id}` |
-| `edit` | `PATCH` | `/guilds/{guild_id}/events/{guild_scheduled_event_id}` |
-| `delete` | `DELETE` | `/guilds/{guild_id}/events/{guild_scheduled_event_id}` |
-| `listUsers` | `GET` | `/guilds/{guild_id}/events/{guild_scheduled_event_id}/users` |
+| `list` | `GET` | `/guilds/{guild_id}/scheduled-events` |
+| `create` | `POST` | `/guilds/{guild_id}/scheduled-events` |
+| `get` | `GET` | `/guilds/{guild_id}/scheduled-events/{guild_scheduled_event_id}` |
+| `edit` | `PATCH` | `/guilds/{guild_id}/scheduled-events/{guild_scheduled_event_id}` |
+| `delete` | `DELETE` | `/guilds/{guild_id}/scheduled-events/{guild_scheduled_event_id}` |
+| `listUsers` | `GET` | `/guilds/{guild_id}/scheduled-events/{guild_scheduled_event_id}/users` |
+| `countUsers` | `GET` | `/guilds/{guild_id}/scheduled-events/{guild_scheduled_event_id}/users/counts` |
+| `listExceptionUsers` | `GET` | `/guilds/{guild_id}/scheduled-events/{guild_scheduled_event_id}/{exception_id}/users` |
+| `createException` | `POST` | `/guilds/{guild_id}/scheduled-events/{guild_scheduled_event_id}/exceptions` |
+| `editException` | `PATCH` | `/guilds/{guild_id}/scheduled-events/{guild_scheduled_event_id}/exceptions/{exception_id}` |
+| `deleteException` | `DELETE` | `/guilds/{guild_id}/scheduled-events/{guild_scheduled_event_id}/exceptions/{exception_id}` |
 
 ## Stages
 
@@ -190,6 +217,7 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 |---|---:|---|
 | `get` | `GET` | `/stickers/{sticker_id}` |
 | `listPacks` | `GET` | `/sticker-packs` |
+| `getPack` | `GET` | `/sticker-packs/{pack_id}` |
 | `listGuildStickers` | `GET` | `/guilds/{guild_id}/stickers` |
 | `getGuildSticker` | `GET` | `/guilds/{guild_id}/stickers/{sticker_id}` |
 | `createGuildSticker` | `POST` | `/guilds/{guild_id}/stickers` |
@@ -201,7 +229,6 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 | Endpoint | Method | Path |
 |---|---:|---|
 | `getGuildTemplate` | `GET` | `/guilds/templates/{template_code}` |
-| `createGuildFromTemplate` | `POST` | `/guilds/templates/{template_code}` |
 | `listGuildTemplates` | `GET` | `/guilds/{guild_id}/templates` |
 | `createGuildTemplate` | `POST` | `/guilds/{guild_id}/templates` |
 | `syncGuildTemplate` | `PUT` | `/guilds/{guild_id}/templates/{template_code}` |
@@ -214,8 +241,9 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 |---|---:|---|
 | `getMetadata` | `GET` | `/applications/{application_id}/role-connections/metadata` |
 | `updateMetadata` | `PUT` | `/applications/{application_id}/role-connections/metadata` |
-| `getUserConnection` | `GET` | `/users/@me/connections/{guild_id}` |
-| `updateUserConnection` | `PATCH` | `/users/@me/connections/{guild_id}` |
+| `getUserConnection` | `GET` | `/users/@me/applications/{application_id}/role-connection` |
+| `updateUserConnection` | `PUT` | `/users/@me/applications/{application_id}/role-connection` |
+| `deleteUserConnection` | `DELETE` | `/users/@me/applications/{application_id}/role-connection` |
 
 ## Users
 
@@ -235,6 +263,8 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 | Endpoint | Method | Path |
 |---|---:|---|
 | `listGuildRegions` | `GET` | `/guilds/{guild_id}/regions` |
+| `getCurrentState` | `GET` | `/guilds/{guild_id}/voice-states/@me` |
+| `getState` | `GET` | `/guilds/{guild_id}/voice-states/{user_id}` |
 | `modifyCurrentState` | `PATCH` | `/guilds/{guild_id}/voice-states/@me` |
 | `modifyState` | `PATCH` | `/guilds/{guild_id}/voice-states/{user_id}` |
 | `listRegions` | `GET` | `/voice/regions` |
@@ -264,6 +294,7 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 | Endpoint | Method | Path |
 |---|---:|---|
 | `list` | `GET` | `/applications/{application_id}/entitlements` |
+| `listForCurrentUser` | `GET` | `/users/@me/applications/{application_id}/entitlements` |
 | `get` | `GET` | `/applications/{application_id}/entitlements/{entitlement_id}` |
 | `consume` | `POST` | `/applications/{application_id}/entitlements/{entitlement_id}/consume` |
 | `createTest` | `POST` | `/applications/{application_id}/entitlements` |
@@ -308,6 +339,9 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 | `token` | `POST` | `/oauth2/token` |
 | `revoke` | `POST` | `/oauth2/token/revoke` |
 | `getCurrentAuthorization` | `GET` | `/oauth2/@me` |
+| `getCurrentApplication` | `GET` | `/oauth2/applications/@me` |
+| `getPublicKeys` | `GET` | `/oauth2/keys` |
+| `getUserInfo` | `GET` | `/oauth2/userinfo` |
 
 ## Interactions
 
@@ -338,7 +372,34 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 | `linkChannel` | `PATCH` | `/lobbies/{lobby_id}/channel-linking` |
 | `sendMessage` | `POST` | `/lobbies/{lobby_id}/messages` |
 | `listMessages` | `GET` | `/lobbies/{lobby_id}/messages` |
-| `moderateMessage` | `PATCH` | `/lobbies/{lobby_id}/messages/{message_id}/moderation` |
+| `moderateMessage` | `PUT` | `/lobbies/{lobby_id}/messages/{message_id}/moderation-metadata` |
 | `inviteSelf` | `POST` | `/lobbies/{lobby_id}/members/@me/invites` |
 | `inviteUser` | `POST` | `/lobbies/{lobby_id}/members/{user_id}/invites` |
+
+## Gateway
+
+| Endpoint | Method | Path |
+|---|---:|---|
+| `get` | `GET` | `/gateway` |
+| `getBot` | `GET` | `/gateway/bot` |
+
+## Partner Sdk
+
+| Endpoint | Method | Path |
+|---|---:|---|
+| `token` | `POST` | `/partner-sdk/token` |
+| `botToken` | `POST` | `/partner-sdk/token/bot` |
+| `unmergeProvisionalAccount` | `POST` | `/partner-sdk/provisional-accounts/unmerge` |
+| `botUnmergeProvisionalAccount` | `POST` | `/partner-sdk/provisional-accounts/unmerge/bot` |
+| `moderateDmMessage` | `PUT` | `/partner-sdk/dms/{user_id_1}/{user_id_2}/messages/{message_id}/moderation-metadata` |
+
+## Application Identities
+
+| Endpoint | Method | Path |
+|---|---:|---|
+| `getProfile` | `GET` | `/applications/{application_id}/users/{user_id}/identities/{provider_issued_user_id}/profile` |
+| `editProfile` | `PATCH` | `/applications/{application_id}/users/{user_id}/identities/{provider_issued_user_id}/profile` |
+| `listForUser` | `GET` | `/users/{user_id}/application-identities/{application_id}` |
+| `getByProviderUser` | `GET` | `/applications/{application_id}/application-identities/{provider_type}/{provider_issued_user_id}` |
+| `delete` | `POST` | `/users/{user_id}/application-identities/{application_id}/{provider_type}/{provider_issued_user_id}/delete` |
 
