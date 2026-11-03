@@ -12,7 +12,9 @@ final class SyncCommandsCommand extends Command
 {
     use ResolvesApplicationId;
 
-    protected $signature = 'laracord:commands:sync {--guild= : Sync to a single guild instead of globally}';
+    protected $signature = 'laracord:commands:sync
+        {--guild= : Sync to a single guild instead of globally}
+        {--force : Allow an empty config to delete every registered command}';
 
     protected $description = 'Bulk overwrite Discord application commands from config (laracord.commands)';
 
@@ -25,6 +27,12 @@ final class SyncCommandsCommand extends Command
 
         /** @var array<string, mixed> $commands a JSON array of command definitions */
         $commands = (array) config('laracord.commands', []);
+        if ($commands === [] && ! $this->option('force')) {
+            $this->error('laracord.commands is empty, so syncing would delete every registered command. Pass --force to do that.');
+
+            return self::FAILURE;
+        }
+
         $guild = $this->option('guild');
 
         if (is_string($guild) && $guild !== '') {

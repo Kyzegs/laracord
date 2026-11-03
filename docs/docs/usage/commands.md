@@ -30,6 +30,8 @@ php artisan laracord:commands:sync
 php artisan laracord:commands:sync --guild=123456789012345678
 ```
 
+Syncing an empty config would delete every registered command, so the command refuses unless you pass `--force`.
+
 ## Listing
 
 `laracord:commands:list` prints the commands currently registered with Discord:
@@ -41,7 +43,7 @@ php artisan laracord:commands:list --guild=123456789012345678
 
 ## Clearing
 
-`laracord:commands:clear` removes every registered command:
+`laracord:commands:clear` removes every registered command. It asks for confirmation first; pass `--force` to skip that in scripts:
 
 ```bash
 php artisan laracord:commands:clear
