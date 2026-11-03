@@ -43,6 +43,7 @@ export default defineConfig({
           { text: 'Rate Limits', link: '/usage/rate-limits' },
           { text: 'Notifications', link: '/usage/notifications' },
           { text: 'Interactions', link: '/usage/interactions' },
+          { text: 'Webhook Events', link: '/usage/webhook-events' },
           { text: 'Components', link: '/usage/components' },
           { text: 'Commands', link: '/usage/commands' },
           { text: 'Events', link: '/usage/events' },

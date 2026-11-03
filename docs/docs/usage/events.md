@@ -1,6 +1,7 @@
 # Events
 
 The client dispatches lifecycle events around every request, so you can add logging, metrics, or tracing without wrapping your own calls.
+These client lifecycle events are distinct from inbound Discord [Webhook Events](./webhook-events.md).
 
 | Event | Dispatched | Payload |
 | --- | --- | --- |
