@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Kyzegs\Laracord\Components;
 
+use Kyzegs\Laracord\Components\Concerns\BuildsPayload;
 use Kyzegs\Laracord\Components\Concerns\HasId;
 use Kyzegs\Laracord\Components\Enums\ComponentType;
 
 final class Container implements Component
 {
+    use BuildsPayload;
     use HasId;
 
     /** @var list<Component> */
@@ -69,18 +71,12 @@ final class Container implements Component
             throw new \InvalidArgumentException('Container contains an unsupported child component.');
         }
 
-        return array_filter([
+        return $this->withoutNulls([
             'type' => ComponentType::CONTAINER->value,
             'id' => $this->id,
             'accent_color' => $this->accentColor,
             'components' => array_map(static fn (Component $component): array => $component->toArray(), $this->components),
             'spoiler' => $this->spoiler,
-        ], static fn (mixed $value): bool => $value !== null);
-    }
-
-    /** @return array<string, mixed> */
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
+        ]);
     }
 }

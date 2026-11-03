@@ -30,11 +30,6 @@ final readonly class Authentication
         return $this->token === null ? null : $this->type->value.' '.$this->token;
     }
 
-    public function fingerprint(): string
-    {
-        return $this->token === null ? 'unauthenticated' : hash('sha256', $this->type->value."\0".$this->token);
-    }
-
     private static function validate(string $token): string
     {
         if (trim($token) === '') {

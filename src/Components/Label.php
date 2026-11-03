@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Kyzegs\Laracord\Components;
 
+use Kyzegs\Laracord\Components\Concerns\BuildsPayload;
 use Kyzegs\Laracord\Components\Concerns\HasId;
 use Kyzegs\Laracord\Components\Enums\ComponentType;
 
 final class Label implements Component
 {
+    use BuildsPayload;
     use HasId;
 
     private ?string $description = null;
@@ -58,18 +60,12 @@ final class Label implements Component
             throw new \InvalidArgumentException('Label contains an unsupported child component.');
         }
 
-        return array_filter([
+        return $this->withoutNulls([
             'type' => ComponentType::LABEL->value,
             'id' => $this->id,
             'label' => $this->label,
             'description' => $this->description,
             'component' => $this->component->toArray(),
-        ], static fn (mixed $value): bool => $value !== null);
-    }
-
-    /** @return array<string, mixed> */
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
+        ]);
     }
 }

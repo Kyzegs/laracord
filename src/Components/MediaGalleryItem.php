@@ -6,10 +6,13 @@ namespace Kyzegs\Laracord\Components;
 
 use Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;
+use Kyzegs\Laracord\Components\Concerns\BuildsPayload;
 
 /** @implements Arrayable<string, mixed> */
 final class MediaGalleryItem implements Arrayable, JsonSerializable
 {
+    use BuildsPayload;
+
     private ?string $description = null;
 
     private ?bool $spoiler = null;
@@ -47,16 +50,10 @@ final class MediaGalleryItem implements Arrayable, JsonSerializable
     /** @return array<string, mixed> */
     public function toArray(): array
     {
-        return array_filter([
+        return $this->withoutNulls([
             'media' => ['url' => $this->url],
             'description' => $this->description,
             'spoiler' => $this->spoiler,
-        ], static fn (mixed $value): bool => $value !== null);
-    }
-
-    /** @return array<string, mixed> */
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
+        ]);
     }
 }

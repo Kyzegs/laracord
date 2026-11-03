@@ -6,11 +6,13 @@ namespace Kyzegs\Laracord\Components;
 
 use Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;
+use Kyzegs\Laracord\Components\Concerns\BuildsPayload;
 use Kyzegs\Laracord\Components\Concerns\HasEmoji;
 
 /** @implements Arrayable<string, mixed> */
 final class SelectOption implements Arrayable, JsonSerializable
 {
+    use BuildsPayload;
     use HasEmoji;
 
     private function __construct(
@@ -54,18 +56,12 @@ final class SelectOption implements Arrayable, JsonSerializable
     /** @return array<string, mixed> */
     public function toArray(): array
     {
-        return array_filter([
+        return $this->withoutNulls([
             'label' => $this->label,
             'value' => $this->value,
             'description' => $this->description,
             'emoji' => $this->emoji,
             'default' => $this->default ?: null,
-        ], static fn (mixed $value): bool => $value !== null);
-    }
-
-    /** @return array<string, mixed> */
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
+        ]);
     }
 }

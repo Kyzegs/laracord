@@ -8,4 +8,4 @@ Laracord uses `kyzegs/guzzle-rate-limit-middleware` with Discord's dynamic bucke
 - Unexpected 429 responses honor headers or JSON `retry_after`.
 - 401, 403, and non-shared 429 responses feed a configurable invalid-request safety budget.
 
-Use Redis or another shared atomic-lock cache in multi-worker production deployments. All limits and safety margins are configurable under `laracord.rate_limit`.
+Laracord uses your application's default cache store. Make it Redis or another shared store with atomic locks in multi-worker production deployments. All limits and safety margins are configurable under `laracord.rate_limit`.

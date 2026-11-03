@@ -6,11 +6,15 @@ namespace Kyzegs\Laracord\Payloads;
 
 use Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;
+use Kyzegs\Laracord\Components\Concerns\ValidatesIdentifiers;
+use Kyzegs\Laracord\Components\Enums\ComponentType;
 use Kyzegs\Laracord\Constants\MessageFlags;
 
 /** @implements Arrayable<string, mixed> */
 final class DiscordMessage implements Arrayable, JsonSerializable
 {
+    use ValidatesIdentifiers;
+
     /** @var array<string, mixed> */
     private array $data = ['allowed_mentions' => ['parse' => []]];
 
@@ -220,7 +224,15 @@ final class DiscordMessage implements Arrayable, JsonSerializable
                 throw new \InvalidArgumentException('A Discord Components V2 message requires at least one component.');
             }
 
-            $topLevelTypes = [1, 9, 10, 12, 13, 14, 17];
+            $topLevelTypes = [
+                ComponentType::ACTION_ROW->value,
+                ComponentType::SECTION->value,
+                ComponentType::TEXT_DISPLAY->value,
+                ComponentType::MEDIA_GALLERY->value,
+                ComponentType::FILE->value,
+                ComponentType::SEPARATOR->value,
+                ComponentType::CONTAINER->value,
+            ];
             foreach ($components as $component) {
                 if (! isset($component['type']) || ! in_array($component['type'], $topLevelTypes, true)) {
                     throw new \InvalidArgumentException('Discord Components V2 message contains an unsupported top-level component.');
@@ -231,9 +243,7 @@ final class DiscordMessage implements Arrayable, JsonSerializable
                 throw new \InvalidArgumentException('Discord Components V2 messages support at most 40 total components.');
             }
 
-            $ids = [];
-            $customIds = [];
-            $this->validateUniqueIdentifiers($components, $ids, $customIds);
+            $this->validateUniqueIdentifiers($components, 'message');
         }
 
         $hasMetadata = array_filter($this->files, static fn (array $file): bool => $file['description'] !== null || $file['spoiler']) !== [];
@@ -259,35 +269,5 @@ final class DiscordMessage implements Arrayable, JsonSerializable
         }
 
         return $count;
-    }
-
-    /**
-     * @param  array<array-key, mixed>  $value
-     * @param  array<int, true>  $ids
-     * @param  array<string, true>  $customIds
-     */
-    private function validateUniqueIdentifiers(array $value, array &$ids, array &$customIds): void
-    {
-        if (isset($value['id']) && is_int($value['id']) && $value['id'] !== 0) {
-            if (isset($ids[$value['id']])) {
-                throw new \InvalidArgumentException('Component ids must be unique within a message.');
-            }
-
-            $ids[$value['id']] = true;
-        }
-
-        if (isset($value['custom_id']) && is_string($value['custom_id'])) {
-            if (isset($customIds[$value['custom_id']])) {
-                throw new \InvalidArgumentException('Component custom_ids must be unique within a message.');
-            }
-
-            $customIds[$value['custom_id']] = true;
-        }
-
-        foreach ($value as $child) {
-            if (is_array($child)) {
-                $this->validateUniqueIdentifiers($child, $ids, $customIds);
-            }
-        }
     }
 }

@@ -1,6 +1,6 @@
 # Testing
 
-`Laracord::fake()` swaps the Discord client for a recorder that captures every request and answers with canned responses — no HTTP calls leave your test suite.
+`Laracord::fake()` swaps the Discord client for a recorder that captures every request and answers with canned responses — no HTTP calls leave your test suite. The fake replaces the facade and the `Contracts\Client` and `Contracts\Factory` bindings, and notifications go through it too. Type-hint those contracts rather than `DiscordClient`, which the fake cannot stand in for.
 
 ```php
 use Kyzegs\Laracord\Facades\Laracord;

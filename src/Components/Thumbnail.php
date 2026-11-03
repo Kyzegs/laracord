@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Kyzegs\Laracord\Components;
 
+use Kyzegs\Laracord\Components\Concerns\BuildsPayload;
 use Kyzegs\Laracord\Components\Concerns\HasId;
 use Kyzegs\Laracord\Components\Enums\ComponentType;
 
 final class Thumbnail implements Component
 {
+    use BuildsPayload;
     use HasId;
 
     private ?string $description = null;
@@ -48,18 +50,12 @@ final class Thumbnail implements Component
     /** @return array<string, mixed> */
     public function toArray(): array
     {
-        return array_filter([
+        return $this->withoutNulls([
             'type' => ComponentType::THUMBNAIL->value,
             'id' => $this->id,
             'media' => ['url' => $this->url],
             'description' => $this->description,
             'spoiler' => $this->spoiler,
-        ], static fn (mixed $value): bool => $value !== null);
-    }
-
-    /** @return array<string, mixed> */
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
+        ]);
     }
 }

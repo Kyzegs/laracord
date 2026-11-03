@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Kyzegs\Laracord\Components;
 
+use Kyzegs\Laracord\Components\Concerns\BuildsPayload;
 use Kyzegs\Laracord\Components\Concerns\HasId;
 use Kyzegs\Laracord\Components\Enums\ComponentType;
 
 final class File implements Component
 {
+    use BuildsPayload;
     use HasId;
 
     private ?bool $spoiler = null;
@@ -36,17 +38,11 @@ final class File implements Component
     /** @return array<string, mixed> */
     public function toArray(): array
     {
-        return array_filter([
+        return $this->withoutNulls([
             'type' => ComponentType::FILE->value,
             'id' => $this->id,
             'file' => ['url' => $this->url],
             'spoiler' => $this->spoiler,
-        ], static fn (mixed $value): bool => $value !== null);
-    }
-
-    /** @return array<string, mixed> */
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
+        ]);
     }
 }

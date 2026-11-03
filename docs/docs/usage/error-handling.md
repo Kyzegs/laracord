@@ -11,7 +11,7 @@ Every non-successful Discord response becomes a `DiscordHttpException`. Common s
 | `401` | `DiscordAuthenticationException` |
 | `403` | `DiscordForbiddenException` |
 | `404` | `DiscordNotFoundException` |
-| `500`, `502`, `504`, `524` | `DiscordServerException` |
+| `5xx` | `DiscordServerException` |
 | Other non-2xx | `DiscordHttpException` |
 
 The exception exposes both the `DiscordResponse` and the original `DiscordRequest`:
@@ -91,7 +91,7 @@ use Kyzegs\Laracord\Exceptions\DiscordException;
 use Kyzegs\Laracord\Exceptions\DiscordTransportException;
 
 try {
-    $response = Laracord::bot()->users()->getCurrentUser();
+    $response = Laracord::bot()->users()->getCurrent();
 } catch (DiscordTransportException $exception) {
     report($exception);
 

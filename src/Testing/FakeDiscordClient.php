@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Kyzegs\Laracord\Testing;
 
-use Illuminate\Support\Str;
 use Kyzegs\Laracord\Contracts\Client;
-use Kyzegs\Laracord\Endpoints\EndpointCatalog;
 use Kyzegs\Laracord\Http\DiscordRequest;
 use Kyzegs\Laracord\Http\DiscordResponse;
 use Kyzegs\Laracord\Pool\Pool;
-use Kyzegs\Laracord\Resources\ResourceClient;
+use Kyzegs\Laracord\Resources\Concerns\ResolvesResources;
 use Kyzegs\Laracord\ValueObjects\OAuthAccessToken;
 use Throwable;
 
@@ -20,6 +18,8 @@ use Throwable;
  */
 final readonly class FakeDiscordClient implements Client
 {
+    use ResolvesResources;
+
     public function __construct(private FakeLaracord $fake) {}
 
     public function asBot(?string $token = null): self
@@ -35,27 +35,6 @@ final readonly class FakeDiscordClient implements Client
     public function withoutAuthentication(): self
     {
         return $this;
-    }
-
-    public function resource(string $name): ResourceClient
-    {
-        $class = 'Kyzegs\\Laracord\\Resources\\Generated\\'.Str::studly($name).'Resource';
-
-        if (class_exists($class) && is_subclass_of($class, ResourceClient::class)) {
-            return new $class($this, $name);
-        }
-
-        return new ResourceClient($this, $name);
-    }
-
-    /** @param array<int, mixed> $arguments */
-    public function __call(string $name, array $arguments): ResourceClient
-    {
-        if ($arguments === [] && EndpointCatalog::hasResource($name)) {
-            return $this->resource($name);
-        }
-
-        throw new \BadMethodCallException('Unknown Discord resource '.$name.'.');
     }
 
     public function send(DiscordRequest $discordRequest): DiscordResponse

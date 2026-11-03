@@ -31,38 +31,10 @@ class PartialGuild
     }
 
     /**
-     * Check if the user has any of the given permissions.
-     *
-     * @param  int[]  ...$permissions
-     */
-    public function hasAnyPermissions(int ...$permissions): bool
-    {
-        return collect($permissions)
-            ->map(fn ($permission): bool => ($this->permissions & $permission) === $permission)
-            ->containsStrict(true);
-    }
-
-    /**
      * Return whether the user is an administrator.
      */
     public function isAdmin(): bool
     {
         return $this->hasPermissions(Permissions::ADMINISTRATOR);
-    }
-
-    /**
-     * Determine what role a user has within the given guild.
-     */
-    public function role(): string
-    {
-        if ($this->owner) {
-            return 'Owner';
-        }
-
-        if ($this->isAdmin()) {
-            return 'Administrator';
-        }
-
-        return 'Member';
     }
 }

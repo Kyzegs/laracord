@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Kyzegs\Laracord;
 
+use Composer\InstalledVersions;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\HandlerStack;
 use Illuminate\Contracts\Cache\Repository as CacheRepository;
@@ -15,7 +16,6 @@ use Kyzegs\GuzzleRateLimitMiddleware\Config\Options;
 use Kyzegs\GuzzleRateLimitMiddleware\RateLimitMiddleware;
 use Kyzegs\Laracord\RateLimit\LaravelLockFactory;
 use Kyzegs\Laracord\RateLimit\LaravelStore;
-use Kyzegs\Laracord\RateLimit\RedactingLogger;
 use Kyzegs\Laracord\ValueObjects\Authentication;
 use Psr\Log\LoggerInterface;
 
@@ -47,18 +47,22 @@ final readonly class ClientFactory
             (int) ($rate['lock_ttl_seconds'] ?? 60),
             (int) ($rate['lock_wait_seconds'] ?? 10),
         );
-        $stack->push(RateLimitMiddleware::discord($laravelStore, new RedactingLogger($this->logger), $laravelLockFactory, $options), 'discord_rate_limits');
+        $stack->push(RateLimitMiddleware::discord($laravelStore, $this->logger, $laravelLockFactory, $options), 'discord_rate_limits');
 
-        $baseUrl = rtrim((string) $this->configRepository->get('laracord.api_url', 'https://discord.com/api'), '/').'/v'.(int) $this->configRepository->get('laracord.api_version', 10).'/';
         $client = new GuzzleClient([
             'handler' => $stack,
-            'base_uri' => $baseUrl,
+            'base_uri' => self::baseUrl($this->configRepository),
             'http_errors' => false,
             'timeout' => (float) $this->configRepository->get('laracord.http.timeout', 30.0),
             'connect_timeout' => (float) $this->configRepository->get('laracord.http.connect_timeout', 10.0),
-            'headers' => ['User-Agent' => (string) $this->configRepository->get('laracord.user_agent', 'DiscordBot (https://github.com/Kyzegs/laracord, 1.0.0)')],
+            'headers' => ['User-Agent' => (string) ($this->configRepository->get('laracord.user_agent') ?: 'DiscordBot (https://github.com/Kyzegs/laracord, '.InstalledVersions::getPrettyVersion('kyzegs/laracord').')')],
         ]);
 
         return new DiscordClient($this, $client, $authentication, $this->configRepository, $this->events);
+    }
+
+    public static function baseUrl(ConfigRepository $configRepository): string
+    {
+        return rtrim((string) $configRepository->get('laracord.api_url', 'https://discord.com/api'), '/').'/v'.(int) $configRepository->get('laracord.api_version', 10).'/';
     }
 }

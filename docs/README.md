@@ -8,7 +8,7 @@ npm run dev
 npm run build
 ```
 
-Documentation lives in `docs/`. Site config and theme live in `docs/.vitepress/`.
+Documentation lives in `docs/`. Site config lives in `docs/.vitepress/`.
 
 Regenerate endpoint reference from package catalog:
 

@@ -8,7 +8,6 @@ use Illuminate\Http\JsonResponse;
 use Kyzegs\Laracord\Components\Modal;
 use Kyzegs\Laracord\Constants\MessageFlags;
 use Kyzegs\Laracord\Payloads\DiscordMessage;
-use Symfony\Component\HttpFoundation\Response;
 
 final class InteractionResponse
 {
@@ -58,11 +57,6 @@ final class InteractionResponse
     public static function launchActivity(): JsonResponse
     {
         return new JsonResponse(['type' => 12]);
-    }
-
-    public static function webhookPong(): Response
-    {
-        return new Response('', 204, ['Content-Type' => 'application/json']);
     }
 
     /**

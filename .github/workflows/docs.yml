@@ -1,22 +1,24 @@
-name: Deploy VitePress site to Pages
+name: Build and deploy VitePress site
 
 on:
   push:
     branches: [main]
+  pull_request:
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: read
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -37,6 +39,7 @@ jobs:
           cache: npm
           cache-dependency-path: docs/package-lock.json
       - name: Setup Pages
+        if: github.event_name != 'pull_request'
         uses: actions/configure-pages@v4
       - name: Install dependencies
         run: npm ci
@@ -45,10 +48,15 @@ jobs:
         run: npm run build
         working-directory: docs
       - name: Upload artifact
+        if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v3
         with:
           path: docs/docs/.vitepress/dist
   deploy:
+    if: github.event_name != 'pull_request'
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- PHP 8.2+
+- PHP 8.3+
 - Laravel 12 or 13
 - `ext-json` and `ext-sodium`
 - A Discord bot token for bot-authenticated requests
@@ -10,7 +10,7 @@
 ## Install the package
 
 ```bash
-composer require kyzegs/laracord:^1.0@rc
+composer require kyzegs/laracord:^2.0
 ```
 
 Laravel discovers the service provider automatically. Publish the configuration when you need to change its defaults:
@@ -38,7 +38,7 @@ Then request the current bot user:
 ```php
 use Kyzegs\Laracord\Facades\Laracord;
 
-$response = Laracord::bot()->users()->getCurrentUser();
+$response = Laracord::bot()->users()->getCurrent();
 $response->json();
 ```
 

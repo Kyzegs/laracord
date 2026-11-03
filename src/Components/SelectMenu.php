@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Kyzegs\Laracord\Components;
 
+use Kyzegs\Laracord\Components\Concerns\BuildsPayload;
 use Kyzegs\Laracord\Components\Concerns\HasId;
 use Kyzegs\Laracord\Components\Enums\ComponentType;
 
 abstract class SelectMenu implements Component
 {
+    use BuildsPayload;
     use HasId;
 
     protected ?string $placeholder = null;
@@ -26,9 +28,7 @@ abstract class SelectMenu implements Component
 
     final public function __construct(protected readonly string $customId)
     {
-        if ($customId === '' || mb_strlen($customId) > 100) {
-            throw new \InvalidArgumentException('Select menu custom_id must contain between 1 and 100 characters.');
-        }
+        self::assertCustomId($customId, 'Select menu');
     }
 
     public static function make(string $customId): static
@@ -122,7 +122,7 @@ abstract class SelectMenu implements Component
             throw new \InvalidArgumentException('Select menu default value count cannot be less than min_values.');
         }
 
-        return array_filter([
+        return $this->withoutNulls([
             'type' => $this->type()->value,
             'id' => $this->id,
             'custom_id' => $this->customId,
@@ -133,12 +133,6 @@ abstract class SelectMenu implements Component
             'required' => $this->required,
             'default_values' => $this->defaultValues ?: null,
             ...$this->extra(),
-        ], static fn (mixed $value): bool => $value !== null);
-    }
-
-    /** @return array<string, mixed> */
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
+        ]);
     }
 }
