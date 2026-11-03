@@ -4,6 +4,9 @@ on:
   push:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -33,7 +36,7 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: json, mbstring, sodium
           coverage: none
-      - run: composer require "illuminate/cache:${{ matrix.laravel }}" "illuminate/collections:${{ matrix.laravel }}" "illuminate/config:${{ matrix.laravel }}" "illuminate/http:${{ matrix.laravel }}" "illuminate/notifications:${{ matrix.laravel }}" "illuminate/support:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+      - run: composer require "illuminate/cache:${{ matrix.laravel }}" "illuminate/collections:${{ matrix.laravel }}" "illuminate/console:${{ matrix.laravel }}" "illuminate/container:${{ matrix.laravel }}" "illuminate/contracts:${{ matrix.laravel }}" "illuminate/http:${{ matrix.laravel }}" "illuminate/notifications:${{ matrix.laravel }}" "illuminate/support:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
       - run: composer update --prefer-dist --no-interaction --no-progress
       - run: composer validate --strict --no-check-lock
       - run: composer test
