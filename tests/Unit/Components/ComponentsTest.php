@@ -101,6 +101,11 @@ it('returns a modal interaction response from a builder', function (): void {
     ]);
 });
 
+it('validates labels given to button factories', function (string $label): void {
+    expect(fn (): Button => Button::primary('id', $label))->toThrow(InvalidArgumentException::class, 'Button label')
+        ->and(fn (): Button => Button::link('https://discord.com', $label))->toThrow(InvalidArgumentException::class, 'Button label');
+})->with([str_repeat('a', 81), '']);
+
 it('rejects mixing buttons with a select in one row', function (): void {
     ActionRow::make(Button::primary('a', 'A'), UserSelect::make('u'))->toArray();
 })->throws(InvalidArgumentException::class);

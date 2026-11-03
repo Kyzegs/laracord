@@ -6,8 +6,10 @@ use Kyzegs\Laracord\Exceptions\DiscordRateLimitException;
 use Kyzegs\Laracord\Facades\Laracord;
 use Kyzegs\Laracord\Http\DiscordRequest;
 use Kyzegs\Laracord\Http\DiscordResponse;
+use Kyzegs\Laracord\Interactions\InteractionRouter;
 use Kyzegs\Laracord\Payloads\DiscordMessage;
 use Kyzegs\Laracord\Tests\TestCase;
+use PHPUnit\Framework\AssertionFailedError;
 
 uses(TestCase::class);
 
@@ -75,6 +77,37 @@ it('asserts nothing was sent', function (): void {
     $fake = Laracord::fake();
 
     $fake->assertNothingSent();
+});
+
+it('treats an endpoint named like a PHP function as an endpoint', function (): void {
+    $fake = Laracord::fake();
+
+    $fake->assertNotSent('polls', 'end');
+
+    Laracord::bot()->polls()->end(['channel_id' => '1', 'message_id' => '2']);
+
+    $fake->assertSent('polls', 'end');
+    expect(fn () => $fake->assertNotSent('polls', 'end'))->toThrow(AssertionFailedError::class);
+});
+
+it('still accepts a callback in place of the endpoint', function (): void {
+    $fake = Laracord::fake();
+
+    Laracord::bot()->channels()->get(['channel_id' => '1']);
+
+    $fake->assertSent('channels', fn (DiscordRequest $request): bool => $request->endpoint === 'get');
+});
+
+it('exposes the interaction router', function (): void {
+    Laracord::fake();
+
+    expect(Laracord::interactions())->toBeInstanceOf(InteractionRouter::class);
+});
+
+it('rejects missing route parameters like the real client', function (): void {
+    Laracord::fake();
+
+    expect(fn () => Laracord::bot()->channels()->get())->toThrow(InvalidArgumentException::class, 'Missing Discord route parameter');
 });
 
 it('resolves stubs from a closure receiving the request', function (): void {

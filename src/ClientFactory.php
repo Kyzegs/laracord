@@ -15,6 +15,7 @@ use Kyzegs\GuzzleRateLimitMiddleware\Config\Options;
 use Kyzegs\GuzzleRateLimitMiddleware\RateLimitMiddleware;
 use Kyzegs\Laracord\RateLimit\LaravelLockFactory;
 use Kyzegs\Laracord\RateLimit\LaravelStore;
+use Kyzegs\Laracord\RateLimit\RedactingLogger;
 use Kyzegs\Laracord\ValueObjects\Authentication;
 use Psr\Log\LoggerInterface;
 
@@ -37,7 +38,7 @@ final readonly class ClientFactory
             jitterPercent: (float) ($rate['jitter_percent'] ?? 2.0),
             globalLimit: new GlobalLimit((int) ($rate['global_requests'] ?? 50), (float) ($rate['global_window_seconds'] ?? 1.0)),
             invalidRequestLimit: new InvalidRequestLimit((int) ($rate['invalid_requests'] ?? 9000), (float) ($rate['invalid_window_seconds'] ?? 600.0)),
-            maxDelaySeconds: isset($rate['max_delay_seconds']) ? (float) $rate['max_delay_seconds'] : null,
+            maxDelaySeconds: is_numeric($rate['max_delay_seconds'] ?? null) ? (float) $rate['max_delay_seconds'] : null,
         );
         $laravelStore = new LaravelStore($this->cacheRepository, (string) ($rate['cache_prefix'] ?? 'laracord:rate-limit:'));
         $laravelLockFactory = new LaravelLockFactory(
@@ -46,7 +47,7 @@ final readonly class ClientFactory
             (int) ($rate['lock_ttl_seconds'] ?? 60),
             (int) ($rate['lock_wait_seconds'] ?? 10),
         );
-        $stack->push(RateLimitMiddleware::discord($laravelStore, $this->logger, $laravelLockFactory, $options), 'discord_rate_limits');
+        $stack->push(RateLimitMiddleware::discord($laravelStore, new RedactingLogger($this->logger), $laravelLockFactory, $options), 'discord_rate_limits');
 
         $baseUrl = rtrim((string) $this->configRepository->get('laracord.api_url', 'https://discord.com/api'), '/').'/v'.(int) $this->configRepository->get('laracord.api_version', 10).'/';
         $client = new GuzzleClient([

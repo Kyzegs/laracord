@@ -6,8 +6,10 @@ namespace Kyzegs\Laracord;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\Promise\Utils;
 use GuzzleHttp\RequestOptions;
+use Illuminate\Contracts\Cache\LockTimeoutException;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Sleep;
@@ -18,6 +20,7 @@ use Kyzegs\GuzzleRateLimitMiddleware\Exception\RateLimitExceededException;
 use Kyzegs\Laracord\Contracts\Client;
 use Kyzegs\Laracord\Endpoints\EndpointCatalog;
 use Kyzegs\Laracord\Enums\AuthenticationRequirement;
+use Kyzegs\Laracord\Enums\HttpMethod;
 use Kyzegs\Laracord\Events\RequestFailed;
 use Kyzegs\Laracord\Events\RequestSending;
 use Kyzegs\Laracord\Events\ResponseReceived;
@@ -33,6 +36,7 @@ use Kyzegs\Laracord\Exceptions\MissingAuthenticationException;
 use Kyzegs\Laracord\Http\DiscordRequest;
 use Kyzegs\Laracord\Http\DiscordResponse;
 use Kyzegs\Laracord\Pool\Pool;
+use Kyzegs\Laracord\RateLimit\RedactingLogger;
 use Kyzegs\Laracord\Resources\ResourceClient;
 use Kyzegs\Laracord\ValueObjects\AuditLogReason;
 use Kyzegs\Laracord\ValueObjects\Authentication;
@@ -124,7 +128,8 @@ final readonly class DiscordClient implements Client
 
         $this->events->dispatch(new RequestSending($discordRequest));
 
-        $attempts = max(1, (int) $this->repository->get('laracord.http.server_retries', 5));
+        // A POST that timed out or got a 5xx may still have taken effect, so repeating it could post twice.
+        $attempts = $discordRequest->method === HttpMethod::POST ? 1 : max(1, (int) $this->repository->get('laracord.http.server_retries', 5));
         $response = null;
         for ($attempt = 0; $attempt < $attempts; $attempt++) {
             try {
@@ -140,7 +145,7 @@ final readonly class DiscordClient implements Client
                 throw $this->fail($discordRequest, $this->classify($exception));
             }
 
-            if (! in_array($response->getStatusCode(), [500, 502, 504, 524], true) || $attempt === $attempts - 1) {
+            if ($response->getStatusCode() < 500 || $attempt === $attempts - 1) {
                 break;
             }
 
@@ -264,8 +269,10 @@ final readonly class DiscordClient implements Client
         return match (true) {
             $exception instanceof InvalidRequestLimitExceededException => new DiscordInvalidRequestLimitException($exception->retryAfter, previous: $exception),
             $exception instanceof RateLimitDelayExceededException => new DiscordRateLimitException($exception->retryAfter, previous: $exception),
-            $exception instanceof RateLimitExceededException => new DiscordRateLimitException($exception->getRetryAfter(), $exception->isGlobal(), $exception),
-            $exception instanceof ConnectException => new DiscordTransportException($exception->getMessage(), $exception->getCode(), previous: $exception),
+            // These two carry the request URL, which can contain a webhook or interaction token, so they are not chained.
+            $exception instanceof RateLimitExceededException => new DiscordRateLimitException($exception->getRetryAfter(), $exception->isGlobal()),
+            $exception instanceof TransferException => new DiscordTransportException(RedactingLogger::redact($exception->getMessage()), $exception->getCode()),
+            $exception instanceof LockTimeoutException => new DiscordTransportException('Timed out waiting for the Discord rate limit lock.', previous: $exception),
             default => $exception,
         };
     }
@@ -283,8 +290,9 @@ final readonly class DiscordClient implements Client
             401 => new DiscordAuthenticationException($discordResponse, $discordRequest),
             403 => new DiscordForbiddenException($discordResponse, $discordRequest),
             404 => new DiscordNotFoundException($discordResponse, $discordRequest),
-            500, 502, 504, 524 => new DiscordServerException($discordResponse, $discordRequest),
-            default => new DiscordHttpException($discordResponse, $discordRequest),
+            default => $response->getStatusCode() >= 500
+                ? new DiscordServerException($discordResponse, $discordRequest)
+                : new DiscordHttpException($discordResponse, $discordRequest),
         };
     }
 

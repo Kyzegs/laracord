@@ -6,6 +6,7 @@ namespace Kyzegs\Laracord\Resources;
 
 use Generator;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Arr;
 use Illuminate\Support\LazyCollection;
 use JsonSerializable;
 use Kyzegs\Laracord\Contracts\Client;
@@ -13,6 +14,7 @@ use Kyzegs\Laracord\Endpoints\EndpointCatalog;
 use Kyzegs\Laracord\Enums\AuthenticationRequirement;
 use Kyzegs\Laracord\Http\DiscordRequest;
 use Kyzegs\Laracord\Http\DiscordResponse;
+use Kyzegs\Laracord\Payloads\DiscordMessage;
 use Kyzegs\Laracord\ValueObjects\AuditLogReason;
 
 readonly class ResourceClient
@@ -48,7 +50,7 @@ readonly class ResourceClient
             $parameters,
             $query,
             $body,
-            $files,
+            $files === [] && $body instanceof DiscordMessage ? $body->files() : $files,
             $auditLogReason,
             $definition['auth'] ?? AuthenticationRequirement::REQUIRED,
             $definition['form'] ?? false,
@@ -58,19 +60,21 @@ readonly class ResourceClient
     }
 
     /**
-     * Lazily iterate a cursor-paginated endpoint, advancing by the id of the last
-     * item on each page until a short page is returned.
+     * Lazily iterate a cursor-paginated endpoint, advancing by the last item on
+     * each page until a short page is returned.
      *
-     * Defaults suit ascending-id collections (e.g. guild members, bans). For
-     * reverse-chronological history pass the matching cursor, e.g. `before`.
+     * Defaults suit ascending-id collections. The cursor value is read from `id`
+     * or, for guild members and bans, `user.id`; pass `$cursorKey` for feeds that
+     * page by another field. For reverse-chronological history pass the matching
+     * cursor, e.g. `before`.
      *
      * @param  array<string, string|int|\Stringable>  $parameters
      * @param  array<string, mixed>  $query
      * @return LazyCollection<int, mixed>
      */
-    public function paginate(string $endpoint, array $parameters = [], array $query = [], string $cursor = 'after', int $perPage = 100, ?string $itemsKey = null): LazyCollection
+    public function paginate(string $endpoint, array $parameters = [], array $query = [], string $cursor = 'after', int $perPage = 100, ?string $itemsKey = null, ?string $cursorKey = null): LazyCollection
     {
-        return LazyCollection::make(function () use ($endpoint, $parameters, $query, $cursor, $perPage, $itemsKey): Generator {
+        return LazyCollection::make(function () use ($endpoint, $parameters, $query, $cursor, $perPage, $itemsKey, $cursorKey): Generator {
             $cursorValue = $query[$cursor] ?? null;
 
             do {
@@ -84,11 +88,15 @@ readonly class ResourceClient
                     break;
                 }
 
-                yield from $items;
+                // Not `yield from`: its keys restart on every page, so all() would overwrite earlier pages.
+                foreach ($items as $item) {
+                    yield $item;
+                }
 
                 $last = end($items);
-                $cursorValue = is_array($last) ? ($last['id'] ?? null) : null;
-            } while ($cursorValue !== null && count($items) >= $perPage);
+                $previous = $cursorValue;
+                $cursorValue = is_array($last) ? Arr::get($last, $cursorKey ?? 'id') ?? Arr::get($last, 'user.id') : null;
+            } while ($cursorValue !== null && $cursorValue !== $previous && count($items) >= $perPage);
         });
     }
 

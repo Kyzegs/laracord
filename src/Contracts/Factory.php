@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Kyzegs\Laracord\Contracts;
 
+use Kyzegs\Laracord\Interactions\InteractionRouter;
 use Kyzegs\Laracord\ValueObjects\OAuthAccessToken;
 
 /**
@@ -16,4 +17,6 @@ interface Factory
     public function bearer(string|OAuthAccessToken $token): Client;
 
     public function withoutAuthentication(): Client;
+
+    public function interactions(): InteractionRouter;
 }

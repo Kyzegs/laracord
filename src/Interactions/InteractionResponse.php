@@ -19,7 +19,7 @@ final class InteractionResponse
     /** @param array<string, mixed>|DiscordMessage $message */
     public static function message(DiscordMessage|array $message): JsonResponse
     {
-        return new JsonResponse(['type' => 4, 'data' => $message instanceof DiscordMessage ? $message->toArray() : $message]);
+        return new JsonResponse(['type' => 4, 'data' => self::data($message)]);
     }
 
     public static function defer(bool $ephemeral = false): JsonResponse
@@ -35,7 +35,7 @@ final class InteractionResponse
     /** @param array<string, mixed>|DiscordMessage $message */
     public static function update(DiscordMessage|array $message): JsonResponse
     {
-        return new JsonResponse(['type' => 7, 'data' => $message instanceof DiscordMessage ? $message->toArray() : $message]);
+        return new JsonResponse(['type' => 7, 'data' => self::data($message)]);
     }
 
     /** @param list<array<string, mixed>> $choices */
@@ -57,5 +57,22 @@ final class InteractionResponse
     public static function webhookPong(): Response
     {
         return new Response('', 204, ['Content-Type' => 'application/json']);
+    }
+
+    /**
+     * @param  array<string, mixed>|DiscordMessage  $message
+     * @return array<string, mixed>
+     */
+    private static function data(DiscordMessage|array $message): array
+    {
+        if (! $message instanceof DiscordMessage) {
+            return $message;
+        }
+
+        if ($message->files() !== []) {
+            throw new \InvalidArgumentException('A direct interaction response cannot carry files. Defer, then send them with InteractionContext::editOriginal() or followup().');
+        }
+
+        return $message->toArray();
     }
 }

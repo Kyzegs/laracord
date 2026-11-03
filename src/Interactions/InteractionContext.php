@@ -86,7 +86,6 @@ final readonly class InteractionContext
             [...$this->parameters(), ...$parameters],
             $message,
             $query,
-            $message instanceof DiscordMessage ? $message->files() : [],
         );
     }
 

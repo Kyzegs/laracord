@@ -67,6 +67,8 @@ final class VoteController
 
 Use the context after the initial response to retrieve, edit, or delete the original message and to manage follow-ups. These requests use the interaction token and do not send bot authentication.
 
+A direct response is plain JSON and cannot carry files, so `InteractionResponse::message()` and `update()` throw if the message has any. Defer instead, then send them with `editOriginal()` or `followup()`.
+
 ```php
 final class ReportHandler
 {

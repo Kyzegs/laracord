@@ -11,6 +11,8 @@ use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Kyzegs\Laracord\Console\ClearCommandsCommand;
 use Kyzegs\Laracord\Console\ListCommandsCommand;
 use Kyzegs\Laracord\Console\SyncCommandsCommand;
+use Kyzegs\Laracord\Contracts\Client;
+use Kyzegs\Laracord\Contracts\Factory;
 use Kyzegs\Laracord\Interactions\InteractionRouter;
 use Kyzegs\Laracord\Notifications\DiscordChannel;
 use Kyzegs\Laracord\Socialite\DiscordProvider;
@@ -53,5 +55,9 @@ class ServiceProvider extends BaseServiceProvider
         $this->app->singleton(InteractionRouter::class);
         $this->app->singleton(LaracordManager::class);
         $this->app->alias(LaracordManager::class, 'laracord');
+
+        // Resolved through the `laracord` binding so that Laracord::fake() replaces them too.
+        $this->app->bind(Factory::class, fn (Application $application) => $application->make('laracord'));
+        $this->app->bind(Client::class, fn (Application $application) => $application->make(Factory::class)->bot());
     }
 }
