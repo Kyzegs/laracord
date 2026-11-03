@@ -38,7 +38,7 @@ LARACORD_CONNECT_TIMEOUT=10
 LARACORD_SERVER_RETRIES=5
 ```
 
-Laracord retries connection failures and Discord responses with status `500`, `502`, `504`, or `524`. `LARACORD_SERVER_RETRIES` is the total number of attempts, including the first request.
+Laracord retries connection failures and `5xx` responses, except for `POST` requests, which may already have taken effect. `LARACORD_SERVER_RETRIES` is the total number of attempts, including the first request.
 
 ## Rate limiting
 

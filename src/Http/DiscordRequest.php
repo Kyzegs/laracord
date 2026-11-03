@@ -45,7 +45,8 @@ final readonly class DiscordRequest
         }
 
         if (preg_match('/\{[^}]+}/', $path) === 1) {
-            throw new \InvalidArgumentException('Missing Discord route parameter for '.$path.'.');
+            // Names the route template: the resolved path can already contain a webhook or interaction token.
+            throw new \InvalidArgumentException('Missing Discord route parameter for '.$this->path.'.');
         }
 
         return $path;

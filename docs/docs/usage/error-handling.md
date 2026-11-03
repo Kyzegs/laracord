@@ -78,11 +78,11 @@ try {
 }
 ```
 
-Do not add a second blind retry loop around all requests. Laracord already retries the Discord server statuses and connection failures configured by the client. If your application queues a retry after one of these exceptions, use the exposed `retryAfter` value.
+Do not add a second blind retry loop around all requests. Laracord already retries `5xx` responses and connection failures, except for `POST` requests: a `POST` that timed out or got a `5xx` may still have taken effect, so repeating it could post twice. If your application queues a retry after one of these exceptions, use the exposed `retryAfter` value.
 
 ## Transport and authentication errors
 
-- `DiscordTransportException` indicates that connection retries were exhausted or no response was produced.
+- `DiscordTransportException` indicates that retries were exhausted, that a `POST` failed in transit and was not repeated, or that no response was produced.
 - `MissingAuthenticationException` means a protected endpoint was called through `withoutAuthentication()`.
 - `DiscordException` is the common parent for all package exceptions.
 
@@ -105,7 +105,7 @@ try {
 
 ## Logging safely
 
-Log endpoint names, route parameters, status, and Discord's error code. Avoid logging authorization headers, OAuth tokens, webhook tokens, or complete request URLs containing secrets.
+Log endpoint names, status, and Discord's error code. Avoid logging authorization headers, OAuth tokens, or complete request URLs. Laracord redacts tokens from its own logs and exception messages, but `DiscordRequest::$parameters` holds webhook and interaction tokens as given, so do not log it wholesale.
 
 ```php
 try {
