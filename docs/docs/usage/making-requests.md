@@ -149,7 +149,7 @@ $name = $discord->guilds()->get(['guild_id' => $guildId])
 
 ## Pagination
 
-`paginate()` lazily walks a cursor-paginated endpoint, advancing by the id of the last item on each page until a short page is returned. It returns a `LazyCollection`, so only one page is held in memory at a time:
+`paginate()` lazily walks a cursor-paginated endpoint, advancing by the last item on each page until a short page is returned. It returns a `LazyCollection`, so only one page is held in memory at a time:
 
 ```php
 $discord->guilds()
@@ -159,12 +159,14 @@ $discord->guilds()
     });
 ```
 
-Defaults suit ascending-id collections (guild members, bans). For reverse-chronological history pass the matching cursor, and for nested payloads pass the items key:
+Defaults suit ascending-id collections, including guild members and bans, whose cursor is `user.id`. For reverse-chronological history pass the matching cursor, for nested payloads pass the items key, and for feeds that page by another field pass `cursorKey`:
 
 ```php
 $discord->messages()->paginate('list', ['channel_id' => $channelId], cursor: 'before');
 
-$discord->auditLogs()->paginate('get', ['guild_id' => $guildId], itemsKey: 'audit_log_entries');
+$discord->auditLogs()->paginate('get', ['guild_id' => $guildId], cursor: 'before', itemsKey: 'audit_log_entries');
+
+$discord->channels()->paginate('listPinnedMessages', ['channel_id' => $channelId], cursor: 'before', perPage: 50, itemsKey: 'items', cursorKey: 'pinned_at');
 ```
 
 ## Concurrent requests
