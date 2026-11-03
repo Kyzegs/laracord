@@ -9,8 +9,6 @@ use Kyzegs\Laracord\Endpoints\EndpointCatalog;
 $lines = [
     '# Endpoint Catalog',
     '',
-    'Audited against Discord HTTP documentation on '.EndpointCatalog::AUDITED_AT.'.',
-    '',
     'Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, $query, $files, $reason)`.',
     '',
 ];

@@ -57,11 +57,6 @@ final class Modal implements Arrayable, JsonSerializable
         return $this;
     }
 
-    public function customId(): string
-    {
-        return $this->customId;
-    }
-
     /** @return array<string, mixed> */
     public function toArray(): array
     {

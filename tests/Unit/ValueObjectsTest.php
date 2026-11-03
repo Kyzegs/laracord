@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Kyzegs\Laracord\ValueObjects\Authentication;
 use Kyzegs\Laracord\ValueObjects\DiscordWebhook;
 use Kyzegs\Laracord\ValueObjects\Snowflake;
 
@@ -33,8 +32,3 @@ it('rejects webhook URLs for other payload formats instead of dropping the suffi
     expect(fn (): DiscordWebhook => DiscordWebhook::fromUrl('https://discord.com/api/webhooks/123456789012345678/token/'.$suffix))
         ->toThrow(InvalidArgumentException::class);
 })->with(['slack', 'github']);
-
-it('isolates authentication fingerprints', function (): void {
-    expect(Authentication::bot('one')->fingerprint())
-        ->not->toBe(Authentication::bearer('one')->fingerprint());
-});

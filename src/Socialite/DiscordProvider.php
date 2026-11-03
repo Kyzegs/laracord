@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 use Laravel\Socialite\Two\AbstractProvider;
 use Laravel\Socialite\Two\InvalidStateException;
 
-class DiscordProvider extends AbstractProvider implements ProviderInterface
+class DiscordProvider extends AbstractProvider
 {
     /**
      * The cached user instance.

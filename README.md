@@ -22,7 +22,7 @@ composer require kyzegs/laracord:^1.0@rc
 php artisan vendor:publish --tag=laracord-config
 ```
 
-See [`docs/docs/getting-started.md`](docs/docs/getting-started.md) and [`docs/docs/usage/migration-v1.md`](docs/docs/usage/migration-v1.md).
+See [`docs/docs/getting-started.md`](docs/docs/getting-started.md).
 
 Gateway, voice transport, RPC, Embedded App SDK, and Social SDK clients are intentionally outside scope.
 

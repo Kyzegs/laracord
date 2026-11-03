@@ -1,7 +1,5 @@
 # Endpoint Catalog
 
-Audited against Discord HTTP documentation on 2026-07-20.
-
 Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, $query, $files, $reason)`.
 
 ## Applications

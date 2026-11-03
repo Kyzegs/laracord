@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace Kyzegs\Laracord\Interactions;
 
-use RuntimeException;
+use Kyzegs\Laracord\Exceptions\DiscordException;
 
-final class UnhandledInteractionException extends RuntimeException {}
+final class UnhandledInteractionException extends DiscordException {}

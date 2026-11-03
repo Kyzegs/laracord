@@ -9,8 +9,6 @@ use Kyzegs\Laracord\Enums\HttpMethod;
 
 final class EndpointCatalog
 {
-    public const string AUDITED_AT = '2026-07-20';
-
     /**
      * Endpoint names are relative to their resource: the resource noun is dropped, so
      * `$client->guilds()->createChannel(...)` rather than `createGuildChannel`. Common
