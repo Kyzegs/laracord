@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Kyzegs\Laracord\Components;
 
+use Kyzegs\Laracord\Components\Concerns\BuildsPayload;
 use Kyzegs\Laracord\Components\Concerns\HasId;
 use Kyzegs\Laracord\Components\Enums\ComponentType;
 
 final class MediaGallery implements Component
 {
+    use BuildsPayload;
     use HasId;
 
     /** @var list<MediaGalleryItem> */
@@ -42,16 +44,10 @@ final class MediaGallery implements Component
             throw new \InvalidArgumentException('A media gallery requires between 1 and 10 items.');
         }
 
-        return array_filter([
+        return $this->withoutNulls([
             'type' => ComponentType::MEDIA_GALLERY->value,
             'id' => $this->id,
             'items' => array_map(static fn (MediaGalleryItem $item): array => $item->toArray(), $this->items),
-        ], static fn (mixed $value): bool => $value !== null);
-    }
-
-    /** @return array<string, mixed> */
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
+        ]);
     }
 }

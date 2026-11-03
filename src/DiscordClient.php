@@ -13,12 +13,10 @@ use Illuminate\Contracts\Cache\LockTimeoutException;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Sleep;
-use Illuminate\Support\Str;
 use Kyzegs\GuzzleRateLimitMiddleware\Exception\InvalidRequestLimitExceededException;
 use Kyzegs\GuzzleRateLimitMiddleware\Exception\RateLimitDelayExceededException;
 use Kyzegs\GuzzleRateLimitMiddleware\Exception\RateLimitExceededException;
 use Kyzegs\Laracord\Contracts\Client;
-use Kyzegs\Laracord\Endpoints\EndpointCatalog;
 use Kyzegs\Laracord\Enums\AuthenticationRequirement;
 use Kyzegs\Laracord\Enums\HttpMethod;
 use Kyzegs\Laracord\Events\RequestFailed;
@@ -37,7 +35,7 @@ use Kyzegs\Laracord\Http\DiscordRequest;
 use Kyzegs\Laracord\Http\DiscordResponse;
 use Kyzegs\Laracord\Pool\Pool;
 use Kyzegs\Laracord\RateLimit\RedactingLogger;
-use Kyzegs\Laracord\Resources\ResourceClient;
+use Kyzegs\Laracord\Resources\Concerns\ResolvesResources;
 use Kyzegs\Laracord\ValueObjects\AuditLogReason;
 use Kyzegs\Laracord\ValueObjects\Authentication;
 use Kyzegs\Laracord\ValueObjects\OAuthAccessToken;
@@ -78,6 +76,8 @@ use Psr\Http\Message\StreamInterface;
  */
 final readonly class DiscordClient implements Client
 {
+    use ResolvesResources;
+
     public function __construct(
         private ClientFactory $clientFactory,
         private ClientInterface $client,
@@ -99,27 +99,6 @@ final readonly class DiscordClient implements Client
     public function withoutAuthentication(): self
     {
         return $this->clientFactory->make(Authentication::none());
-    }
-
-    public function resource(string $name): ResourceClient
-    {
-        $class = sprintf('%s\\Resources\\Generated\\%sResource', __NAMESPACE__, Str::studly($name));
-
-        if (class_exists($class) && is_subclass_of($class, ResourceClient::class)) {
-            return new $class($this, $name);
-        }
-
-        return new ResourceClient($this, $name);
-    }
-
-    /** @param array<int, mixed> $arguments */
-    public function __call(string $name, array $arguments): ResourceClient
-    {
-        if ($arguments === [] && EndpointCatalog::hasResource($name)) {
-            return $this->resource($name);
-        }
-
-        throw new \BadMethodCallException('Unknown Discord resource '.$name.'.');
     }
 
     public function send(DiscordRequest $discordRequest): DiscordResponse

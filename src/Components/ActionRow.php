@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Kyzegs\Laracord\Components;
 
+use Kyzegs\Laracord\Components\Concerns\BuildsPayload;
 use Kyzegs\Laracord\Components\Concerns\HasId;
 use Kyzegs\Laracord\Components\Enums\ComponentType;
 
 final class ActionRow implements Component
 {
+    use BuildsPayload;
     use HasId;
 
     /** @var list<Component> */
@@ -52,11 +54,5 @@ final class ActionRow implements Component
             ...($this->id === null ? [] : ['id' => $this->id]),
             'components' => array_map(static fn (Component $component): array => $component->toArray(), $this->components),
         ];
-    }
-
-    /** @return array<string, mixed> */
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
     }
 }

@@ -6,10 +6,15 @@ namespace Kyzegs\Laracord\Components;
 
 use Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;
+use Kyzegs\Laracord\Components\Concerns\BuildsPayload;
+use Kyzegs\Laracord\Components\Concerns\ValidatesIdentifiers;
 
 /** @implements Arrayable<string, mixed> */
 final class Modal implements Arrayable, JsonSerializable
 {
+    use BuildsPayload;
+    use ValidatesIdentifiers;
+
     /** @var list<Component> */
     private array $components = [];
 
@@ -17,9 +22,7 @@ final class Modal implements Arrayable, JsonSerializable
         private readonly string $customId,
         private readonly string $title,
     ) {
-        if ($customId === '' || mb_strlen($customId) > 100) {
-            throw new \InvalidArgumentException('Modal custom_id must contain between 1 and 100 characters.');
-        }
+        self::assertCustomId($customId, 'Modal');
 
         if ($title === '' || mb_strlen($title) > 45) {
             throw new \InvalidArgumentException('Modal title must contain between 1 and 45 characters.');
@@ -70,50 +73,12 @@ final class Modal implements Arrayable, JsonSerializable
         }
 
         $components = array_map(static fn (Component $component): array => $component->toArray(), $this->components);
-        $ids = [];
-        $customIds = [];
-        $this->validateUniqueIdentifiers($components, $ids, $customIds);
+        $this->validateUniqueIdentifiers($components, 'modal');
 
         return [
             'custom_id' => $this->customId,
             'title' => $this->title,
             'components' => $components,
         ];
-    }
-
-    /** @return array<string, mixed> */
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
-    }
-
-    /**
-     * @param  array<array-key, mixed>  $value
-     * @param  array<int, true>  $ids
-     * @param  array<string, true>  $customIds
-     */
-    private function validateUniqueIdentifiers(array $value, array &$ids, array &$customIds): void
-    {
-        if (isset($value['id']) && is_int($value['id']) && $value['id'] !== 0) {
-            if (isset($ids[$value['id']])) {
-                throw new \InvalidArgumentException('Component ids must be unique within a modal.');
-            }
-
-            $ids[$value['id']] = true;
-        }
-
-        if (isset($value['custom_id']) && is_string($value['custom_id'])) {
-            if (isset($customIds[$value['custom_id']])) {
-                throw new \InvalidArgumentException('Component custom_ids must be unique within a modal.');
-            }
-
-            $customIds[$value['custom_id']] = true;
-        }
-
-        foreach ($value as $child) {
-            if (is_array($child)) {
-                $this->validateUniqueIdentifiers($child, $ids, $customIds);
-            }
-        }
     }
 }

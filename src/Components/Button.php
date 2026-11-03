@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Kyzegs\Laracord\Components;
 
+use Kyzegs\Laracord\Components\Concerns\BuildsPayload;
 use Kyzegs\Laracord\Components\Concerns\HasEmoji;
 use Kyzegs\Laracord\Components\Concerns\HasId;
 use Kyzegs\Laracord\Components\Enums\ButtonStyle;
@@ -11,6 +12,7 @@ use Kyzegs\Laracord\Components\Enums\ComponentType;
 
 final class Button implements Component
 {
+    use BuildsPayload;
     use HasEmoji;
     use HasId;
 
@@ -78,8 +80,8 @@ final class Button implements Component
     /** @return array<string, mixed> */
     public function toArray(): array
     {
-        if ($this->customId !== null && ($this->customId === '' || mb_strlen($this->customId) > 100)) {
-            throw new \InvalidArgumentException('Button custom_id must contain between 1 and 100 characters.');
+        if ($this->customId !== null) {
+            self::assertCustomId($this->customId, 'Button');
         }
 
         if ($this->url !== null && ($this->url === '' || mb_strlen($this->url) > 512)) {
@@ -90,7 +92,7 @@ final class Button implements Component
             throw new \InvalidArgumentException('Button sku_id cannot be empty.');
         }
 
-        return array_filter([
+        return $this->withoutNulls([
             'type' => ComponentType::BUTTON->value,
             'id' => $this->id,
             'style' => $this->style->value,
@@ -100,12 +102,6 @@ final class Button implements Component
             'url' => $this->url,
             'sku_id' => $this->skuId,
             'disabled' => $this->disabled ?: null,
-        ], static fn (mixed $value): bool => $value !== null);
-    }
-
-    /** @return array<string, mixed> */
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
+        ]);
     }
 }

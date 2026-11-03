@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Kyzegs\Laracord\Components;
 
+use Kyzegs\Laracord\Components\Concerns\BuildsPayload;
 use Kyzegs\Laracord\Components\Concerns\HasId;
 use Kyzegs\Laracord\Components\Enums\ComponentType;
 
 final class FileUpload implements Component
 {
+    use BuildsPayload;
     use HasId;
 
     private ?int $minValues = null;
@@ -22,9 +24,7 @@ final class FileUpload implements Component
 
     private function __construct(private readonly string $customId)
     {
-        if ($customId === '' || mb_strlen($customId) > 100) {
-            throw new \InvalidArgumentException('File upload custom_id must contain between 1 and 100 characters.');
-        }
+        self::assertCustomId($customId, 'File upload');
     }
 
     public static function make(string $customId): self
@@ -94,7 +94,7 @@ final class FileUpload implements Component
             throw new \InvalidArgumentException('File upload min_values may be 0 only when required is false.');
         }
 
-        return array_filter([
+        return $this->withoutNulls([
             'type' => ComponentType::FILE_UPLOAD->value,
             'id' => $this->id,
             'custom_id' => $this->customId,
@@ -102,12 +102,6 @@ final class FileUpload implements Component
             'max_values' => $this->maxValues,
             'required' => $this->required,
             'file_types' => $this->fileTypes,
-        ], static fn (mixed $value): bool => $value !== null);
-    }
-
-    /** @return array<string, mixed> */
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
+        ]);
     }
 }

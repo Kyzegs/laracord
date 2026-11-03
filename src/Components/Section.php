@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Kyzegs\Laracord\Components;
 
+use Kyzegs\Laracord\Components\Concerns\BuildsPayload;
 use Kyzegs\Laracord\Components\Concerns\HasId;
 use Kyzegs\Laracord\Components\Enums\ComponentType;
 
 final class Section implements Component
 {
+    use BuildsPayload;
     use HasId;
 
     /** @var list<Component> */
@@ -59,17 +61,11 @@ final class Section implements Component
             throw new \InvalidArgumentException('A section requires a button or thumbnail accessory.');
         }
 
-        return array_filter([
+        return $this->withoutNulls([
             'type' => ComponentType::SECTION->value,
             'id' => $this->id,
             'components' => array_map(static fn (Component $component): array => $component->toArray(), $this->components),
             'accessory' => $this->accessory->toArray(),
-        ], static fn (mixed $value): bool => $value !== null);
-    }
-
-    /** @return array<string, mixed> */
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
+        ]);
     }
 }

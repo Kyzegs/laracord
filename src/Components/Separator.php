@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Kyzegs\Laracord\Components;
 
+use Kyzegs\Laracord\Components\Concerns\BuildsPayload;
 use Kyzegs\Laracord\Components\Concerns\HasId;
 use Kyzegs\Laracord\Components\Enums\ComponentType;
 
 final class Separator implements Component
 {
+    use BuildsPayload;
     use HasId;
 
     private ?bool $divider = null;
@@ -41,17 +43,11 @@ final class Separator implements Component
     /** @return array<string, mixed> */
     public function toArray(): array
     {
-        return array_filter([
+        return $this->withoutNulls([
             'type' => ComponentType::SEPARATOR->value,
             'id' => $this->id,
             'divider' => $this->divider,
             'spacing' => $this->spacing,
-        ], static fn (mixed $value): bool => $value !== null);
-    }
-
-    /** @return array<string, mixed> */
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
+        ]);
     }
 }

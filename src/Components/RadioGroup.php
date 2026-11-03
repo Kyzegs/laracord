@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Kyzegs\Laracord\Components;
 
+use Kyzegs\Laracord\Components\Concerns\BuildsPayload;
 use Kyzegs\Laracord\Components\Concerns\HasId;
 use Kyzegs\Laracord\Components\Enums\ComponentType;
 
 final class RadioGroup implements Component
 {
+    use BuildsPayload;
     use HasId;
 
     /** @var list<SelectOption> */
@@ -18,9 +20,7 @@ final class RadioGroup implements Component
 
     private function __construct(private readonly string $customId)
     {
-        if ($customId === '' || mb_strlen($customId) > 100) {
-            throw new \InvalidArgumentException('Radio group custom_id must contain between 1 and 100 characters.');
-        }
+        self::assertCustomId($customId, 'Radio group');
     }
 
     public static function make(string $customId): self
@@ -67,18 +67,12 @@ final class RadioGroup implements Component
             throw new \InvalidArgumentException('A radio group supports at most one default option.');
         }
 
-        return array_filter([
+        return $this->withoutNulls([
             'type' => ComponentType::RADIO_GROUP->value,
             'id' => $this->id,
             'custom_id' => $this->customId,
             'options' => $options,
             'required' => $this->required,
-        ], static fn (mixed $value): bool => $value !== null);
-    }
-
-    /** @return array<string, mixed> */
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
+        ]);
     }
 }

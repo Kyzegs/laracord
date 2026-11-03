@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Kyzegs\Laracord\Components;
 
+use Kyzegs\Laracord\Components\Concerns\BuildsPayload;
 use Kyzegs\Laracord\Components\Concerns\HasId;
 use Kyzegs\Laracord\Components\Enums\ComponentType;
 use Kyzegs\Laracord\Components\Enums\TextInputStyle;
 
 final class TextInput implements Component
 {
+    use BuildsPayload;
     use HasId;
 
     private ?int $minLength = null;
@@ -27,9 +29,7 @@ final class TextInput implements Component
         private readonly ?string $label,
         private readonly TextInputStyle $style,
     ) {
-        if ($customId === '' || mb_strlen($customId) > 100) {
-            throw new \InvalidArgumentException('Text input custom_id must contain between 1 and 100 characters.');
-        }
+        self::assertCustomId($customId, 'Text input');
 
         if ($label !== null && ($label === '' || mb_strlen($label) > 45)) {
             throw new \InvalidArgumentException('Text input label cannot exceed 45 characters.');
@@ -104,7 +104,7 @@ final class TextInput implements Component
             throw new \InvalidArgumentException('Text input min_length cannot exceed max_length.');
         }
 
-        return array_filter([
+        return $this->withoutNulls([
             'type' => ComponentType::TEXT_INPUT->value,
             'id' => $this->id,
             'custom_id' => $this->customId,
@@ -115,12 +115,6 @@ final class TextInput implements Component
             'required' => $this->required,
             'value' => $this->value,
             'placeholder' => $this->placeholder,
-        ], static fn (mixed $value): bool => $value !== null);
-    }
-
-    /** @return array<string, mixed> */
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
+        ]);
     }
 }
