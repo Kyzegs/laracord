@@ -99,14 +99,14 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 | `editIncidentActions` | `PUT` | `/guilds/{guild_id}/incident-actions` |
 | `listChannels` | `GET` | `/guilds/{guild_id}/channels` |
 | `createChannel` | `POST` | `/guilds/{guild_id}/channels` |
-| `modifyChannelPositions` | `PATCH` | `/guilds/{guild_id}/channels` |
+| `editChannelPositions` | `PATCH` | `/guilds/{guild_id}/channels` |
 | `listActiveThreads` | `GET` | `/guilds/{guild_id}/threads/active` |
 | `getMember` | `GET` | `/guilds/{guild_id}/members/{user_id}` |
 | `listMembers` | `GET` | `/guilds/{guild_id}/members` |
 | `searchMembers` | `GET` | `/guilds/{guild_id}/members/search` |
 | `addMember` | `PUT` | `/guilds/{guild_id}/members/{user_id}` |
-| `modifyMember` | `PATCH` | `/guilds/{guild_id}/members/{user_id}` |
-| `modifyCurrentMember` | `PATCH` | `/guilds/{guild_id}/members/@me` |
+| `editMember` | `PATCH` | `/guilds/{guild_id}/members/{user_id}` |
+| `editCurrentMember` | `PATCH` | `/guilds/{guild_id}/members/@me` |
 | `addMemberRole` | `PUT` | `/guilds/{guild_id}/members/{user_id}/roles/{role_id}` |
 | `removeMemberRole` | `DELETE` | `/guilds/{guild_id}/members/{user_id}/roles/{role_id}` |
 | `removeMember` | `DELETE` | `/guilds/{guild_id}/members/{user_id}` |
@@ -119,22 +119,22 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 | `getRole` | `GET` | `/guilds/{guild_id}/roles/{role_id}` |
 | `getRoleMemberCounts` | `GET` | `/guilds/{guild_id}/roles/member-counts` |
 | `createRole` | `POST` | `/guilds/{guild_id}/roles` |
-| `modifyRolePositions` | `PATCH` | `/guilds/{guild_id}/roles` |
-| `modifyRole` | `PATCH` | `/guilds/{guild_id}/roles/{role_id}` |
+| `editRolePositions` | `PATCH` | `/guilds/{guild_id}/roles` |
+| `editRole` | `PATCH` | `/guilds/{guild_id}/roles/{role_id}` |
 | `deleteRole` | `DELETE` | `/guilds/{guild_id}/roles/{role_id}` |
 | `getPruneCount` | `GET` | `/guilds/{guild_id}/prune` |
 | `beginPrune` | `POST` | `/guilds/{guild_id}/prune` |
 | `listIntegrations` | `GET` | `/guilds/{guild_id}/integrations` |
 | `deleteIntegration` | `DELETE` | `/guilds/{guild_id}/integrations/{integration_id}` |
 | `getWidgetSettings` | `GET` | `/guilds/{guild_id}/widget` |
-| `modifyWidget` | `PATCH` | `/guilds/{guild_id}/widget` |
+| `editWidget` | `PATCH` | `/guilds/{guild_id}/widget` |
 | `getWidget` | `GET` | `/guilds/{guild_id}/widget.json` |
 | `getVanityUrl` | `GET` | `/guilds/{guild_id}/vanity-url` |
 | `getWidgetImage` | `GET` | `/guilds/{guild_id}/widget.png` |
 | `getWelcomeScreen` | `GET` | `/guilds/{guild_id}/welcome-screen` |
-| `modifyWelcomeScreen` | `PATCH` | `/guilds/{guild_id}/welcome-screen` |
+| `editWelcomeScreen` | `PATCH` | `/guilds/{guild_id}/welcome-screen` |
 | `getOnboarding` | `GET` | `/guilds/{guild_id}/onboarding` |
-| `modifyOnboarding` | `PUT` | `/guilds/{guild_id}/onboarding` |
+| `editOnboarding` | `PUT` | `/guilds/{guild_id}/onboarding` |
 
 ## Emojis
 
@@ -143,12 +143,12 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 | `listGuildEmojis` | `GET` | `/guilds/{guild_id}/emojis` |
 | `getGuildEmoji` | `GET` | `/guilds/{guild_id}/emojis/{emoji_id}` |
 | `createGuildEmoji` | `POST` | `/guilds/{guild_id}/emojis` |
-| `modifyGuildEmoji` | `PATCH` | `/guilds/{guild_id}/emojis/{emoji_id}` |
+| `editGuildEmoji` | `PATCH` | `/guilds/{guild_id}/emojis/{emoji_id}` |
 | `deleteGuildEmoji` | `DELETE` | `/guilds/{guild_id}/emojis/{emoji_id}` |
 | `listApplicationEmojis` | `GET` | `/applications/{application_id}/emojis` |
 | `getApplicationEmoji` | `GET` | `/applications/{application_id}/emojis/{emoji_id}` |
 | `createApplicationEmoji` | `POST` | `/applications/{application_id}/emojis` |
-| `modifyApplicationEmoji` | `PATCH` | `/applications/{application_id}/emojis/{emoji_id}` |
+| `editApplicationEmoji` | `PATCH` | `/applications/{application_id}/emojis/{emoji_id}` |
 | `deleteApplicationEmoji` | `DELETE` | `/applications/{application_id}/emojis/{emoji_id}` |
 
 ## Invites
@@ -219,7 +219,7 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 | `listGuildStickers` | `GET` | `/guilds/{guild_id}/stickers` |
 | `getGuildSticker` | `GET` | `/guilds/{guild_id}/stickers/{sticker_id}` |
 | `createGuildSticker` | `POST` | `/guilds/{guild_id}/stickers` |
-| `modifyGuildSticker` | `PATCH` | `/guilds/{guild_id}/stickers/{sticker_id}` |
+| `editGuildSticker` | `PATCH` | `/guilds/{guild_id}/stickers/{sticker_id}` |
 | `deleteGuildSticker` | `DELETE` | `/guilds/{guild_id}/stickers/{sticker_id}` |
 
 ## Templates
@@ -230,7 +230,7 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 | `listGuildTemplates` | `GET` | `/guilds/{guild_id}/templates` |
 | `createGuildTemplate` | `POST` | `/guilds/{guild_id}/templates` |
 | `syncGuildTemplate` | `PUT` | `/guilds/{guild_id}/templates/{template_code}` |
-| `modifyGuildTemplate` | `PATCH` | `/guilds/{guild_id}/templates/{template_code}` |
+| `editGuildTemplate` | `PATCH` | `/guilds/{guild_id}/templates/{template_code}` |
 | `deleteGuildTemplate` | `DELETE` | `/guilds/{guild_id}/templates/{template_code}` |
 
 ## Role Connections
@@ -238,9 +238,9 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 | Endpoint | Method | Path |
 |---|---:|---|
 | `getMetadata` | `GET` | `/applications/{application_id}/role-connections/metadata` |
-| `updateMetadata` | `PUT` | `/applications/{application_id}/role-connections/metadata` |
+| `editMetadata` | `PUT` | `/applications/{application_id}/role-connections/metadata` |
 | `getUserConnection` | `GET` | `/users/@me/applications/{application_id}/role-connection` |
-| `updateUserConnection` | `PUT` | `/users/@me/applications/{application_id}/role-connection` |
+| `editUserConnection` | `PUT` | `/users/@me/applications/{application_id}/role-connection` |
 | `deleteUserConnection` | `DELETE` | `/users/@me/applications/{application_id}/role-connection` |
 
 ## Users
@@ -249,7 +249,7 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 |---|---:|---|
 | `getCurrent` | `GET` | `/users/@me` |
 | `get` | `GET` | `/users/{user_id}` |
-| `modifyCurrent` | `PATCH` | `/users/@me` |
+| `editCurrent` | `PATCH` | `/users/@me` |
 | `listGuilds` | `GET` | `/users/@me/guilds` |
 | `getGuildMember` | `GET` | `/users/@me/guilds/{guild_id}/member` |
 | `leaveGuild` | `DELETE` | `/users/@me/guilds/{guild_id}` |
@@ -263,8 +263,8 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 | `listGuildRegions` | `GET` | `/guilds/{guild_id}/regions` |
 | `getCurrentState` | `GET` | `/guilds/{guild_id}/voice-states/@me` |
 | `getState` | `GET` | `/guilds/{guild_id}/voice-states/{user_id}` |
-| `modifyCurrentState` | `PATCH` | `/guilds/{guild_id}/voice-states/@me` |
-| `modifyState` | `PATCH` | `/guilds/{guild_id}/voice-states/{user_id}` |
+| `editCurrentState` | `PATCH` | `/guilds/{guild_id}/voice-states/@me` |
+| `editState` | `PATCH` | `/guilds/{guild_id}/voice-states/{user_id}` |
 | `listRegions` | `GET` | `/voice/regions` |
 
 ## Webhooks
@@ -327,7 +327,7 @@ Call any entry with `$client->{resource}()->call($endpoint, $parameters, $body, 
 | `listGuildSounds` | `GET` | `/guilds/{guild_id}/soundboard-sounds` |
 | `getGuildSound` | `GET` | `/guilds/{guild_id}/soundboard-sounds/{sound_id}` |
 | `createGuildSound` | `POST` | `/guilds/{guild_id}/soundboard-sounds` |
-| `modifyGuildSound` | `PATCH` | `/guilds/{guild_id}/soundboard-sounds/{sound_id}` |
+| `editGuildSound` | `PATCH` | `/guilds/{guild_id}/soundboard-sounds/{sound_id}` |
 | `deleteGuildSound` | `DELETE` | `/guilds/{guild_id}/soundboard-sounds/{sound_id}` |
 
 ## Oauth2
