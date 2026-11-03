@@ -55,7 +55,7 @@ LARACORD_LOCK_TTL=60
 LARACORD_LOCK_WAIT=10
 ```
 
-Use a shared cache store with atomic locks, such as Redis, when multiple workers make Discord requests. The complete defaults live under `laracord.rate_limit` in the published configuration.
+Laracord uses your application's default cache store, so make it a shared store with atomic locks, such as Redis, when multiple workers make Discord requests. The complete defaults live under `laracord.rate_limit` in the published configuration.
 
 ## Signature verification
 
@@ -72,7 +72,7 @@ use Kyzegs\Laracord\Facades\Laracord;
 
 $user = Laracord::bot()
     ->users()
-    ->getCurrentUser()
+    ->getCurrent()
     ->json();
 ```
 

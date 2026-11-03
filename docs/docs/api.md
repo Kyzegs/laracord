@@ -4,7 +4,7 @@ Laracord groups Discord HTTP routes into resource clients. See the generated [en
 
 ```php
 $response = Laracord::bot()->guilds()->call(
-    'getGuild',
+    'get',
     ['guild_id' => $guildId],
     query: ['with_counts' => true],
 );

@@ -1,10 +1,10 @@
 # Getting Started
 
-Laracord 1.0 wraps Discord's HTTP platform in immutable authentication contexts and resource clients.
+Laracord wraps Discord's HTTP platform in immutable authentication contexts and resource clients.
 
 ## Requirements
 
-- PHP 8.2+
+- PHP 8.3+
 - Laravel 12 or 13
 - `ext-json` and `ext-sodium`
 

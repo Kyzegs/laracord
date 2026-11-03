@@ -2,7 +2,7 @@
 
 # Laracord
 
-Laravel-native Discord HTTP platform client for PHP 8.2+ and Laravel 12–13.
+Laravel-native Discord HTTP platform client for PHP 8.3+ and Laravel 12–13.
 
 ```php
 use Kyzegs\Laracord\Facades\Laracord;
@@ -18,12 +18,12 @@ echo $message->json('id');
 Laracord provides bot and OAuth bearer contexts, Discord-aware cross-process rate limiting, every catalogued HTTP route, multipart uploads, Socialite, webhook notifications, and signed interaction/webhook-event helpers.
 
 ```bash
-composer require kyzegs/laracord:^1.0@rc
+composer require kyzegs/laracord:^2.0
 php artisan vendor:publish --tag=laracord-config
 ```
 
-See [`docs/docs/getting-started.md`](docs/docs/getting-started.md).
+See [`docs/docs/getting-started.md`](docs/docs/getting-started.md). Upgrading from 1.x? See [`UPGRADE-2.0.md`](UPGRADE-2.0.md).
 
-Gateway, voice transport, RPC, Embedded App SDK, and Social SDK clients are intentionally outside scope.
+Every route in Discord's HTTP API is catalogued, and a weekly job checks that against Discord's OpenAPI spec. Gateway, voice transport, RPC, Embedded App SDK, and Social SDK clients are intentionally outside scope.
 
 MIT licensed.

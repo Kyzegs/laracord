@@ -29,4 +29,4 @@ Event::listen(RequestFailed::class, function (RequestFailed $event): void {
 });
 ```
 
-Pooled requests dispatch the same events per request. They fire after the server-error retry loop, so `RequestFailed` reflects the final outcome rather than each retry.
+Pooled requests dispatch the same events per request. They skip the server-error retry loop, so each pooled request gets a single attempt and `RequestFailed` reports that attempt.

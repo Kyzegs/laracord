@@ -74,7 +74,7 @@ export default defineConfig({
       { icon: 'github', link: 'https://github.com/Kyzegs/laracord' },
     ],
     editLink: {
-      pattern: 'https://github.com/Kyzegs/laracord/edit/develop/docs/docs/:path',
+      pattern: 'https://github.com/Kyzegs/laracord/edit/main/docs/docs/:path',
       text: 'Edit this page on GitHub',
     },
     footer: {
