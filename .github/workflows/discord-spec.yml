@@ -1,0 +1,26 @@
+name: Discord spec
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - bin/catalog-check.php
+      - src/Endpoints/EndpointCatalog.php
+
+permissions:
+  contents: read
+
+jobs:
+  catalog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: json, mbstring, sodium
+          coverage: none
+      - run: composer install --prefer-dist --no-interaction --no-progress
+      - run: composer catalog:check
