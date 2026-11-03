@@ -34,7 +34,7 @@ return [
     'application_id' => env('DISCORD_APPLICATION_ID'),
     'api_url' => env('DISCORD_API_URL', 'https://discord.com/api'),
     'api_version' => (int) env('DISCORD_API_VERSION', 10),
-    'user_agent' => env('DISCORD_USER_AGENT', 'DiscordBot (https://github.com/Kyzegs/laracord, 1.0.0)'),
+    'user_agent' => env('DISCORD_USER_AGENT'),
 
     /*
     |--------------------------------------------------------------------------

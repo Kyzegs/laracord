@@ -9,7 +9,10 @@ use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 use Kyzegs\Laracord\Socialite\DiscordProvider;
 use Kyzegs\Laracord\Socialite\User;
+use Kyzegs\Laracord\Tests\TestCase;
 use Laravel\Socialite\Two\InvalidStateException;
+
+uses(TestCase::class);
 
 it('maps modern discord user names and default avatars', function (): void {
     $provider = new class(new Request, 'client', 'secret', 'https://example.test/callback') extends DiscordProvider
@@ -64,3 +67,14 @@ it('rejects a code that Discord did not issue without exchanging it', function (
     'another provider' => [['iss' => 'https://evil.test']],
     'no issuer' => [[]],
 ]);
+
+it('calls the API configured for the rest of the client', function (): void {
+    config()->set('laracord.api_url', 'https://proxy.test/api/');
+    config()->set('laracord.api_version', 9);
+
+    $mock = oauthResponses();
+
+    oauthCallback(['iss' => 'https://discord.com'], $mock)->user();
+
+    expect((string) $mock->getLastRequest()?->getUri())->toBe('https://proxy.test/api/v9/users/@me');
+});

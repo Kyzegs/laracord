@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Composer\InstalledVersions;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
@@ -82,3 +83,18 @@ it('throws typed discord exceptions', function (): void {
     expect(fn () => $discordClient->send(new DiscordRequest(HttpMethod::GET, '/channels/404')))
         ->toThrow(DiscordNotFoundException::class, 'Unknown Channel');
 });
+
+it('identifies itself with the installed package version unless configured otherwise', function (?string $configured, string $expected): void {
+    config()->set('laracord.user_agent', $configured);
+    $history = [];
+    $handlerStack = HandlerStack::create(new MockHandler([new Response(200)]));
+    $handlerStack->push(Middleware::history($history));
+
+    resolve(ClientFactory::class)->make(Authentication::bot('secret'), $handlerStack)->send(new DiscordRequest(HttpMethod::GET, '/gateway'));
+
+    expect($history[0]['request']->getHeaderLine('User-Agent'))->toBe($expected);
+})->with([
+    'default' => [null, 'DiscordBot (https://github.com/Kyzegs/laracord, '.InstalledVersions::getPrettyVersion('kyzegs/laracord').')'],
+    'empty env value' => ['', 'DiscordBot (https://github.com/Kyzegs/laracord, '.InstalledVersions::getPrettyVersion('kyzegs/laracord').')'],
+    'configured' => ['DiscordBot (https://example.com, 2.0)', 'DiscordBot (https://example.com, 2.0)'],
+]);

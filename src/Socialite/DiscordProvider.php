@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Kyzegs\Laracord\Socialite;
 
+use Illuminate\Container\Container;
+use Illuminate\Contracts\Config\Repository;
 use Illuminate\Support\Collection;
+use Kyzegs\Laracord\ClientFactory;
 use Laravel\Socialite\Two\AbstractProvider;
 use Laravel\Socialite\Two\InvalidStateException;
 
@@ -53,18 +56,17 @@ class DiscordProvider extends AbstractProvider
      */
     protected function getTokenUrl(): string
     {
-        return 'https://discord.com/api/v10/oauth2/token';
+        return $this->apiUrl('oauth2/token');
     }
 
     /**
      * Get the raw user for the given access token.
      *
-     * @param  string  $token
+     * @return array<string, mixed>
      */
-    /** @return array<string, mixed> */
     protected function getUserByToken(mixed $token): array
     {
-        $response = $this->getHttpClient()->get('https://discord.com/api/v10/users/@me', [
+        $response = $this->getHttpClient()->get($this->apiUrl('users/@me'), [
             'headers' => [
                 'Authorization' => 'Bearer '.$token,
             ],
@@ -75,8 +77,9 @@ class DiscordProvider extends AbstractProvider
 
     /**
      * Map the raw user array to a Socialite User instance.
+     *
+     * @param  array<string, mixed>  $user
      */
-    /** @param array<string, mixed> $user */
     protected function mapUserToObject(array $user): User
     {
         $id = (string) $user['id'];
@@ -94,10 +97,15 @@ class DiscordProvider extends AbstractProvider
         ]);
     }
 
+    private function apiUrl(string $path): string
+    {
+        return ClientFactory::baseUrl(Container::getInstance()->make(Repository::class)).$path;
+    }
+
     /** @return Collection<int, PartialGuild> */
     public function guildsFromToken(string $token): Collection
     {
-        $response = $this->getHttpClient()->get('https://discord.com/api/v10/users/@me/guilds', [
+        $response = $this->getHttpClient()->get($this->apiUrl('users/@me/guilds'), [
             'headers' => ['Authorization' => 'Bearer '.$token],
         ]);
 
