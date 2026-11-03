@@ -1,4 +1,4 @@
-# Interactions and Webhook Events
+# Interactions
 
 Attach `VerifyDiscordSignature` to application-owned routes. It validates Ed25519 signature, raw body, timestamp, and replay window.
 
@@ -12,7 +12,7 @@ Route::post('/discord/interactions', function (Request $request) {
 })->middleware(VerifyDiscordSignature::class);
 ```
 
-Use `InteractionResponse::webhookPong()` for webhook-event PING payloads. Laracord does not register routes automatically.
+Laracord does not register routes automatically. Discord Webhook Events use a separate envelope and are covered in [Webhook Events](./webhook-events.md).
 
 ## Routing interactions
 
