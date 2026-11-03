@@ -172,6 +172,8 @@ $discord->channels()->paginate('listPinnedMessages', ['channel_id' => $channelId
 
 `pool()` dispatches several requests at once and returns the results keyed exactly as you built them. Each value is a `DiscordResponse`, or the `Throwable` that request failed with. Pooled requests skip the server-error retry loop.
 
+The requests can reach Discord in any order, so don't pool requests that depend on each other, such as messages that must appear in sequence. Requests to a route whose rate limit isn't known yet wait for the first response, and waiting for an exhausted limit pauses the whole pool.
+
 ```php
 use Kyzegs\Laracord\Pool\Pool;
 

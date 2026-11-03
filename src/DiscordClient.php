@@ -34,7 +34,6 @@ use Kyzegs\Laracord\Exceptions\MissingAuthenticationException;
 use Kyzegs\Laracord\Http\DiscordRequest;
 use Kyzegs\Laracord\Http\DiscordResponse;
 use Kyzegs\Laracord\Pool\Pool;
-use Kyzegs\Laracord\RateLimit\RedactingLogger;
 use Kyzegs\Laracord\Resources\Concerns\ResolvesResources;
 use Kyzegs\Laracord\ValueObjects\AuditLogReason;
 use Kyzegs\Laracord\ValueObjects\Authentication;
@@ -250,7 +249,7 @@ final readonly class DiscordClient implements Client
             $exception instanceof RateLimitDelayExceededException => new DiscordRateLimitException($exception->retryAfter, previous: $exception),
             // These two carry the request URL, which can contain a webhook or interaction token, so they are not chained.
             $exception instanceof RateLimitExceededException => new DiscordRateLimitException($exception->getRetryAfter(), $exception->isGlobal()),
-            $exception instanceof TransferException => new DiscordTransportException(RedactingLogger::redact($exception->getMessage()), $exception->getCode()),
+            $exception instanceof TransferException => new DiscordTransportException((string) preg_replace('#(/(?:webhooks|interactions)/[^/\s?]+/)[^/\s?]+#', '$1[REDACTED]', $exception->getMessage()), $exception->getCode()),
             $exception instanceof LockTimeoutException => new DiscordTransportException('Timed out waiting for the Discord rate limit lock.', previous: $exception),
             default => $exception,
         };

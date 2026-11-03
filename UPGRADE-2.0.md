@@ -56,6 +56,10 @@ These pointed at the wrong route, so any code calling them was failing:
 - **`RateLimitExceededException` is no longer chained** to `DiscordRateLimitException`, and Guzzle exceptions are no longer chained to `DiscordTransportException`, because both carry the request URL.
 - **Socialite callbacks must carry `iss=https://discord.com`.** A missing or different value throws `InvalidStateException`. If your frontend forwards the callback to your backend, forward `iss` along with `code` and `state`.
 - **Notifications with components now send `with_components`**, so Discord honours them where it used to ignore them. Interactive components still need an application-owned webhook.
+- **`pool()` requests now run concurrently.** They used to go out one at a time, so they can now reach Discord in any order. Don't pool requests that depend on each other.
+- **Out-of-range `laracord.rate_limit` values throw `InvalidArgumentException`** when the client is built, instead of misbehaving at request time. For example, `LARACORD_GLOBAL_REQUESTS=0` used to wait forever. Negative retries, buffers or delays, jitter outside 0 to 100, limits below 1 and windows of 0 or less are all rejected.
+- **Rate limit state is re-learned once after you deploy**, because `kyzegs/guzzle-rate-limit-middleware` 1.3 changed its Discord route keys. Expect a brief return to cautious, one-at-a-time requests per route.
+- **Laracord requires `kyzegs/guzzle-rate-limit-middleware` 1.3 and Guzzle 7.15.2 or later.** Rate limit log messages name the route template, such as `POST /api/v10/webhooks/{webhook_id}/{webhook_token}`, rather than the full URL, so update anything that parses them.
 - **`Laracord::fake()` throws on a missing route parameter**, as the real client does, so a test that left one out now fails.
 - **`UnhandledInteractionException` extends `DiscordException`.** A `catch (DiscordException)` around your router now catches it too.
 - **The default User-Agent reports the installed version.** `laracord.user_agent` defaults to `null`; keep setting it to override.

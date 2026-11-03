@@ -152,7 +152,7 @@ it('keeps tokens out of rate limit logs', function (): void {
 
         public function log($level, Stringable|string $message, array $context = []): void
         {
-            $this->messages[] = (string) $message;
+            $this->messages[] = $message.' '.json_encode($context);
         }
     };
     app()->instance(LoggerInterface::class, $logger);
@@ -165,7 +165,7 @@ it('keeps tokens out of rate limit logs', function (): void {
     expect(clientOn($mock)->send(webhookPost())->json('ok'))->toBeTrue()
         ->and($logger->messages)->not->toBeEmpty()
         ->and(implode(' ', $logger->messages))->not->toContain('secret-token')
-        ->and(implode(' ', $logger->messages))->toContain('[REDACTED]');
+        ->and(implode(' ', $logger->messages))->toContain('{webhook_token}');
 });
 
 it('reports a rate limit lock timeout as a Discord exception', function (): void {

@@ -16,7 +16,6 @@ use Kyzegs\GuzzleRateLimitMiddleware\Config\Options;
 use Kyzegs\GuzzleRateLimitMiddleware\RateLimitMiddleware;
 use Kyzegs\Laracord\RateLimit\LaravelLockFactory;
 use Kyzegs\Laracord\RateLimit\LaravelStore;
-use Kyzegs\Laracord\RateLimit\RedactingLogger;
 use Kyzegs\Laracord\ValueObjects\Authentication;
 use Psr\Log\LoggerInterface;
 
@@ -48,7 +47,7 @@ final readonly class ClientFactory
             (int) ($rate['lock_ttl_seconds'] ?? 60),
             (int) ($rate['lock_wait_seconds'] ?? 10),
         );
-        $stack->push(RateLimitMiddleware::discord($laravelStore, new RedactingLogger($this->logger), $laravelLockFactory, $options), 'discord_rate_limits');
+        $stack->push(RateLimitMiddleware::discord($laravelStore, $this->logger, $laravelLockFactory, $options), 'discord_rate_limits');
 
         $client = new GuzzleClient([
             'handler' => $stack,
