@@ -209,6 +209,25 @@ $response = $discord->messages()->create(
 );
 ```
 
+## Message builder
+
+`DiscordMessage` works anywhere a message body does, and its files are uploaded without passing them separately. It defaults to no parsed mentions:
+
+```php
+use Kyzegs\Laracord\Constants\MessageFlags;
+use Kyzegs\Laracord\Payloads\DiscordMessage;
+
+$discord->messages()->create(['channel_id' => $channelId], (new DiscordMessage)
+    ->content('Monthly report')
+    ->reply($messageId)
+    ->file($stream, 'report.pdf', 'application/pdf', description: 'October figures', spoiler: true)
+    ->flags(MessageFlags::SUPPRESS_NOTIFICATIONS));
+```
+
+`forward($messageId, $channelId)`, `stickers()`, `poll()`, and `sharedClientTheme()` cover the other message features. `threadName()` and `appliedTags()` apply when a webhook posts to a forum or media channel.
+
+Laracord does not repeat a `POST` that timed out or got a `5xx`, because it may have taken effect. To retry `messages()->create()` yourself without posting twice, set `nonce()` and send the same value again: Discord returns the original message instead of a duplicate. Webhooks and interaction follow-ups do not take a nonce, so retrying those can post twice.
+
 ## Uncatalogued endpoints
 
 For a Discord route that has not yet reached the catalog, construct a `DiscordRequest` and send it directly:

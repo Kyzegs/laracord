@@ -129,7 +129,7 @@ $modal = Modal::make('report', 'Submit report')
         TextInput::paragraph('details')->required()->maxLength(4000),
         'Describe what happened.',
     )
-    ->label('Evidence', FileUpload::make('evidence')->maxValues(3))
+    ->label('Evidence', FileUpload::make('evidence')->maxValues(3)->fileTypes(['image', '.pdf']))
     ->label('Priority', RadioGroup::make('priority')->options(
         SelectOption::make('Normal', 'normal')->default(),
         SelectOption::make('Urgent', 'urgent'),
@@ -143,6 +143,6 @@ $modal = Modal::make('report', 'Submit report')
 InteractionResponse::modal($modal);
 ```
 
-Modern modal controls are `FileUpload`, `RadioGroup`, `CheckboxGroup`, and `Checkbox`. Radio and checkbox groups reuse `SelectOption` because Discord gives these options the same label, value, description, and default fields.
+Modern modal controls are `FileUpload`, `RadioGroup`, `CheckboxGroup`, and `Checkbox`. `FileUpload::fileTypes()` takes up to 10 of `image`, `video`, `audio`, or dot-prefixed extensions; Discord only checks the extension, so validate file contents yourself. Radio and checkbox groups reuse `SelectOption` because Discord gives these options the same label, value, description, and default fields.
 
 See Discord's [component reference](https://docs.discord.com/developers/components/reference) for placement rules and rendered behavior.

@@ -17,6 +17,9 @@ final class FileUpload implements Component
 
     private ?bool $required = null;
 
+    /** @var list<string>|null */
+    private ?array $fileTypes = null;
+
     private function __construct(private readonly string $customId)
     {
         if ($customId === '' || mb_strlen($customId) > 100) {
@@ -58,6 +61,28 @@ final class FileUpload implements Component
         return $this;
     }
 
+    /**
+     * Limit uploads by extension. Discord does not inspect file contents, so validate them yourself.
+     *
+     * @param  list<string>  $fileTypes  `image`, `video`, `audio`, or dot-prefixed extensions such as `.pdf`
+     */
+    public function fileTypes(array $fileTypes): self
+    {
+        if (count($fileTypes) > 10) {
+            throw new \InvalidArgumentException('File upload file_types supports at most 10 entries.');
+        }
+
+        foreach ($fileTypes as $fileType) {
+            if (! in_array($fileType, ['image', 'video', 'audio'], true) && preg_match('/^\.[^.\s]+$/D', $fileType) !== 1) {
+                throw new \InvalidArgumentException(sprintf('File upload file type "%s" must be image, video, audio, or a dot-prefixed extension.', $fileType));
+            }
+        }
+
+        $this->fileTypes = $fileTypes;
+
+        return $this;
+    }
+
     /** @return array<string, mixed> */
     public function toArray(): array
     {
@@ -76,6 +101,7 @@ final class FileUpload implements Component
             'min_values' => $this->minValues,
             'max_values' => $this->maxValues,
             'required' => $this->required,
+            'file_types' => $this->fileTypes,
         ], static fn (mixed $value): bool => $value !== null);
     }
 

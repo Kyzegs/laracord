@@ -84,6 +84,95 @@ final readonly class Interaction
         return $key === null ? Arr::get($this->payload, 'data', []) : Arr::get($this->payload, 'data.'.$key, $default);
     }
 
+    /**
+     * The invoking user. Discord nests it under `member` in guilds.
+     *
+     * @return array<string, mixed>|null
+     */
+    public function user(): ?array
+    {
+        return Arr::get($this->payload, 'member.user') ?? Arr::get($this->payload, 'user');
+    }
+
+    public function guildId(): ?string
+    {
+        return Arr::get($this->payload, 'guild_id');
+    }
+
+    public function channelId(): ?string
+    {
+        return Arr::get($this->payload, 'channel_id');
+    }
+
+    /** The invoking user's language. */
+    public function locale(): ?string
+    {
+        return Arr::get($this->payload, 'locale');
+    }
+
+    /** The app's permissions in the channel, as a bit set of Constants\Permissions. */
+    public function appPermissions(): int
+    {
+        return (int) Arr::get($this->payload, 'app_permissions', 0);
+    }
+
+    /** @return list<array<string, mixed>> */
+    public function entitlements(): array
+    {
+        return Arr::get($this->payload, 'entitlements', []);
+    }
+
+    /** The largest upload this interaction's responses may carry, in bytes. */
+    public function attachmentSizeLimit(): ?int
+    {
+        return Arr::get($this->payload, 'attachment_size_limit');
+    }
+
+    /** Where the interaction was triggered: guild (0), bot DM (1) or private channel (2). */
+    public function contextType(): ?int
+    {
+        return Arr::get($this->payload, 'context');
+    }
+
+    /**
+     * Read a value submitted through a modal by its custom_id: a string for text
+     * inputs and radio groups, a bool for checkboxes, and a list for selects,
+     * checkbox groups and file uploads (ids to look up with resolvedAttachments()).
+     */
+    public function submitted(string $customId, mixed $default = null): mixed
+    {
+        $components = $this->data('components', []);
+        $component = is_array($components) ? $this->findComponent($components, $customId) : null;
+
+        return $component['value'] ?? $component['values'] ?? $default;
+    }
+
+    /**
+     * Modals nest inputs under a Label's `component` or an Action Row's `components`.
+     *
+     * @param  array<array-key, mixed>  $components
+     * @return array<array-key, mixed>|null
+     */
+    private function findComponent(array $components, string $customId): ?array
+    {
+        foreach ($components as $component) {
+            if (! is_array($component)) {
+                continue;
+            }
+
+            if (($component['custom_id'] ?? null) === $customId) {
+                return $component;
+            }
+
+            $found = $this->findComponent($component['components'] ?? [$component['component'] ?? null], $customId);
+            if ($found !== null) {
+                return $found;
+            }
+        }
+
+        return null;
+    }
+
     /** The invoked command name (application command and autocomplete interactions). */
     public function commandName(): ?string
     {

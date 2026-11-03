@@ -6,6 +6,7 @@ namespace Kyzegs\Laracord\Socialite;
 
 use Illuminate\Support\Collection;
 use Laravel\Socialite\Two\AbstractProvider;
+use Laravel\Socialite\Two\InvalidStateException;
 
 class DiscordProvider extends AbstractProvider implements ProviderInterface
 {
@@ -22,6 +23,20 @@ class DiscordProvider extends AbstractProvider implements ProviderInterface
      * @var string
      */
     protected $scopeSeparator = ' ';
+
+    /**
+     * Discord names itself in `iss` on every redirect (RFC 9207). Anything else
+     * means the code came from another provider, so it must not be exchanged here.
+     */
+    #[\Override]
+    public function user()
+    {
+        if ($this->request->input('iss') !== 'https://discord.com') {
+            throw new InvalidStateException('Unexpected OAuth2 issuer.');
+        }
+
+        return parent::user();
+    }
 
     /**
      * Get the authentication URL for the provider.

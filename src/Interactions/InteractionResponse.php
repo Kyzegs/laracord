@@ -6,6 +6,7 @@ namespace Kyzegs\Laracord\Interactions;
 
 use Illuminate\Http\JsonResponse;
 use Kyzegs\Laracord\Components\Modal;
+use Kyzegs\Laracord\Constants\MessageFlags;
 use Kyzegs\Laracord\Payloads\DiscordMessage;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -24,7 +25,7 @@ final class InteractionResponse
 
     public static function defer(bool $ephemeral = false): JsonResponse
     {
-        return new JsonResponse(['type' => 5, 'data' => $ephemeral ? ['flags' => 64] : []]);
+        return new JsonResponse(['type' => 5, 'data' => $ephemeral ? ['flags' => MessageFlags::EPHEMERAL] : []]);
     }
 
     public static function deferUpdate(): JsonResponse
@@ -52,6 +53,11 @@ final class InteractionResponse
             : ['custom_id' => $modal, 'title' => $title, 'components' => $components];
 
         return new JsonResponse(['type' => 9, 'data' => $data]);
+    }
+
+    public static function launchActivity(): JsonResponse
+    {
+        return new JsonResponse(['type' => 12]);
     }
 
     public static function webhookPong(): Response
