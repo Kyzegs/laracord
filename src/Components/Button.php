@@ -21,7 +21,11 @@ final class Button implements Component
         private ?string $url = null,
         private ?string $skuId = null,
         private bool $disabled = false,
-    ) {}
+    ) {
+        if ($label !== null) {
+            $this->label($label);
+        }
+    }
 
     public static function primary(string $customId, ?string $label = null): self
     {
