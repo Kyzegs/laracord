@@ -102,6 +102,15 @@ $userId = $interaction->option('admin.ban.user');
 $option = $interaction->optionData('admin.ban.user');
 ```
 
+`submitted()` reads a modal value by `custom_id`, wherever Discord nested it. It returns a string for text inputs and radio groups, a bool for checkboxes, and a list for selects, checkbox groups, and file uploads:
+
+```php
+$name = $interaction->submitted('name');
+$attachmentIds = $interaction->submitted('evidence', []);
+```
+
+`user()` returns the invoking user in guilds and in DMs. `guildId()`, `channelId()`, `locale()`, `appPermissions()`, `entitlements()`, `attachmentSizeLimit()`, and `contextType()` expose the rest of the interaction context, and the full payload stays available as `$interaction->payload`.
+
 Resolved Discord objects are available through `resolvedUsers()`, `resolvedMembers()`, `resolvedRoles()`, `resolvedChannels()`, `resolvedMessages()`, and `resolvedAttachments()`. Use `resolved('users', $userId)` to retrieve one object. The original accessors — `id()`, `applicationId()`, `type()`, `isPing()`, `token()`, `data()`, `commandName()`, `customId()`, `values()`, and top-level `option(name)` — remain available.
 
 See Discord's [Receiving and Responding to Interactions](https://docs.discord.com/developers/interactions/receiving-and-responding) reference for callback constraints and token lifetime. An unmatched interaction throws `UnhandledInteractionException`.
