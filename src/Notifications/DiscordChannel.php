@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Kyzegs\Laracord\Notifications;
 
 use Illuminate\Notifications\Notification;
+use Kyzegs\Laracord\Contracts\Factory;
 use Kyzegs\Laracord\Http\DiscordResponse;
-use Kyzegs\Laracord\LaracordManager;
 use Kyzegs\Laracord\Payloads\DiscordMessage;
 use Kyzegs\Laracord\ValueObjects\DiscordWebhook;
 
 final readonly class DiscordChannel
 {
-    public function __construct(private LaracordManager $laracordManager) {}
+    public function __construct(private Factory $factory) {}
 
     public function send(object $notifiable, Notification $notification): ?DiscordResponse
     {
@@ -35,12 +35,14 @@ final readonly class DiscordChannel
             throw new \UnexpectedValueException('toDiscord() must return DiscordMessage.');
         }
 
-        return $this->laracordManager->withoutAuthentication()->resource('webhooks')->call(
+        // Discord ignores components sent to a webhook unless the request opts in.
+        $query = isset($message->toArray()['components']) ? ['wait' => true, 'with_components' => true] : ['wait' => true];
+
+        return $this->factory->withoutAuthentication()->resource('webhooks')->call(
             'execute',
             ['webhook_id' => $webhook->id, 'webhook_token' => $webhook->token()],
             $message,
-            ['wait' => true],
-            $message->files(),
+            $query,
         );
     }
 }

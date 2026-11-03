@@ -6,10 +6,12 @@ namespace Kyzegs\Laracord\Testing;
 
 use Closure;
 use GuzzleHttp\Psr7\Response as Psr7Response;
+use Illuminate\Container\Container;
 use Kyzegs\Laracord\Contracts\Client;
 use Kyzegs\Laracord\Contracts\Factory;
 use Kyzegs\Laracord\Http\DiscordRequest;
 use Kyzegs\Laracord\Http\DiscordResponse;
+use Kyzegs\Laracord\Interactions\InteractionRouter;
 use Kyzegs\Laracord\ValueObjects\OAuthAccessToken;
 use PHPUnit\Framework\Assert as PHPUnit;
 use Throwable;
@@ -49,6 +51,11 @@ final class FakeLaracord implements Factory
         return new FakeDiscordClient($this);
     }
 
+    public function interactions(): InteractionRouter
+    {
+        return Container::getInstance()->make(InteractionRouter::class);
+    }
+
     /**
      * Build a canned response for use as a stub value.
      *
@@ -65,6 +72,9 @@ final class FakeLaracord implements Factory
 
     public function handle(DiscordRequest $request): DiscordResponse
     {
+        // Throws on a missing route parameter, as the real client does.
+        $request->resolvedPath();
+
         $this->recorded[] = $request;
 
         $stub = $this->resolveStub($request);
@@ -91,7 +101,8 @@ final class FakeLaracord implements Factory
 
     public function assertSent(string $resource, string|callable|null $endpoint = null, ?callable $callback = null): void
     {
-        if (is_callable($endpoint)) {
+        // A string is always an endpoint name, even one like `end` that is also a PHP function.
+        if (! is_string($endpoint) && is_callable($endpoint)) {
             $callback = $endpoint;
             $endpoint = null;
         }
@@ -105,7 +116,7 @@ final class FakeLaracord implements Factory
 
     public function assertNotSent(string $resource, string|callable|null $endpoint = null, ?callable $callback = null): void
     {
-        if (is_callable($endpoint)) {
+        if (! is_string($endpoint) && is_callable($endpoint)) {
             $callback = $endpoint;
             $endpoint = null;
         }
