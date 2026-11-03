@@ -55,6 +55,7 @@
         "format:test": "vendor/bin/pint --test",
         "ide-helpers": "php -f bin/resources.php",
         "ide-helpers:test": "php -f bin/resources.php -- --lint",
+        "catalog:check": "php -f bin/catalog-check.php",
         "refactor:test": "vendor/bin/rector process --dry-run --no-progress-bar"
     },
     "extra": {
