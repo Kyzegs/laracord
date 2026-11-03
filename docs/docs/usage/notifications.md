@@ -1,5 +1,7 @@
 # Webhook Notifications
 
+Notifications post through a webhook, so files and components on the `DiscordMessage` are sent with no extra setup. Interactive components need an application-owned webhook; other webhooks can only send display components.
+
 ```php
 use Kyzegs\Laracord\Notifications\DiscordChannel;
 use Kyzegs\Laracord\Payloads\DiscordMessage;
